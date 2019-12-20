@@ -3,43 +3,160 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://cassiestd.github.io/tags/cassie/</loc>
+    <loc>http://example.com/project/project1/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.com/project/project2/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.com/project/project3/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.com/project/project4/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/cassie/</loc>
     <lastmod>2019-12-18T02:01:58+05:30</lastmod>
   </url>
   
   <url>
-    <loc>https://cassiestd.github.io/</loc>
+    <loc>http://example.com/posts/2019-12-18/hugo&#43;githubpages%E7%9A%84%E4%BD%BF%E7%94%A8/</loc>
     <lastmod>2019-12-18T02:01:58+05:30</lastmod>
   </url>
   
   <url>
-    <loc>https://cassiestd.github.io/posts/2019-12-18/hugo&#43;githubpages%E7%9A%84%E4%BD%BF%E7%94%A8/</loc>
+    <loc>http://example.com/</loc>
     <lastmod>2019-12-18T02:01:58+05:30</lastmod>
   </url>
   
   <url>
-    <loc>https://cassiestd.github.io/posts/</loc>
+    <loc>http://example.com/posts/</loc>
     <lastmod>2019-12-18T02:01:58+05:30</lastmod>
   </url>
   
   <url>
-    <loc>https://cassiestd.github.io/tags/</loc>
+    <loc>http://example.com/tags/</loc>
     <lastmod>2019-12-18T02:01:58+05:30</lastmod>
   </url>
   
   <url>
-    <loc>https://cassiestd.github.io/posts/2019-12-18/art1/</loc>
+    <loc>http://example.com/posts/2019-12-18/art1/</loc>
     <lastmod>2019-12-18T02:01:58+05:30</lastmod>
   </url>
   
   <url>
-    <loc>https://cassiestd.github.io/about/</loc>
+    <loc>http://example.com/about/</loc>
     <lastmod>2019-12-17T21:37:58+05:30</lastmod>
   </url>
   
   <url>
-    <loc>https://cassiestd.github.io/posts/2019-12-17/test/</loc>
+    <loc>http://example.com/posts/2019-12-17/test/</loc>
     <lastmod>2018-03-18T02:01:58+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.com/post/creating-a-new-theme/</loc>
+    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/go/</loc>
+    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/golang/</loc>
+    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/hugo/</loc>
+    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.com/post/</loc>
+    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/themes/</loc>
+    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.com/post/goisforlovers/</loc>
+    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/development/</loc>
+    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.com/post/hugoisforlovers/</loc>
+    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/template/</loc>
+    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/jekyll/</loc>
+    <lastmod>2014-03-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.com/post/migrate-from-jekyll/</loc>
+    <lastmod>2014-03-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/static-site-generator/</loc>
+    <lastmod>2014-03-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/bootstrap/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.com/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/css/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/highlight-js/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/html/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/js/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.com/project/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/responsive/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/syntax-highlighting/</loc>
   </url>
   
 </urlset>
