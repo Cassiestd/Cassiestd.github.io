@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Cassie</title>
+    <link>https://cassiestd.github.io/tags/</link>
+    <description>Recent content in Tags on Cassie</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <copyright>©Copyright notice</copyright>
+    <lastBuildDate>Wed, 18 Dec 2019 02:01:58 +0530</lastBuildDate>
+    
+	<atom:link href="https://cassiestd.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Cassie</title>
+      <link>https://cassiestd.github.io/tags/cassie/</link>
+      <pubDate>Wed, 18 Dec 2019 02:01:58 +0530</pubDate>
+      
+      <guid>https://cassiestd.github.io/tags/cassie/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

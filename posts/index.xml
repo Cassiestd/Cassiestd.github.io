@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Cassie</title>
+    <link>https://cassiestd.github.io/posts/</link>
+    <description>Recent content in Posts on Cassie</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <copyright>©Copyright notice</copyright>
+    <lastBuildDate>Wed, 18 Dec 2019 02:01:58 +0530</lastBuildDate>
+    
+	<atom:link href="https://cassiestd.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Hugo&#43;githubPages的使用</title>
+      <link>https://cassiestd.github.io/posts/2019-12-18/hugo&#43;githubpages%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Wed, 18 Dec 2019 02:01:58 +0530</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2019-12-18/hugo&#43;githubpages%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+      <description>hugo生成html 当在content的posts中写完文章后，命令行cd到本地博客的主目录，运行命令 hugo -DEF ，会将你的文章转成html在public目录下。
+将public目录内容上传到github 命令行cd到public目录，运行命令 git add . 将本目录下的所有文件都添加到本地git仓库，然后运行命令 git commit -m &amp;quot;标识&amp;quot; 将刚才的添加都commit（提交）一下，然后就是运行命令 git push original master 将本次仓库的文件上传到远程仓库。所有操作便完成了，打开你的博客查看。</description>
+    </item>
+    
+    <item>
+      <title>TEST ART1</title>
+      <link>https://cassiestd.github.io/posts/2019-12-18/art1/</link>
+      <pubDate>Wed, 18 Dec 2019 02:01:58 +0530</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2019-12-18/art1/</guid>
+      <description> 好丑哦 我自闭了= = </description>
+    </item>
+    
+    <item>
+      <title>Just TEST IMAGE</title>
+      <link>https://cassiestd.github.io/posts/2019-12-17/test/</link>
+      <pubDate>Sun, 18 Mar 2018 02:01:58 +0530</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2019-12-17/test/</guid>
+      <description>Just Test hei~~~下面是图片测试</description>
+    </item>
+    
+  </channel>
+</rss>
