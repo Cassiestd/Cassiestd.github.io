@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <copyright>© Copyright notice</copyright>
-    <lastBuildDate>Wed, 18 Dec 2019 02:01:58 +0530</lastBuildDate>
+    <lastBuildDate>Thu, 19 Dec 2019 23:30:58 +0530</lastBuildDate>
     
 	<atom:link href="https://cassiestd.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>information</title>
+      <link>https://cassiestd.github.io/tags/information/</link>
+      <pubDate>Thu, 19 Dec 2019 23:30:58 +0530</pubDate>
+      
+      <guid>https://cassiestd.github.io/tags/information/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Cassie</title>
