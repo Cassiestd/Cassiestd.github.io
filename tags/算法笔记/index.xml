@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>算法笔记 on Cassie</title>
+    <link>https://cassiestd.github.io/tags/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/</link>
+    <description>Recent content in 算法笔记 on Cassie</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <copyright>© Copyright notice</copyright>
+    <lastBuildDate>Sun, 13 Jan 2019 23:30:58 +0530</lastBuildDate>
+    
+	<atom:link href="https://cassiestd.github.io/tags/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>算法笔记第1-3章知识点</title>
+      <link>https://cassiestd.github.io/posts/2020-01-13/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0%E7%AC%AC1-3%E7%AB%A0/</link>
+      <pubDate>Sun, 13 Jan 2019 23:30:58 +0530</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-01-13/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0%E7%AC%AC1-3%E7%AB%A0/</guid>
+      <description>算法笔记第1-3章知识点 第一章 1、 程序提交结果： &amp;gt; (1) 答案正确：AC(Accepted)
+ (2) 编译错误：CE(Compile Error)
+(3) 答案错误：WA(Wrong Answer)
+(4) 运行超时：TLE(Time Limit Exceeded)
+(5) 运行错误：RE(Runtime Error)
+(6) 内存超限：MLE(Memory Limit Exceeded)
+(7) 格式错误：PE(Presentation Error)
+(8) 输出超限：OLE(Output Limit Exceeded)
+ 第二章 1、 scanf函数：注意不要忘了&amp;rdquo;&amp;amp;&amp;ldquo;符号！！
+int a,b; scanf(&amp;#34;%d%d&amp;#34;,&amp;amp;a,&amp;amp;b); // %d是整型变量的标准输入 printf(&amp;#34;%d&amp;#34;,a+b); 2、 四种基本数据类型及取值范围： 3、 注意： &amp;gt; (1) 无符号数加unsigned。
+ (2) long long 类型变量超过(2^31)-1就要加LL后缀。
+(3) 浮点数后缀F。
+(4) 32位整数用int，64位用long long。
+(5) 浮点数用double，不用float。float为32位，精度6-7位；double为64位，精度15-16位。
+ 4、 字符常量and字符变量：
+ (1) 字符常量：不能够被改变，不能够被赋值。 例如： &amp;lsquo;c&amp;rsquo;。 字符常量（必须是一个字符）要用单引号引起来以示区分。</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>SpringMVC之注解开发 - Cassie</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="SpringMVC之注解开发" />
+<meta property="og:description" content="前言 &emsp;&emsp;之前的一篇博文：SpringMVC之处理器映射器中最后的注解式处理器映射器讲了如何使用最基础的注解开发，现在下面将讨论注解开发中的一些常见要点。
+讨论对象  @RequestMapping 控制器返回值 参数绑定  过程 @RequestMapping &emsp;&emsp;通过之前的利用注解方式配置映射器和适配器，对于控制器中标记有@RequestMapping的方法，我们可以通过@RequestMapping设定的url访问到此方法，其实 @RequestMapping也可以作用于类上，而不仅仅是作用于方法上 。作用于类上可以窄化请求映射。注解式开发的控制器都是基于方法的，我们往往把一个模块的控制器都放在一个类里，如果此时用@RequestMapping标记类，窄化此模块的请求，可以很好的起到逻辑上的模块划分的作用。假设我做一个手商城，有一个商品模块，那么是不是可以有商品添加，商品删除，商品修改等等此模块下的控制器，这些控制器放在一个类里，然后我在类前用@RequestMapping(&quot;/item&quot;)标记，然后假设我的商品添加控制器的标记为@RequestMapping(&quot;/addItem&quot;)，那么如果我要访问商品添加的控制器，访问的相对url为：/item/addItem，此类里的每个控制器都要加上/item前缀,此所谓窄化了请求。为啥要窄化请求，我认为是可以在逻辑上合理划分模块，一旦控制器多了，有个代表模块的前缀将会使得项目更加合理。参考实例如下：
+@Controller @RequestMapping(&#34;justTest&#34;) public class TestController{ @RequestMapping(&#34;/hello&#34;) public ModelAndView sayHello(){ ModelAndView modelAndView=new ModelAndView(&#34;hello&#34;); modelAndView.addObject(&#34;info&#34;,&#34;Hello Man!&#34;); return modelAndView; } } &emsp;&emsp;访问测试结果如下：
+&emsp;&emsp;@RequestMapping的另一个要点就是 请求限制 ，可以规定请求的方式为GET或者POST等等，可以规定请求的提交内容的类型（json等），等等。具体的属性如下表：
+   属性值 作用     value 例如 @RequestMapping(value=&quot;/test&quot;)，其实这等价于 @RequestMapping(&quot;/test&quot;)   method 指定请求控制器的方式，有GET，POST，DELETE等。例如：@RequestMapping(value = &quot;/test&quot;,method = RequestMethod.POST)就是指定只处理POST类型的请求   consumes 规定请求的提交内容的类型，比如我只接受json类型数据的请求，那么我可以设置成： @RequestMapping(value = &quot;/test&quot;,consumes = &quot;application/json&quot;)   produces 规定返回的内容的类型，比如我返回xml类型的数据，那么我可以设置成： @RequestMapping(value = &quot;/test&quot;,produces = &quot;application/json&quot;)   params 规定请求所必需的带的参数，可以进一步过滤掉无关请求   headers 规定请求必须带的HTTP头信息    &emsp;&emsp;为了测试以上参数，我写的一个控制器如下：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cassiestd.github.io/posts/2020-06-06/springmvc%E4%B9%8B%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91/" />
+<meta property="article:published_time" content="2019-07-27T17:48:36+08:00" />
+<meta property="article:modified_time" content="2019-07-27T17:48:36+08:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SpringMVC之注解开发"/>
+<meta name="twitter:description" content="前言 &emsp;&emsp;之前的一篇博文：SpringMVC之处理器映射器中最后的注解式处理器映射器讲了如何使用最基础的注解开发，现在下面将讨论注解开发中的一些常见要点。
+讨论对象  @RequestMapping 控制器返回值 参数绑定  过程 @RequestMapping &emsp;&emsp;通过之前的利用注解方式配置映射器和适配器，对于控制器中标记有@RequestMapping的方法，我们可以通过@RequestMapping设定的url访问到此方法，其实 @RequestMapping也可以作用于类上，而不仅仅是作用于方法上 。作用于类上可以窄化请求映射。注解式开发的控制器都是基于方法的，我们往往把一个模块的控制器都放在一个类里，如果此时用@RequestMapping标记类，窄化此模块的请求，可以很好的起到逻辑上的模块划分的作用。假设我做一个手商城，有一个商品模块，那么是不是可以有商品添加，商品删除，商品修改等等此模块下的控制器，这些控制器放在一个类里，然后我在类前用@RequestMapping(&quot;/item&quot;)标记，然后假设我的商品添加控制器的标记为@RequestMapping(&quot;/addItem&quot;)，那么如果我要访问商品添加的控制器，访问的相对url为：/item/addItem，此类里的每个控制器都要加上/item前缀,此所谓窄化了请求。为啥要窄化请求，我认为是可以在逻辑上合理划分模块，一旦控制器多了，有个代表模块的前缀将会使得项目更加合理。参考实例如下：
+@Controller @RequestMapping(&#34;justTest&#34;) public class TestController{ @RequestMapping(&#34;/hello&#34;) public ModelAndView sayHello(){ ModelAndView modelAndView=new ModelAndView(&#34;hello&#34;); modelAndView.addObject(&#34;info&#34;,&#34;Hello Man!&#34;); return modelAndView; } } &emsp;&emsp;访问测试结果如下：
+&emsp;&emsp;@RequestMapping的另一个要点就是 请求限制 ，可以规定请求的方式为GET或者POST等等，可以规定请求的提交内容的类型（json等），等等。具体的属性如下表：
+   属性值 作用     value 例如 @RequestMapping(value=&quot;/test&quot;)，其实这等价于 @RequestMapping(&quot;/test&quot;)   method 指定请求控制器的方式，有GET，POST，DELETE等。例如：@RequestMapping(value = &quot;/test&quot;,method = RequestMethod.POST)就是指定只处理POST类型的请求   consumes 规定请求的提交内容的类型，比如我只接受json类型数据的请求，那么我可以设置成： @RequestMapping(value = &quot;/test&quot;,consumes = &quot;application/json&quot;)   produces 规定返回的内容的类型，比如我返回xml类型的数据，那么我可以设置成： @RequestMapping(value = &quot;/test&quot;,produces = &quot;application/json&quot;)   params 规定请求所必需的带的参数，可以进一步过滤掉无关请求   headers 规定请求必须带的HTTP头信息    &emsp;&emsp;为了测试以上参数，我写的一个控制器如下："/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:200,300" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="https://cassiestd.github.io/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://cassiestd.github.io/css/main.css" /><link rel="stylesheet" type="text/css" href="https://cassiestd.github.io/css/dark.css" media="(prefers-color-scheme: dark)" />
+
+	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+	<script src="https://cassiestd.github.io/js/main.js"></script>
+</head>
+
+<body>
+	<div class="container wrapper post">
+		<div class="header">
+	<h1 class="site-title"><a href="https://cassiestd.github.io/">Cassie</a></h1>
+	<div class="site-description"><h2>博学精一</h2><nav class="nav social">
+			<ul class="flat"><a href="https://github.com/cassiestd" title="Github"><i data-feather="github"></i></a><a href="/index.xml" title="RSS"><i data-feather="rss"></i></a></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+			<li>
+				<a href="/tags">Tags</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post-header">
+			<h1 class="title">SpringMVC之注解开发</h1>
+			<div class="meta">Posted at &mdash; Jul 27, 2019</div>
+		</div>
+
+		<div class="markdown">
+			
+
+<h2 id="前言">前言</h2>
+
+<p>&emsp;&emsp;之前的一篇博文：<a href="https://p1n93r.github.io/post/springmvc/springmvc之控制器映射器/">SpringMVC之处理器映射器</a>中最后的注解式处理器映射器讲了如何使用最基础的注解开发，现在下面将讨论注解开发中的一些常见要点。</p>
+
+<h2 id="讨论对象">讨论对象</h2>
+
+<ul>
+<li>@RequestMapping</li>
+<li>控制器返回值</li>
+<li>参数绑定</li>
+</ul>
+
+<h2 id="过程">过程</h2>
+
+<h3 id="requestmapping">@RequestMapping</h3>
+
+<p>&emsp;&emsp;通过之前的利用注解方式配置映射器和适配器，对于控制器中标记有@RequestMapping的方法，我们可以通过@RequestMapping设定的url访问到此方法，其实 <strong>@RequestMapping也可以作用于类上，而不仅仅是作用于方法上</strong> 。作用于类上可以窄化请求映射。注解式开发的控制器都是基于方法的，我们往往把一个模块的控制器都放在一个类里，如果此时用@RequestMapping标记类，窄化此模块的请求，可以很好的起到逻辑上的模块划分的作用。假设我做一个手商城，有一个商品模块，那么是不是可以有商品添加，商品删除，商品修改等等此模块下的控制器，这些控制器放在一个类里，然后我在类前用<code>@RequestMapping(&quot;/item&quot;)</code>标记，然后假设我的商品添加控制器的标记为<code>@RequestMapping(&quot;/addItem&quot;)</code>，那么如果我要访问商品添加的控制器，访问的相对url为：<code>/item/addItem</code>，此类里的每个控制器都要加上<code>/item</code>前缀,此所谓窄化了请求。为啥要窄化请求，我认为是可以在逻辑上合理划分模块，一旦控制器多了，有个代表模块的前缀将会使得项目更加合理。参考实例如下：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">@Controller
+@RequestMapping(&#34;justTest&#34;)
+public class TestController{
+    @RequestMapping(&#34;/hello&#34;)
+    public ModelAndView sayHello(){
+        ModelAndView modelAndView=new ModelAndView(&#34;hello&#34;);
+        modelAndView.addObject(&#34;info&#34;,&#34;Hello Man!&#34;);
+        return modelAndView;
+    }
+}</pre></div>
+<p>&emsp;&emsp;访问测试结果如下：</p>
+
+<p><img src="./../media/测试1.png" alt="测试1" /></p>
+
+<p>&emsp;&emsp;@RequestMapping的另一个要点就是 <strong>请求限制</strong> ，可以规定请求的方式为GET或者POST等等，可以规定请求的提交内容的类型（json等），等等。具体的属性如下表：</p>
+
+<table>
+<thead>
+<tr>
+<th>属性值</th>
+<th>作用</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>value</td>
+<td>例如 <code>@RequestMapping(value=&quot;/test&quot;)</code>，其实这等价于 <code>@RequestMapping(&quot;/test&quot;)</code></td>
+</tr>
+
+<tr>
+<td>method</td>
+<td>指定请求控制器的方式，有GET，POST，DELETE等。例如：<code>@RequestMapping(value = &quot;/test&quot;,method = RequestMethod.POST)</code>就是指定只处理POST类型的请求</td>
+</tr>
+
+<tr>
+<td>consumes</td>
+<td>规定请求的提交内容的类型，比如我只接受json类型数据的请求，那么我可以设置成： <code>@RequestMapping(value = &quot;/test&quot;,consumes = &quot;application/json&quot;)</code></td>
+</tr>
+
+<tr>
+<td>produces</td>
+<td>规定返回的内容的类型，比如我返回xml类型的数据，那么我可以设置成： <code>@RequestMapping(value = &quot;/test&quot;,produces = &quot;application/json&quot;)</code></td>
+</tr>
+
+<tr>
+<td>params</td>
+<td>规定请求所必需的带的参数，可以进一步过滤掉无关请求</td>
+</tr>
+
+<tr>
+<td>headers</td>
+<td>规定请求必须带的HTTP头信息</td>
+</tr>
+</tbody>
+</table>
+
+<p>&emsp;&emsp;为了测试以上参数，我写的一个控制器如下：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><span style="color:#719e07">package</span> com.test.ssm.web.controller;
+<span style="color:#719e07">import</span> org.springframework.stereotype.Controller;
+<span style="color:#719e07">import</span> org.springframework.web.bind.annotation.RequestMapping;
+<span style="color:#719e07">import</span> org.springframework.web.bind.annotation.RequestMethod;
+<span style="color:#719e07">import</span> javax.servlet.http.HttpServletRequest;
+<span style="color:#719e07">import</span> javax.servlet.http.HttpServletResponse;
+<span style="color:#719e07">import</span> java.io.IOException;
+<span style="color:#719e07">import</span> java.io.PrintWriter;
+@Controller
+@<span style="color:#268bd2">RequestMapping</span>(<span style="color:#2aa198">&#34;justTest&#34;</span>)
+public class TestController{
+    @<span style="color:#268bd2">RequestMapping</span>(
+            value=<span style="color:#2aa198">&#34;/hello&#34;</span>,
+            params = <span style="color:#2aa198">&#34;id&#34;</span>,
+            headers = <span style="color:#2aa198">&#34;Referer=http://p1n93r.github.io/&#34;</span>,
+            consumes=<span style="color:#2aa198">&#34;application/XML&#34;</span>,
+            produces = <span style="color:#2aa198">&#34;application/JSON&#34;</span>,
+            method = RequestMethod.POST
+    )
+    public void <span style="color:#268bd2">sayHello</span>(HttpServletRequest request, HttpServletResponse response){
+        System.out.<span style="color:#b58900">println</span>(<span style="color:#2aa198">&#34;成功访问到控制器&#34;</span>);
+        try {
+            PrintWriter out=response.<span style="color:#268bd2">getWriter</span>();
+            out.<span style="color:#268bd2">write</span>(<span style="color:#2aa198">&#34;{\&#34;name\&#34;:\&#34;P1n93r\&#34;}&#34;</span>);
+        } <span style="color:#268bd2">catch</span> (IOException e) {
+            e.<span style="color:#268bd2">printStackTrace</span>();
+        }
+    }
+}</pre></div>
+<p>&emsp;&emsp;可以看出，我要求请求带个参数id，并且规定请求头要有<code>Referer=http://p1n93r.github.io/</code>（Referer头一般用来作为网站的同源策略的实现），还规定发送请求的内容类型为xml，还得是POST请求，我返回的内容类型为json类型。然后我用burpsuit发送一个符合规定的HTTP请求，如下图所示：</p>
+
+<p><img src="./../media/测试2.png" alt="测试2" /></p>
+
+<p><strong><em>Notice</em></strong>：虽然我用的POST提交，但是我把请求参数id写在了请求行，还是能被后台识别。</p>
+
+<h3 id="控制器返回值">控制器返回值</h3>
+
+<p>注解式控制器的返回值主要有三类：</p>
+
+<ul>
+<li>ModelAndView</li>
+<li>void</li>
+<li>字符串</li>
+</ul>
+
+<h4 id="返回modelandview">返回ModelAndView</h4>
+
+<ul>
+<li>需要开发人员手动实例化ModelAndView对象</li>
+<li>通过调用其实例的 <code>setViewName()</code> 方法来设置返回的逻辑视图名</li>
+<li>通过调用其实例的 <code>addObject()</code> 方法来填充数据</li>
+</ul>
+
+<h4 id="返回void">返回void</h4>
+
+<ul>
+<li>其实用法就是普通的Servlet一样的用法</li>
+<li>利用HttpServletRequest对象进行请求转发</li>
+<li>利用HttpServletResponse对象进行重定向或者直接指定响应结果</li>
+</ul>
+
+<h4 id="返回字符串">返回字符串</h4>
+
+<ul>
+<li>直接返回一个字符串将被当做逻辑视图名</li>
+<li>字符串以 <code>forward:</code> 打头意思是转发到冒号后面表示的逻辑视图。</li>
+<li>字符串以 <code>redirect</code> 打头意思是重定向到冒号后面表示的逻辑视图。</li>
+</ul>
+
+<h3 id="参数绑定">参数绑定</h3>
+
+<p>&emsp;&emsp;所谓的参数绑定就是在HandlerAdapter执行Handler之前，会将HTTP请求的键值对数据绑定在Handler的方法的形参上。用于前后端数据交互。</p>
+
+<p>&emsp;&emsp;参数绑定支持一些默认的参数类型：HttpServletResponse、HttpServletRequest、HttpSession以及Model/MdelMap。</p>
+
+<p>&emsp;&emsp;以上默认支持的参数类型，处理器适配器会默认识别并进行赋值。这些除了Model和ModelMap，其实学习javaWeb基础课程时应当是能非常熟练运用了，那就不提了。主要探讨Model/ModelMap的用法，ModelMap是Model接口的实现类，如果我们直接使用Model，SpringMVC会自动实例化ModelMap。ModelMap主要是用于填充数据给前台显示。比如以下的例子，我调用ModelMap的方法 <code>addAtrribute()</code> 来填充数据，前台用EL表达式获取。参考代码如下：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">@Controller
+@RequestMapping(&#34;justTest&#34;)
+public class TestController{
+    @RequestMapping(value=&#34;/hello&#34;)
+    public String sayHello(Model model){
+        model.addAttribute(&#34;info&#34;,&#34;Welcome to my blog&#34;);
+       return  &#34;hello&#34;;
+    }
+}</pre></div>
+<p>&emsp;&emsp;hello视图的关键代码为： <code>&lt;h1&gt;${requestScope.info}&lt;/h1&gt;</code> ,访问测试结果如下：</p>
+
+<p><img src="./../media/测试3.png" alt="测试3" /></p>
+
+<p>&emsp;&emsp;接下来讨论几种常见的参数绑定场景：</p>
+
+<ul>
+<li>简单类型</li>
+<li>@RequestParam</li>
+<li>pojo</li>
+<li>集合类</li>
+</ul>
+
+<h4 id="简单类型参数绑定">简单类型参数绑定</h4>
+
+<p>&emsp;&emsp;首先说下有哪些简单类型：整形，字符串，布尔型，浮点型。当控制器的形参为这些类型时，如果请求所带的参数名称和控制器的形参名一致时，会将请求参数与形参绑定。一个简单地示例如下：</p>
+
+<p>控制器代码如下：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">@Controller
+@RequestMapping(&#34;justTest&#34;)
+public class TestController{
+    @RequestMapping(value=&#34;/hello&#34;)
+    public String sayHello(Model model,Integer a,String b,Boolean c,Float d,Double e){
+        model.addAttribute(&#34;info&#34;,&#34;Welcome to my blog&#34;+&#34;，a:&#34;+a+&#34;,b:&#34;+b+&#34;,c:&#34;+c+&#34;,d:&#34;+d+&#34;,e:&#34;+e);
+       return  &#34;hello&#34;;
+    }
+}</pre></div>
+<p>测试请求及其结果如下：</p>
+
+<p><img src="./../media/测试4.png" alt="测试4" /></p>
+
+<h4 id="requestparam参数绑定">@RequestParam参数绑定</h4>
+
+<p>&emsp;&emsp;我们可以用@RequestParam的value属性来映射请求参数，其value为啥，请求发送的参数就得是啥。此外，可以用required属性设定请求发送的参数是否必须有，注意： <strong>如果设定required为false，请求没发送这个参数，那么@RequestParam对应的类型必须为包装类型，否则将报错。</strong> 因为请求没给参数，那么将会给形参赋值为null嘛，int那些简单类型是不能为null的。最后我们可以用defaultValue设定每给参数时的默认值。代码参考如下：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">@Controller
+@RequestMapping(&#34;justTest&#34;)
+public class TestController{
+    @RequestMapping(value=&#34;/hello&#34;)
+    public String sayHello(Model model,
+                           @RequestParam(value = &#34;what&#34;,required = false,defaultValue = &#34;You said nothing~&#34;)String w){
+        model.addAttribute(&#34;info&#34;,&#34;Welcome to my blog&#34;+&#34;&lt;br/&gt;what U say:&#34;+w);
+       return  &#34;hello&#34;;
+    }
+}</pre></div>
+<p>测试请求及其结果如下：</p>
+
+<p><img src="./../media/测试5.png" alt="测试5" />
+<img src="./../media/测试6.png" alt="测试6" /></p>
+
+<h4 id="pojo类型参数绑定">pojo类型参数绑定</h4>
+
+<p>&emsp;&emsp;pojo类型的参数绑定则分为简单pojo和包装型pojo的参数绑定。这里我举例包装型pojo的参数绑定。pojo的代码如下：</p>
+
+<p>Address类代码：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><span style="color:#719e07">package</span> com.test.ssm.pojo;
+public class Address {
+    private String province;
+    private String city;
+
+    <span style="color:#586e75">//getter and setter
+</span><span style="color:#586e75"></span>    public String <span style="color:#268bd2">getCity</span>() {
+        <span style="color:#719e07">return</span> city;
+    }
+    public void <span style="color:#268bd2">setCity</span>(String city) {
+        this.city = city;
+    }
+    public String <span style="color:#268bd2">getProvince</span>() {
+        <span style="color:#719e07">return</span> province;
+    }
+    public void <span style="color:#268bd2">setProvince</span>(String province) {
+        this.province = province;
+    }
+    @Override
+    public String <span style="color:#268bd2">toString</span>() {
+        <span style="color:#719e07">return</span> <span style="color:#2aa198">&#34;Address{&#34;</span> <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#34;province=&#39;&#34;</span> <span style="color:#719e07">+</span> province <span style="color:#719e07">+</span> <span style="color:#2aa198">&#39;\&#39;&#39;</span> <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#34;, city=&#39;&#34;</span> <span style="color:#719e07">+</span> city <span style="color:#719e07">+</span> <span style="color:#2aa198">&#39;\&#39;&#39;</span> <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#39;}&#39;</span>;
+    }
+}</pre></div>
+<p>User类代码：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><span style="color:#719e07">package</span> com.test.ssm.pojo;
+public class User {
+    private String name;
+    private <span style="color:#dc322f">int</span> age;
+    private Address address;
+
+    <span style="color:#586e75">//getter and setter
+</span><span style="color:#586e75"></span>    public String <span style="color:#268bd2">getName</span>() {
+        <span style="color:#719e07">return</span> name;
+    }
+    public void <span style="color:#268bd2">setName</span>(String name) {
+        this.name = name;
+    }
+    public <span style="color:#dc322f">int</span> <span style="color:#268bd2">getAge</span>() {
+        <span style="color:#719e07">return</span> age;
+    }
+    public void <span style="color:#268bd2">setAge</span>(<span style="color:#dc322f">int</span> age) {
+        this.age = age;
+    }
+    public Address <span style="color:#268bd2">getAddress</span>() {
+        <span style="color:#719e07">return</span> address;
+    }
+    public void <span style="color:#268bd2">setAddress</span>(Address address) {
+        this.address = address;
+    }
+    @Override
+    public String <span style="color:#268bd2">toString</span>() {
+        <span style="color:#719e07">return</span> <span style="color:#2aa198">&#34;User{&#34;</span> <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#34;name=&#39;&#34;</span> <span style="color:#719e07">+</span> name <span style="color:#719e07">+</span> <span style="color:#2aa198">&#39;\&#39;&#39;</span> <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#34;, age=&#34;</span> <span style="color:#719e07">+</span> age <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#34;, address=&#34;</span> <span style="color:#719e07">+</span> address <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#39;}&#39;</span>;
+    }
+}</pre></div>
+<p>可以看到User类是一个包装的pojo，组合了Address。继续看控制器代码：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">@Controller
+@RequestMapping(&#34;justTest&#34;)
+public class TestController{
+    @RequestMapping(value=&#34;/hello&#34;)
+    public String sayHello(Model model, User user){
+        model.addAttribute(&#34;info&#34;,&#34;Welcome to my blog&#34;+&#34;&lt;br/&gt;what U say:&#34;+user);
+       return  &#34;hello&#34;;
+    }
+}</pre></div>
+<p>可以看到，控制器的形参是一个包装类pojo，那么如何参数绑定呢，其实就是发送的请求的参数需要和pojo的属性一致就行了，对于包装型pojo内的简单pojo类型的属性，假设包装型pojo内的简单pojo属性为a，a又有属性b和c，那么请求发送的参数就需要为： <strong>a.b=xx&amp;a.c=XX</strong> 这种形式。根据上面的举例，列出请求测试及其结果：</p>
+
+<p><img src="./../media/测试7.png" alt="测试7" /></p>
+
+<h4 id="集合类参数绑定">集合类参数绑定</h4>
+
+<p>&emsp;&emsp;集合类主要讨论字符数组，List以及Map。</p>
+
+<p>&emsp;&emsp;对于字符数组，给出例子如下：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">@Controller
+@RequestMapping(&#34;justTest&#34;)
+public class TestController{
+    @RequestMapping(value=&#34;/hello&#34;)
+    public String sayHello(Model model,String[] ss){
+        model.addAttribute(&#34;info&#34;,&#34;Welcome to my blog&#34;+&#34;&lt;br/&gt;what U say:&#34;+ss.length);
+       return  &#34;hello&#34;;
+    }
+}</pre></div>
+<p>发送的请求的参数就是n个ss，例如下图所示：</p>
+
+<p><img src="./../media/测试8.png" alt="测试8" /></p>
+
+<p>&emsp;&emsp;对于List，SpringMVC不能接受前台的数组，所以只能把List封装到一个自定义pojo类对象里（假设被封装的List对象为a，a内的元素类型统一且有属性b和c），然后请求的参数利用a[0].b=xx这种形式来绑定参数。对于Map而言，也是类似，只不过方括号[]内的就不是索引号，而是Map的键名。</p>
+
+<h2 id="结语">结语</h2>
+
+<p>&emsp;&emsp;关于注解开发，后面还有验证器，异常处理，文件上传，json数据交互等等重点=-=（好多哇。。。）</p>
+
+		</div>
+
+		<div class="post-tags">
+			
+				
+			
+		</div><div id="disqus_thread"></div>
+<script type="text/javascript">
+	(function () {
+		
+		
+		if (window.location.hostname == "localhost")
+			return;
+
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		var disqus_shortname = 'cassie_std';
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+		Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div> © Copyright notice |  <a href="https://github.com/vividvilla/ezhil">Ezhil theme</a> | Built with <a href="https://gohugo.io">Hugo</a></div>
+	</nav>
+</div>
+
+<script>feather.replace()</script>
+</body>
+</html>

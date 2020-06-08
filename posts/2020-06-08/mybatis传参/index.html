@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Mybatis传参 - Cassie</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="Mybatis传参" />
+<meta property="og:description" content=" 前言 有一次用到mybatis的动态sql中的foreach，发现foreach的属性collection填写的值有点问题。然后突然想到之前都是使用的都是用Map或JavaBean传参，没有使用过多参的情况，然后今天测试多参传递，之前只知道可以用#{0},#{1}或者再Mapper接口中形参声明中使用@Param，但是今天发现还可以使用#{param1},#{param2}这种，emmm，还发现了很多规则，都在下面了。
+结论  当Mapper接口的形参使用了@Param标记，那么映射文件中用#{0},#{1}&hellip;这种形式取值时，与@Param位置对应的那个#{}会被替换成@Param里的值。 映射文件中使用#{param1}，#{param2}&hellip;的形式取值时，总是可以取到Mapper形参列表里的第一个、第二个&hellip;参数。 映射文件中可以使用 _parameter 。当Mapper接口形参列表只有一个值时，此参数就代表这个值；当形参存在多个值时，此参数就代表这几个形参形成的Map，其key为0,1,2&hellip;,param1,pram2,param3&hellip;，如果存在使用了@Param的情况，则对应位置的#{0},#{1}&hellip;会被替换成@Param里的值。并且利用_parameter.get()方式取值时，不能取0,1,2&hellip;，只能取param1,param2&hellip;,或者@Param标记设置的值。 当Mapper接口只有一个形参时，如果此形参是一个List，那么foreach的collection取值只能是list；如果此形参是一个数组，collection的取值只能是array；如果此形参是一个Map，则collection的取值只能是Map的key（对应的value为可迭代对象）；如果此形参用了@Param标记，则collection只能取@Param标记的值，或者_parameter.get(&lsquo;标记的值&rsquo;)。  " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cassiestd.github.io/posts/2020-06-08/mybatis%E4%BC%A0%E5%8F%82/" />
+<meta property="article:published_time" content="2019-10-26T20:40:36+08:00" />
+<meta property="article:modified_time" content="2019-10-26T20:40:36+08:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Mybatis传参"/>
+<meta name="twitter:description" content=" 前言 有一次用到mybatis的动态sql中的foreach，发现foreach的属性collection填写的值有点问题。然后突然想到之前都是使用的都是用Map或JavaBean传参，没有使用过多参的情况，然后今天测试多参传递，之前只知道可以用#{0},#{1}或者再Mapper接口中形参声明中使用@Param，但是今天发现还可以使用#{param1},#{param2}这种，emmm，还发现了很多规则，都在下面了。
+结论  当Mapper接口的形参使用了@Param标记，那么映射文件中用#{0},#{1}&hellip;这种形式取值时，与@Param位置对应的那个#{}会被替换成@Param里的值。 映射文件中使用#{param1}，#{param2}&hellip;的形式取值时，总是可以取到Mapper形参列表里的第一个、第二个&hellip;参数。 映射文件中可以使用 _parameter 。当Mapper接口形参列表只有一个值时，此参数就代表这个值；当形参存在多个值时，此参数就代表这几个形参形成的Map，其key为0,1,2&hellip;,param1,pram2,param3&hellip;，如果存在使用了@Param的情况，则对应位置的#{0},#{1}&hellip;会被替换成@Param里的值。并且利用_parameter.get()方式取值时，不能取0,1,2&hellip;，只能取param1,param2&hellip;,或者@Param标记设置的值。 当Mapper接口只有一个形参时，如果此形参是一个List，那么foreach的collection取值只能是list；如果此形参是一个数组，collection的取值只能是array；如果此形参是一个Map，则collection的取值只能是Map的key（对应的value为可迭代对象）；如果此形参用了@Param标记，则collection只能取@Param标记的值，或者_parameter.get(&lsquo;标记的值&rsquo;)。  "/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:200,300" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="https://cassiestd.github.io/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://cassiestd.github.io/css/main.css" /><link rel="stylesheet" type="text/css" href="https://cassiestd.github.io/css/dark.css" media="(prefers-color-scheme: dark)" />
+
+	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+	<script src="https://cassiestd.github.io/js/main.js"></script>
+</head>
+
+<body>
+	<div class="container wrapper post">
+		<div class="header">
+	<h1 class="site-title"><a href="https://cassiestd.github.io/">Cassie</a></h1>
+	<div class="site-description"><h2>博学精一</h2><nav class="nav social">
+			<ul class="flat"><a href="https://github.com/cassiestd" title="Github"><i data-feather="github"></i></a><a href="/index.xml" title="RSS"><i data-feather="rss"></i></a></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+			<li>
+				<a href="/tags">Tags</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post-header">
+			<h1 class="title">Mybatis传参</h1>
+			<div class="meta">Posted at &mdash; Oct 26, 2019</div>
+		</div>
+
+		<div class="markdown">
+			
+
+<h2 id="前言">前言</h2>
+
+<p>有一次用到mybatis的动态sql中的foreach，发现foreach的属性collection填写的值有点问题。然后突然想到之前都是使用的都是用Map或JavaBean传参，没有使用过多参的情况，然后今天测试多参传递，之前只知道可以用#{0},#{1}或者再Mapper接口中形参声明中使用@Param，但是今天发现还可以使用#{param1},#{param2}这种，emmm，还发现了很多规则，都在下面了。</p>
+
+<h2 id="结论">结论</h2>
+
+<ul>
+<li>当Mapper接口的形参使用了@Param标记，那么映射文件中用#{0},#{1}&hellip;这种形式取值时，与@Param位置对应的那个#{}会被替换成@Param里的值。</li>
+<li>映射文件中使用#{param1}，#{param2}&hellip;的形式取值时，总是可以取到Mapper形参列表里的第一个、第二个&hellip;参数。</li>
+<li>映射文件中可以使用 <code>_parameter</code> 。当Mapper接口形参列表只有一个值时，此参数就代表这个值；当形参存在多个值时，此参数就代表这几个形参形成的Map，其key为0,1,2&hellip;,param1,pram2,param3&hellip;，如果存在使用了@Param的情况，则对应位置的#{0},#{1}&hellip;会被替换成@Param里的值。并且利用_parameter.get()方式取值时，不能取0,1,2&hellip;，只能取param1,param2&hellip;,或者@Param标记设置的值。</li>
+<li>当Mapper接口只有一个形参时，如果此形参是一个List，那么foreach的collection取值只能是list；如果此形参是一个数组，collection的取值只能是array；如果此形参是一个Map，则collection的取值只能是Map的key（对应的value为可迭代对象）；如果此形参用了@Param标记，则collection只能取@Param标记的值，或者_parameter.get(&lsquo;标记的值&rsquo;)。</li>
+</ul>
+
+		</div>
+
+		<div class="post-tags">
+			
+				
+			
+		</div><div id="disqus_thread"></div>
+<script type="text/javascript">
+	(function () {
+		
+		
+		if (window.location.hostname == "localhost")
+			return;
+
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		var disqus_shortname = 'cassie_std';
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+		Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div> © Copyright notice |  <a href="https://github.com/vividvilla/ezhil">Ezhil theme</a> | Built with <a href="https://gohugo.io">Hugo</a></div>
+	</nav>
+</div>
+
+<script>feather.replace()</script>
+</body>
+</html>

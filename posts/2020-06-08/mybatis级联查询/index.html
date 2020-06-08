@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Mybatis级联查询 - Cassie</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="Mybatis级联查询" />
+<meta property="og:description" content="模拟需求  一对一关系：一个学生（Student）有一个地址（Address），一个地址只能被一个学生拥有。 一对多关系：一个学生可以有多个订单（Order），一个订单只能被一个学生拥有。 多对多关系：一个订单可以有多个商品（Item），同时一个商品可以被多个订单拥有。  根据上面的需求定义以下实体：
+ Student:int id,age;String name,grade,country;Address address;List&lt;Order&gt; orderList; Address:int id;String province,city,detail_address; Order:int id,item_id,sid;  由于Order的记录只存储Item的id，所以暂时不写Item实体，用item_id代表一个Item对象。
+说明 mybatis中通过&lt;resultMap&gt;的子元素&lt;association&gt;来处理一对一级联查询。&lt;association&gt;子元素通常含有以下属性：
+ property：指定映射到实体类的对象属性。 column：指定表中的字段（当通过执行两个sql语句来实现级联查询时用到）。 javaType：指定映射到实体类对象属性的类型。 select：指定引入嵌套查询的子sql语句（一般和column结合使用）。  mybatis中通过&lt;resultMap&gt;的子元素&lt;collection&gt;来处理一对多级联查询。&lt;collection&gt;子元素通常含有以下属性：
+ property：指定映射到实体类的对象属性。 column：指定表中的字段。 ofType：指定实体的对象属性的类型。 select：指定引入嵌套查询的子sql语句。  级联查询有以下三种方法：
+ 执行一条sql语句，将属于子表的部分映射到实体的对象属性的属性上。 执行两条sql语句，将嵌套子查询结果映射到实体的对象属性的属性上。 执行一条sql语句，将查询结果映射到一个包含父表和子表字段的实体的属性上。  方法一 一个resultMap的例子如下：
+&lt;!--执行一条sql语句--&gt; &lt;resultMap id=&#34;oneToOneResMap&#34; type=&#34;com.mybatis.pojo.Student&#34;&gt; &lt;id property=&#34;id&#34; column=&#34;id&#34;/&gt; &lt;result property=&#34;age&#34; column=&#34;age&#34;/&gt; &lt;result property=&#34;name&#34; column=&#34;name&#34;/&gt; &lt;result property=&#34;grade&#34; column=&#34;grade&#34;/&gt; &lt;result property=&#34;country&#34; column=&#34;country&#34;/&gt; &lt;!--一对一的级联查询--&gt; &lt;association property=&#34;address&#34; javaType=&#34;com.mybatis.pojo.Address&#34;&gt; &lt;id property=&#34;id&#34; column=&#34;addr_id&#34;/&gt; &lt;result property=&#34;province&#34; column=&#34;province&#34;/&gt; &lt;result property=&#34;city&#34; column=&#34;city&#34;/&gt; &lt;result property=&#34;detail_address&#34; column=&#34;detail_address&#34;/&gt; &lt;/association&gt; &lt;!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cassiestd.github.io/posts/2020-06-08/mybatis%E7%BA%A7%E8%81%94%E6%9F%A5%E8%AF%A2/" />
+<meta property="article:published_time" content="2019-09-17T11:19:36+08:00" />
+<meta property="article:modified_time" content="2019-09-17T11:19:36+08:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Mybatis级联查询"/>
+<meta name="twitter:description" content="模拟需求  一对一关系：一个学生（Student）有一个地址（Address），一个地址只能被一个学生拥有。 一对多关系：一个学生可以有多个订单（Order），一个订单只能被一个学生拥有。 多对多关系：一个订单可以有多个商品（Item），同时一个商品可以被多个订单拥有。  根据上面的需求定义以下实体：
+ Student:int id,age;String name,grade,country;Address address;List&lt;Order&gt; orderList; Address:int id;String province,city,detail_address; Order:int id,item_id,sid;  由于Order的记录只存储Item的id，所以暂时不写Item实体，用item_id代表一个Item对象。
+说明 mybatis中通过&lt;resultMap&gt;的子元素&lt;association&gt;来处理一对一级联查询。&lt;association&gt;子元素通常含有以下属性：
+ property：指定映射到实体类的对象属性。 column：指定表中的字段（当通过执行两个sql语句来实现级联查询时用到）。 javaType：指定映射到实体类对象属性的类型。 select：指定引入嵌套查询的子sql语句（一般和column结合使用）。  mybatis中通过&lt;resultMap&gt;的子元素&lt;collection&gt;来处理一对多级联查询。&lt;collection&gt;子元素通常含有以下属性：
+ property：指定映射到实体类的对象属性。 column：指定表中的字段。 ofType：指定实体的对象属性的类型。 select：指定引入嵌套查询的子sql语句。  级联查询有以下三种方法：
+ 执行一条sql语句，将属于子表的部分映射到实体的对象属性的属性上。 执行两条sql语句，将嵌套子查询结果映射到实体的对象属性的属性上。 执行一条sql语句，将查询结果映射到一个包含父表和子表字段的实体的属性上。  方法一 一个resultMap的例子如下：
+&lt;!--执行一条sql语句--&gt; &lt;resultMap id=&#34;oneToOneResMap&#34; type=&#34;com.mybatis.pojo.Student&#34;&gt; &lt;id property=&#34;id&#34; column=&#34;id&#34;/&gt; &lt;result property=&#34;age&#34; column=&#34;age&#34;/&gt; &lt;result property=&#34;name&#34; column=&#34;name&#34;/&gt; &lt;result property=&#34;grade&#34; column=&#34;grade&#34;/&gt; &lt;result property=&#34;country&#34; column=&#34;country&#34;/&gt; &lt;!--一对一的级联查询--&gt; &lt;association property=&#34;address&#34; javaType=&#34;com.mybatis.pojo.Address&#34;&gt; &lt;id property=&#34;id&#34; column=&#34;addr_id&#34;/&gt; &lt;result property=&#34;province&#34; column=&#34;province&#34;/&gt; &lt;result property=&#34;city&#34; column=&#34;city&#34;/&gt; &lt;result property=&#34;detail_address&#34; column=&#34;detail_address&#34;/&gt; &lt;/association&gt; &lt;!"/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:200,300" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="https://cassiestd.github.io/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://cassiestd.github.io/css/main.css" /><link rel="stylesheet" type="text/css" href="https://cassiestd.github.io/css/dark.css" media="(prefers-color-scheme: dark)" />
+
+	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+	<script src="https://cassiestd.github.io/js/main.js"></script>
+</head>
+
+<body>
+	<div class="container wrapper post">
+		<div class="header">
+	<h1 class="site-title"><a href="https://cassiestd.github.io/">Cassie</a></h1>
+	<div class="site-description"><h2>博学精一</h2><nav class="nav social">
+			<ul class="flat"><a href="https://github.com/cassiestd" title="Github"><i data-feather="github"></i></a><a href="/index.xml" title="RSS"><i data-feather="rss"></i></a></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+			<li>
+				<a href="/tags">Tags</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post-header">
+			<h1 class="title">Mybatis级联查询</h1>
+			<div class="meta">Posted at &mdash; Sep 17, 2019</div>
+		</div>
+
+		<div class="markdown">
+			
+
+<h2 id="模拟需求">模拟需求</h2>
+
+<ul>
+<li>一对一关系：一个学生（Student）有一个地址（Address），一个地址只能被一个学生拥有。</li>
+<li>一对多关系：一个学生可以有多个订单（Order），一个订单只能被一个学生拥有。</li>
+<li>多对多关系：一个订单可以有多个商品（Item），同时一个商品可以被多个订单拥有。</li>
+</ul>
+
+<p>根据上面的需求定义以下实体：</p>
+
+<ul>
+<li>Student:<code>int id,age;String name,grade,country;Address address;List&lt;Order&gt; orderList;</code></li>
+<li>Address:<code>int id;String province,city,detail_address;</code></li>
+<li>Order:<code>int id,item_id,sid</code>;</li>
+</ul>
+
+<p><strong>由于Order的记录只存储Item的id，所以暂时不写Item实体，用item_id代表一个Item对象。</strong></p>
+
+<h2 id="说明">说明</h2>
+
+<p>mybatis中通过<code>&lt;resultMap&gt;</code>的子元素<code>&lt;association&gt;</code>来处理一对一级联查询。<code>&lt;association&gt;</code>子元素通常含有以下属性：</p>
+
+<ol>
+<li>property：指定映射到实体类的对象属性。</li>
+<li>column：指定表中的字段（当通过执行两个sql语句来实现级联查询时用到）。</li>
+<li>javaType：指定映射到实体类对象属性的类型。</li>
+<li>select：指定引入嵌套查询的子sql语句（一般和column结合使用）。</li>
+</ol>
+
+<p>mybatis中通过<code>&lt;resultMap&gt;</code>的子元素<code>&lt;collection&gt;</code>来处理一对多级联查询。<code>&lt;collection&gt;</code>子元素通常含有以下属性：</p>
+
+<ol>
+<li>property：指定映射到实体类的对象属性。</li>
+<li>column：指定表中的字段。</li>
+<li>ofType：指定实体的对象属性的类型。</li>
+<li>select：指定引入嵌套查询的子sql语句。</li>
+</ol>
+
+<p>级联查询有以下三种方法：</p>
+
+<ol>
+<li>执行一条sql语句，将属于子表的部分映射到实体的对象属性的属性上。</li>
+<li>执行两条sql语句，将嵌套子查询结果映射到实体的对象属性的属性上。</li>
+<li>执行一条sql语句，将查询结果映射到一个包含父表和子表字段的实体的属性上。</li>
+</ol>
+
+<h3 id="方法一">方法一</h3>
+
+<p>一个resultMap的例子如下：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;!--执行一条sql语句--&gt;
+&lt;resultMap id=&#34;oneToOneResMap&#34; type=&#34;com.mybatis.pojo.Student&#34;&gt;
+    &lt;id property=&#34;id&#34; column=&#34;id&#34;/&gt;
+    &lt;result property=&#34;age&#34; column=&#34;age&#34;/&gt;
+    &lt;result property=&#34;name&#34; column=&#34;name&#34;/&gt;
+    &lt;result property=&#34;grade&#34; column=&#34;grade&#34;/&gt;
+    &lt;result property=&#34;country&#34; column=&#34;country&#34;/&gt;
+    &lt;!--一对一的级联查询--&gt;
+    &lt;association property=&#34;address&#34; javaType=&#34;com.mybatis.pojo.Address&#34;&gt;
+        &lt;id property=&#34;id&#34; column=&#34;addr_id&#34;/&gt;
+        &lt;result property=&#34;province&#34; column=&#34;province&#34;/&gt;
+        &lt;result property=&#34;city&#34; column=&#34;city&#34;/&gt;
+        &lt;result property=&#34;detail_address&#34; column=&#34;detail_address&#34;/&gt;
+    &lt;/association&gt;
+    &lt;!--一对多级联查询--&gt;
+    &lt;collection property=&#34;orderList&#34; ofType=&#34;com.mybatis.pojo.Order&#34;&gt;
+        &lt;id property=&#34;id&#34; column=&#34;oid&#34;/&gt;
+        &lt;result property=&#34;item_id&#34; column=&#34;item_id&#34;/&gt;
+    &lt;/collection&gt;
+&lt;/resultMap&gt;</pre></div>
+<p>使用此resultMap的<code>&lt;select&gt;</code>元素为：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;!--定义一个select语句片段--&gt;
+&lt;sql id=&#34;selectSql&#34;&gt;
+    select a.*,b.province,b.city,b.detail_address,c.id as oid,c.item_id from student a,address b,`order` c where a.addr_id=b.id and c.sid=a.id
+&lt;/sql&gt;
+&lt;!--查询所有student记录--&gt;
+&lt;select id=&#34;selectAll&#34; resultMap=&#34;oneToOneResMap&#34;&gt;
+    &lt;include refid=&#34;selectSql&#34;/&gt;
+&lt;/select&gt;</pre></div>
+<h3 id="方法二">方法二</h3>
+
+<p>一个resultMap的例子如下：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;!--执行两条sql语句--&gt;
+&lt;resultMap id=&#34;oneToOneResMap1&#34; type=&#34;java.util.Map&#34;&gt;
+    &lt;id property=&#34;id&#34; column=&#34;id&#34;/&gt;
+    &lt;result property=&#34;age&#34; column=&#34;age&#34;/&gt;
+    &lt;result property=&#34;name&#34; column=&#34;name&#34;/&gt;
+    &lt;result property=&#34;grade&#34; column=&#34;grade&#34;/&gt;
+    &lt;result property=&#34;country&#34; column=&#34;country&#34;/&gt;
+    &lt;!--一对一的级联查询--&gt;
+    &lt;association property=&#34;address&#34; column=&#34;addr_id&#34; javaType=&#34;com.mybatis.pojo.Address&#34; select=&#34;com.mybatis.dao.AddressDao.selectById&#34;/&gt;
+    &lt;!--一对多级联查询--&gt;
+    &lt;collection property=&#34;orderList&#34; column=&#34;id&#34; ofType=&#34;com.mybatis.pojo.Order&#34; select=&#34;com.mybatis.dao.OrderDao.selectByOid&#34;/&gt;
+&lt;/resultMap&gt;</pre></div>
+<p>namespace为com.mybatis.dao.OrderDao，且id为selectByOid的<code>&lt;select&gt;</code>元素为：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;select id=&#34;selectByOid&#34; parameterType=&#34;Integer&#34; resultType=&#34;com.mybatis.pojo.Order&#34;&gt;
+    select * from `order` where sid=#{id}
+&lt;/select&gt;</pre></div>
+<p>使用此resultMap的<code>&lt;select&gt;</code>元素为：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;!--根据id查询一条student记录(利用Map存储结果集)--&gt;
+&lt;select id=&#34;selectById&#34; parameterType=&#34;Integer&#34; resultMap=&#34;oneToOneResMap1&#34;&gt;
+    select * from student where id=#{id}
+&lt;/select&gt;</pre></div>
+<h3 id="方法三">方法三</h3>
+
+<p>这个比较简单，就是写一个实体类，这个实体类包含了各个级联表的各个属性。然后就像正常使用resultMap一样，将resultMap的type属性设置为此实体类即可。此方法不太好，不做研究。</p>
+
+		</div>
+
+		<div class="post-tags">
+			
+				
+			
+		</div><div id="disqus_thread"></div>
+<script type="text/javascript">
+	(function () {
+		
+		
+		if (window.location.hostname == "localhost")
+			return;
+
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		var disqus_shortname = 'cassie_std';
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+		Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div> © Copyright notice |  <a href="https://github.com/vividvilla/ezhil">Ezhil theme</a> | Built with <a href="https://gohugo.io">Hugo</a></div>
+	</nav>
+</div>
+
+<script>feather.replace()</script>
+</body>
+</html>

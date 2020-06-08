@@ -7,10 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <copyright>© Copyright notice</copyright>
-    <lastBuildDate>Thu, 19 Dec 2019 23:30:58 +0530</lastBuildDate>
+    <lastBuildDate>Tue, 12 May 2020 10:21:36 +0800</lastBuildDate>
     
 	<atom:link href="https://cassiestd.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Java容器</title>
+      <link>https://cassiestd.github.io/posts/2020-06-09/java%E5%AE%B9%E5%99%A8/</link>
+      <pubDate>Tue, 12 May 2020 10:21:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-09/java%E5%AE%B9%E5%99%A8/</guid>
+      <description>概览 Java容器主要包括Collection和Map两种，Collection存储对象集合，而Map存储键值对（两个对象）的映射表。
+Collection Set  TreeSet：基于红黑树实现，支持有序性操作（通过其实现SortedSet接口也可看出）。但是查询效率不如HashSet，HashSet查找时间复杂度为O(1)，而TreeSet则为O(logN)。 HashSet：基于哈希表实现，支出快速查找，但不支持有序性操作。并且失去了元素的插入顺序信息。 LinkedHashSet：具有HashSet的查找效率，并且内部使用双向链表维护元素的插入顺序。  List  ArrayList：基于动态数组实现，支持随机访问。 Vector：和ArrayList类似，但是它是线程安全的。 LinkedList：基于双向链表实现，只能顺序访问，但是可以快速的在链表中插入和删除。不仅如此，LinkedList还可以用作栈、队列和双向队列 。  Queue  LinkedList：可以用它来实现双向队列。 PriorityQueue：基于堆结构实现，可以用它来实现优先队列。  Map  TreeMap：基于红黑树实现。 HashMap：基于哈希表实现。 HashTable：和HashMap类似，但是它是线程安全的， 这意味着同一时刻多个线程同时写入HashTable不会导致数据不一致 。但是它是遗留类，不应该去使用它，而是使用ConcurrentHashMap来支持线程安全，ConcurrentHashMap的效率会更高，因为ConcurrentHashMap引入和分段锁。 LinkedHashMap：使用双向链表来维护元素的顺序，顺序为插入顺序或者最近最少使用顺序。  容器中的设计模式 迭代器模式 Collection继承了Iterable接口，其中的iterator()方法能够产生一个Iterator对象，通过这个对象就可迭代遍历Collection中的元素。
+从JDK1.5之后就可以使用foreach方法来遍历实现了Iterable接口的聚合对象。例如：
+ArrayList&amp;lt;String&amp;gt; list = new ArrayList&amp;lt;&amp;gt;(); list.add(&amp;#34;笨笨&amp;#34;); list.add(&amp;#34;蠢蠢&amp;#34;); for (String v:list){ System.out.println(v); } 适配器模式 java.util.Arrays.asList()可以把数组类型转换成List类型。需要注意的事，asList()参数为泛型的变长参数，不能使用基本类型数组作为参数，只能使用相应的包装类型数组。
+asList()的实现代码如下：
+@SafeVarargs @SuppressWarnings(&amp;#34;varargs&amp;#34;) public static &amp;lt;T&amp;gt; List&amp;lt;T&amp;gt; asList(T... a) { return new ArrayList&amp;lt;&amp;gt;(a); } 调用asList()的两种方式如下：
+//方式一 Integer[] args={1,2,3}; List&amp;lt;Integer&amp;gt; integers = Arrays.</description>
+    </item>
     
     <item>
       <title>信息系统分析与设计</title>
@@ -94,15 +109,6 @@
     </item>
     
     <item>
-      <title>TEST ART1</title>
-      <link>https://cassiestd.github.io/posts/2019-12-18/art1/</link>
-      <pubDate>Wed, 18 Dec 2019 02:01:58 +0530</pubDate>
-      
-      <guid>https://cassiestd.github.io/posts/2019-12-18/art1/</guid>
-      <description> 好丑哦 我自闭了= = </description>
-    </item>
-    
-    <item>
       <title>About</title>
       <link>https://cassiestd.github.io/about/</link>
       <pubDate>Tue, 17 Dec 2019 21:37:58 +0530</pubDate>
@@ -111,23 +117,333 @@
       <description> 人生三种境界  &amp;ldquo;昨夜西风凋碧树，独上西楼，望尽天涯路&amp;rdquo;
 &amp;ldquo;衣带渐宽终不悔，为伊消得人憔悴&amp;rdquo;
 &amp;ldquo;众里寻他千百度，蓦然回首，那人却在灯火阑珊处&amp;rdquo;
- 然，where am I？？  我是谁？？
-我在哪儿？？？
-我在干什么？？？
-(壮士“？？一脸懵= =”地一去兮不复还……)
- Who Am I 哦豁~是不是想看照片？？？ 懂你哦~~
-宇宙第一帅吼吼吼(^o^)/~~~ Personal Label  帅
- 很帅
- 非常帅 特别地帅 帅到没朋友 不接受反驳！！！！！！  </description>
+ </description>
     </item>
     
     <item>
-      <title>Just TEST IMAGE</title>
-      <link>https://cassiestd.github.io/posts/2019-12-17/test/</link>
-      <pubDate>Sun, 18 Mar 2018 02:01:58 +0530</pubDate>
+      <title>Spring Bean</title>
+      <link>https://cassiestd.github.io/posts/2020-06-07/spring-bean/</link>
+      <pubDate>Wed, 20 Nov 2019 17:16:36 +0800</pubDate>
       
-      <guid>https://cassiestd.github.io/posts/2019-12-17/test/</guid>
-      <description>Just Test GIAOGIAO~~~~霍霍！！！</description>
+      <guid>https://cassiestd.github.io/posts/2020-06-07/spring-bean/</guid>
+      <description>Bean的配置 Spring是一个生产和管理其容器内的Bean的工厂，如果要使用这个工厂来生产和管理Bean，需要在Spring的配置文件中配置Bean，Spring框架支持XML和Properties两种格式的配置文件，但是实际中常用的是XML格式的文件。XML配置文件的根元素是 &amp;lt;beans&amp;gt; ，其内包含了多个 &amp;lt;bean&amp;gt; 子元素，每个 &amp;lt;bean&amp;gt; 元素定义一个Bean， 并描述Bean是如何装配到Spring容器中的 。 &amp;lt;bean&amp;gt; 常用属性及其子元素如下表：
+   属性或子元素名称 描述     id Bean在Spring中的唯一标识   class Bean的具体实现类   scope 指定Bean的作用域   &amp;lt;constructor-arg&amp;gt; &amp;lt;bean&amp;gt;元素的子元素，使用构造方法注入   &amp;lt;property&amp;gt; &amp;lt;bean&amp;gt;元素的子元素，用于设置一个属性（利用属性的setter方法注入）   &amp;lt;list&amp;gt; &amp;lt;bean&amp;gt;元素的子元素，用于封装List或者数组类型的依赖注入   &amp;lt;map&amp;gt; &amp;lt;bean&amp;gt;元素的子元素，用于封装Map类型的依赖注入   &amp;lt;set&amp;gt; &amp;lt;bean&amp;gt;元素的子元素，用于封装Set类型的依赖注入   &amp;lt;entry&amp;gt; &amp;lt;bean&amp;gt;元素的子元素，用于设置一个键值对    Bean的实例化 在Spring中实例化Bean有三种方式：
+ 构造方法实例化。 静态工厂实例化。 实例工厂实例化。  构造方法实例化 构造方法实例化就是调用Bean的无参构造器来实例化Bean。只需在指定相应的 &amp;lt;bean&amp;gt; 元素就行了（保证Bean有无参构造器）。一个例子如下：</description>
+    </item>
+    
+    <item>
+      <title>IO</title>
+      <link>https://cassiestd.github.io/posts/2020-06-09/io/</link>
+      <pubDate>Wed, 13 Nov 2019 19:22:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-09/io/</guid>
+      <description>概述 java的IO通过java.io包下的类和接口来支持，在java.io包下主要包括输入、输出两种IO流，每种输出输出流又可以分为 字节流和字符流 两大类。除此之外，Java的IO流还使用了一种装饰器的设计模式，它将IO流分成 底层节点流和上层处理流 ，其中节点流用于和底层物理存储节点直接关联，不同的物理节点获取节点流的方式可能存在一定差异，但程序可以把不同的物理节点包装成统一的处理流，从而允许程序使用统一的输入、输出代码来读取不同的物理存储节点的资源。此外，Java7在java.nio包及其子包下提供了一系列全新的API，对原有的新IO的升级，所以称为 NIO2 。
+File类 如果希望程序种操作文件和目录，都可以通过File类来完成， File能新建、删除、重命名文件和目录，File不同访问文件内容本身。 如果需要访问文件内容本身，可以通过输入、输出流来完成。File类主要包括以下的几种操作：
+ 访问文件名相关的方法。 文件检测相关的方法。 获取常规文件信息。 文件操作相关的方法。 目录操作相关的方法。  具体的方法可以参考Java的API文档，此处一个简单的实例如下：
+@Test public void test_0() throws IOException { //以当前路径来创建一个File对象 File file = new File(&amp;#34;.&amp;#34;); //输出当前路径的名称，但是由于是相对路径，所以输出的为一个点：. System.out.println(file.getName()); //输出绝对路径 System.out.println(file.getAbsolutePath()); //打印当前路径下的所有子路径和文件名 System.out.println(Arrays.toString(file.list())); //打印当前路径下的经过过滤后的文件名和目录 System.out.println(Arrays.toString(file.list(new FilenameFilter() { @Override public boolean accept(File dir, String name) { //以s结尾 return name.endsWith(&amp;#34;s&amp;#34;); } }))); //打印系统的所有根路径 System.out.println(Arrays.toString(File.listRoots())); //在当前文件夹下创建一个临时文件 File tmp=File.createTempFile(&amp;#34;tmp-&amp;#34;,&amp;#34;.txt&amp;#34;,file); //指定退出JVM时删除文件 tmp.deleteOnExit(); } 输出如下：
+Java的IO流 流的分类 ① 按照流的流向来划分，可以分为如下两种（输入、输出方向根据程序运行所在的内存的角度划分）：</description>
+    </item>
+    
+    <item>
+      <title>Spring IoC</title>
+      <link>https://cassiestd.github.io/posts/2020-06-07/spring-ioc/</link>
+      <pubDate>Tue, 12 Nov 2019 09:00:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-07/spring-ioc/</guid>
+      <description>Spring IoC基本概念 控制反转（IoC，Inversion of Control） 是Spring框架的基础，也是Spring的核心理念，用于消减计算机程序的耦合的问题。 依赖注入（DI，Dependency Injection）是IoC的另外一种说法 ，只是从不同角度描述相同的概念。
+当一个Java对象调用另一个对象时，传统编程模式下，我们通常使用new的方式创建一个对象，这种方式会增加调用者和被调用者之间的耦合性，不利于后期的维护和升级。Spring框架的出现就是为了解决这个耦合的问题。其中重要的两个概念如下：
+ 控制反转：调用者不再通过new的方式创建被调用者对象，而是由Spring容器来负责创建，创建对象的控制权由调用者转移到了Spring容器，控制权发生了反转，此所谓 控制反转 。 依赖注入：调用者组合被调用者时，Spring容器负责将被依赖的对象赋值给该组合成员变量，相当于为调用者注入了它所依赖的实例，此所谓 依赖注入 。  综上所述， 在Spring中实现控制反转的是IoC容器，其实现方法是依赖注入。
+Spring IoC容器 实现控制反转的是Spring IoC容器。 Spring IoC容器的设计主要是基于BeanFactory，ApplicationContext两个接口。
+BeanFactory BeanFactory是一个管理Bean的工厂，主要负责初始化各种Bean。此接口主有多个实现类，比较常用的是XmlBeanFactory，该类会根据XML配置文件中的定义来装配Bean（需要提供XML文件的绝对路径）。此种方法已过时，不推荐使用了。一个例子如下：
+XmlBeanFactory xmlBeanFactory = new XmlBeanFactory(new FileSystemResource(&amp;#34;E:\\ideaProject\\SpringTest\\res\\spring\\applicationContext.xml&amp;#34;)); Student student =(Student) xmlBeanFactory.getBean(&amp;#34;student&amp;#34;); ApplicationContext ApplicationContext接口是BeanFactory的子接口，也称为 应用上下文 ，ApplicationContext接口除了包含BeanFactory接口的所有功能意外，还添加了对国际化、资源访问、事件传播等内容的支持。创建ApplicationContext接口实例通常有三种方法：
+ 通过ClassPathXmlApplicationContext创建。 通过FileSystemXmlApplicationContext创建。 通过Web服务器实例化ApplicationContext创建。  方式1的实例代码如下：
+//利用ApplicationContext实现控制反转 ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext(&amp;#34;spring/applicationContext.xml&amp;#34;); Student student0=(Student)applicationContext.getBean(&amp;#34;student&amp;#34;); student0.setName(&amp;#34;GIAO！&amp;#34;); System.out.println(student0); 方式2的实例代码如下（需要XMl配置文件的绝对路径）：
+FileSystemXmlApplicationContext applicationContext = new FileSystemXmlApplicationContext(&amp;#34;E:\\ideaProject\\SpringTest\\res\\spring\\applicationContext.xml&amp;#34;); Student student=(Student)applicationContext.getBean(&amp;#34;student&amp;#34;); student.setNumber(4041); System.out.println(student); 方式3，需要在j2ee项目的web.xml中进行配置，以后等到mvc再举例。</description>
+    </item>
+    
+    <item>
+      <title>Spring入门</title>
+      <link>https://cassiestd.github.io/posts/2020-06-07/spring%E5%85%A5%E9%97%A8/</link>
+      <pubDate>Tue, 05 Nov 2019 08:28:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-07/spring%E5%85%A5%E9%97%A8/</guid>
+      <description>Spring简介 Spring是一个轻量级的Java开发框架， 目的是为了解决企业级应用开发的业务逻辑层和其他各层的耦合问题。
+Spring体系结构 Spring的体系结构图如下：
+Core Container  Core模块：提供框架的基本组成部分，包括控制反转（Inversion of Control，IoC）和依赖注入（Denpendency Injection，DI）。 Beans：提供了BeanFactory，是工厂模式的典型实现， Spring将管理对象称为Bean。 Context：建立在Core和Beans的基础上，提供一个 框架式的对象访问方式，是访问定义和配置的任何对象的媒介。 常用接口为ApplicationContext。 SpEl： 提供强大的表达式语言去支持运行时查询和操作对象图。  Test 此模支持使用 JUnit或TestNG 对Spring组件进行单元测试和集成测试。
+AOP、Aspects、Instrumentation和Messaging  AOP： 提供了一个符合AOP要求的面向切面的编程实现，允许定义方法拦截器和切入点，将代码按照功能进行分离，以便干净的解构。 Aspects：提供了与AspectJ的集成功能，AspectJ是一个功能强大且成熟的AOP框架。 Instrumentation：提供了类植入（Instrumentation）支持和类加载器的实现，可以在特定的应用服务器中使用。 Messaging：此模块是Spring 4.0以后新增的，提供了对消息传递体系结构和协议的支持。  Data Access/Integration  JDBC：提供了一个JDBC的抽象层，消除了繁琐的JDBC编码和数据库厂商特有的错误代码解析。 ORM：为流行的 对象关系映射（Object Relational Mapping）API提供集成层。 此模块可以将O/R映射框架与Spring提供的所有其他功能结合使用，例如声明式事务管理功能。 OXM：提供了一个支持对象/XML映射的抽象层实现，例如：JAXB、Castor等。 JMS：指JAVA消息传递服务（Java Message Server），包含用于生产和使用消息的功能。 Transactions：支持用于实现特殊接口和所有POJO类的编程和声明式事务管理。  Web  WebSocket：Spring 4.0以后新增的模块，提供了WebSocket和SockJS的实现。 Servlet：也成为webmvc模块，包含用于Web应用程序的SpringMVC和REST Web Services实现。Spring MVC框架提供了领域模型代码和Web表单之间的清晰分离，并与Spring FrameWork的所有其他功能集成。 Web：提供了基本的Web开发集成功能，例如：文件上传、使用一个Servlet监听器初始化一个IoC容器以及Web应用上下文。 Portlet：类似于Servlet模块的功能，提供了Portlet环境下的MVC的实现。  Spring目录结构 下载Spring Framework解压后，得到如下图所示的目录结构：
+其中，docs目录是Spring的API文档和开发规范；libs是Spring应用所需要的JAR包和源代码；schema是Spring应用所需要的schema文件，这些schema文件定义了Spring相关配置文件的约束。其中， libs下有三类JAR文件：以RELEASE.jar结尾的是开发时所需要的JAR包；以RELEASE-source.jar结尾的时源文件的压缩包；以RELEASE-javadoc.jar结尾的是API文档的压缩包。
+Notice： Spring框架依赖于Apache Commons Logging组件，需要配合commons-logging的JAR包才能使用。</description>
+    </item>
+    
+    <item>
+      <title>泛型</title>
+      <link>https://cassiestd.github.io/posts/2020-06-09/%E6%B3%9B%E5%9E%8B/</link>
+      <pubDate>Fri, 01 Nov 2019 19:33:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-09/%E6%B3%9B%E5%9E%8B/</guid>
+      <description>前言 Java中的泛型支持是从JDK1.5开始的，目的是 让集合能够记住其元素的数据类型 。在没有泛型之前，将元素放在集合中，此元素会被当成Object类型来处理，但是用泛型可以让集合记住元素的数据类型（当然，此时集合只能存放同种类型的元素）。
+初识泛型 一个使用泛型的例子如下：
+@Test public void test11(){ //①不使用泛型时，集合中的元素都被当成Object类型的元素 ArrayList listOne = new ArrayList(); listOne.add(1); //必须将Object类型的元素强转为Integer，编译才能通过 Integer a=(Integer)listOne.get(0); //②使用泛型时，集合可以记住元素的类型 ArrayList&amp;lt;Integer&amp;gt; listTwo = new ArrayList&amp;lt;&amp;gt;(); listTwo.add(1); //此时不需要进行强制类型转换，应为取出元素时，可以记住其元素类型：Integer Integer b=listTwo.get(0); } Java7支持的泛型菱形语法 上一节的例子当中使用泛型时，调用构造器时给出了完整的泛型信息，其实我们声明变量便已经给了泛型信息了，此做法显得多余，所以构造器后的泛型信息可以省略。如：List&amp;lt;Integer&amp;gt; a=new ArrayList&amp;lt;&amp;gt;(); ，这样的语法中，省略了构造器后的菱形中的泛型信息，此所谓泛型的菱形语法（仅支持Java7以上的版本）。
+泛型接口、泛型类和泛型方法 泛型就是在定义此接口、类和方法的时候使用了类型形参，这个类型形参将在声明变量，创建对象，调用方法时动态的指定（类似给函数形参赋形参的过程），类型形参能够在整个接口、类体、方法体内当成类型使用。一个简单的例子如下：
+@Test public void test12(){ class Test&amp;lt;E&amp;gt;{ public void say(E e){ System.out.println(&amp;#34;类型实参的类型为：&amp;#34;+e.getClass()); } public ArrayList&amp;lt;E&amp;gt; get(){ ArrayList&amp;lt;E&amp;gt; list = new ArrayList&amp;lt;&amp;gt;(); return list; } } //传入的泛型实参为Object，所以E为Object，在泛型类内都可以使用此泛型参数 Test&amp;lt;Object&amp;gt; testOne = new Test&amp;lt;&amp;gt;(); //E为Object，所以sya()方法的形参e能够是任何类型的值（都是Object的子类） testOne.</description>
+    </item>
+    
+    <item>
+      <title>Mybatis传参</title>
+      <link>https://cassiestd.github.io/posts/2020-06-08/mybatis%E4%BC%A0%E5%8F%82/</link>
+      <pubDate>Sat, 26 Oct 2019 20:40:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-08/mybatis%E4%BC%A0%E5%8F%82/</guid>
+      <description> 前言 有一次用到mybatis的动态sql中的foreach，发现foreach的属性collection填写的值有点问题。然后突然想到之前都是使用的都是用Map或JavaBean传参，没有使用过多参的情况，然后今天测试多参传递，之前只知道可以用#{0},#{1}或者再Mapper接口中形参声明中使用@Param，但是今天发现还可以使用#{param1},#{param2}这种，emmm，还发现了很多规则，都在下面了。
+结论  当Mapper接口的形参使用了@Param标记，那么映射文件中用#{0},#{1}&amp;hellip;这种形式取值时，与@Param位置对应的那个#{}会被替换成@Param里的值。 映射文件中使用#{param1}，#{param2}&amp;hellip;的形式取值时，总是可以取到Mapper形参列表里的第一个、第二个&amp;hellip;参数。 映射文件中可以使用 _parameter 。当Mapper接口形参列表只有一个值时，此参数就代表这个值；当形参存在多个值时，此参数就代表这几个形参形成的Map，其key为0,1,2&amp;hellip;,param1,pram2,param3&amp;hellip;，如果存在使用了@Param的情况，则对应位置的#{0},#{1}&amp;hellip;会被替换成@Param里的值。并且利用_parameter.get()方式取值时，不能取0,1,2&amp;hellip;，只能取param1,param2&amp;hellip;,或者@Param标记设置的值。 当Mapper接口只有一个形参时，如果此形参是一个List，那么foreach的collection取值只能是list；如果此形参是一个数组，collection的取值只能是array；如果此形参是一个Map，则collection的取值只能是Map的key（对应的value为可迭代对象）；如果此形参用了@Param标记，则collection只能取@Param标记的值，或者_parameter.get(&amp;lsquo;标记的值&amp;rsquo;)。  </description>
+    </item>
+    
+    <item>
+      <title>Mybatis缓存</title>
+      <link>https://cassiestd.github.io/posts/2020-06-08/mybatis%E7%BC%93%E5%AD%98/</link>
+      <pubDate>Sat, 26 Oct 2019 16:24:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-08/mybatis%E7%BC%93%E5%AD%98/</guid>
+      <description>概述 Mybatis主要有一级缓存和二级缓存，mybatis默认开启一级缓存，需要手动开启二级缓存。两者特性如下：
+ 一级缓存：是相对于同一个SqlSession而言；缓存存储介质为内存；一级缓存刷新的标志是SqlSession执行commit。 二级缓存：是相对于同一个namespace的mapper而言；存储介质可以为磁盘，所以要缓存的实体需要实现Serializable接口；SqlSession提交或者关闭后，二级缓存才会生效，二级缓存刷新的标志不是SqlSession执行commit。  一级缓存 mybatis默认就是开启并使用的一级缓存，同一个SqlSession而言，执行多次查询，只会执行一次sql语句，并将结果存储到缓存中，后面的查询都是从缓存中拿取。一个测试方法例子如下：
+@Test public void test1(){ SqlSession sqlSession = factory.openSession(); SellMapper mapper = sqlSession.getMapper(SellMapper.class); System.out.println(mapper.selectAll(&amp;#34;asc&amp;#34;).size()); //mapper.deleteById(2); //sqlSession.commit(); System.out.println(mapper.selectAll(&amp;#34;asc&amp;#34;).size()); } 查看执行日志如下：
+DEBUG [main] - Opening JDBC Connection DEBUG [main] - Created connection 2147046752. DEBUG [main] - Setting autocommit to false on JDBC Connection [com.mysql.cj.jdbc.ConnectionImpl@7ff95560] DEBUG [main] - ==&amp;gt; Preparing: select id,place,spring,summer,autumn,winter,(spring+summer+autumn+winter) as total from sell order by total asc DEBUG [main] - ==&amp;gt; Parameters: DEBUG [main] - &amp;lt;== Total: 24 24 24 可以看到，第二次执行查询操作，没有再次执行sql语句了，总共只执行了一次sql语句，第二次的取值是从缓存中拿到的。那么两次查询之间执行一次commit操作呢（虽然没有真正的对数据库做出修改）？将上面测试方法中的sqlSession.</description>
+    </item>
+    
+    <item>
+      <title>Mybatis懒加载</title>
+      <link>https://cassiestd.github.io/posts/2020-06-08/mybatis%E6%87%92%E5%8A%A0%E8%BD%BD/</link>
+      <pubDate>Sat, 26 Oct 2019 13:09:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-08/mybatis%E6%87%92%E5%8A%A0%E8%BD%BD/</guid>
+      <description>前言 Mybatis的懒加载就是所谓的延迟加载，很多博客上也称之为按需加载，但是我觉得只有当配置了Mybatis的非侵略性懒加载才能称之为按需加载（下面会提到）。Mybatis的级联查询有两种方式：
+ 执行一条多表级联的sql语句（sql语句上的级联）。主从查询必定会同步执行。 写两条单表查询的sql语句，两者之间存在逻辑上的级联（sql语法上并没有关联起来）。当开启mybatis的懒加载时，只有当需要访问从查询的数据时才会执行从查询（此时开启的是非侵略性懒加载。如果是侵略性懒加载，不管你访问的是不是从查询的数据，都会执行从查询）。  本博文后面的讨论都是基于mybatis-3.2.7，所以开启懒加载需要两个依赖包：asm-3.3.1.jar和cglib-2.2.2.jar ，具体的适配版本需要自己测试。
+开启懒加载 开启mybatis的懒加载主要是再mybatis的全局配置文件中的settings元素中设置设置两个元素（mybatis的全局配置文件中的元素是有顺序的，settings元素只能在properties元素之后，在typeAliases元素之前），如下所示：
+&amp;lt;settings&amp;gt; &amp;lt;!--设置mybatis使用log4j日志--&amp;gt; &amp;lt;setting name=&amp;#34;logImpl&amp;#34; value=&amp;#34;LOG4J&amp;#34;/&amp;gt; &amp;lt;!--开启mybatis的懒加载（延迟加载）--&amp;gt; &amp;lt;setting name=&amp;#34;lazyLoadingEnabled&amp;#34; value=&amp;#34;true&amp;#34;/&amp;gt; &amp;lt;!--非侵略型懒加载--&amp;gt; &amp;lt;setting name=&amp;#34;aggressiveLazyLoading&amp;#34; value=&amp;#34;false&amp;#34;/&amp;gt; &amp;lt;/settings&amp;gt; 说明： mybatis-3.2.7默认不开启懒加载，默认开启非侵略性懒加载（侵略性和非侵略性后文会分析）。
+模拟需求 一个学生（Student）有一个成绩单（StudentScore），Student类组合了StudentScore类；数据库中存在两张表：student和student_score，student和student_score是一对一的级联关系。
+Student类代码如下：
+package com.mybatis.pojo; public class Student { protected int id,studentNumber,studentClass; protected String studentName; protected StudentScore studentScore; //学生的成绩  //getter and setter  public int getId() { return id; } public void setId(int id) { this.id = id; } public int getStudentNumber() { return studentNumber; } public void setStudentNumber(int studentNumber) { this.</description>
+    </item>
+    
+    <item>
+      <title>集合</title>
+      <link>https://cassiestd.github.io/posts/2020-06-09/%E9%9B%86%E5%90%88/</link>
+      <pubDate>Fri, 18 Oct 2019 19:50:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-09/%E9%9B%86%E5%90%88/</guid>
+      <description>概述  集合类也被称为 容器 ，所有的集合都位于java.util包下。 集合类家族主要由Collection和Map接口派生出。 集合相比数组的优势是：长度可变，且能存储不同类型的对象。Map还能存储映射关系。 集合只能存储对象，不能存储基本类型的值。 Set代表无序不可重复，List代表有序可重复，Map代表无序不可重复键值的映射，Queue代表队列集合。  Collection的家谱如下图：
+Map的家谱如下图：
+Collection和Iterator Collection是Set、List和Queue父接口，此接口定义了一些操作结合元素的基本方法。可以查看Java8的api文档。此外，Collection定义了一个返回迭代器的方法iterator(),返回一个Iterator类型的迭代器，Iterator必须依赖于Collection对象，迭代器主要如下有三个方法：
+ boolean hasNext():如果被迭代的集合元素还没有被遍历，则返回true。 Object next():返回集合里的下一个迭代对象。 void remove():删除集合里上一次next方法返回的元素。  一个Iterator的使用例子如下（也包括了foreach的使用）：
+@Test public void test_1(){ List&amp;lt;String&amp;gt; a=new ArrayList&amp;lt;&amp;gt;(); for(int i=0;i&amp;lt;5;i++){ a.add(&amp;#34;我是&amp;#34;+i); } Iterator&amp;lt;String&amp;gt; iterator=a.iterator(); while(iterator.hasNext()){ String temp=iterator.next(); if(temp.equals(&amp;#34;我是2&amp;#34;)){ iterator.remove(); } System.out.println(temp); } System.out.println(&amp;#34;------------分割线---------------&amp;#34;); for(String v:a){ System.out.println(v); } } 输出结果如下图：
+Notice: Iterator方式和foreach方式迭代过程中，不能直接对集合进行改变，否则会报错： java.util.ConcurrentModificationException ,所有的内部基于数组来实现的集合，最好用随机访问，其他的采用迭代访问。
+Set集合 Set判断两个对象相等的原则是：两个对象用equals方法返回true。在此基础上再来了解HashSet、SortedSet、LinkedHashSet。
+HashSet  HashSet判断两个对象是否相等的条件是： 两个对象通过equals()方法返回true且两者的hashCode()方法返回值相等。 此外，如果两个对象的equals()返回false，但hashCode()返回的值相同，HashSet会将两个对象存储在相同的位置，使用链表结构保存，会导致性能下降。 HashSet按照Hash算法来存储集合中的元素，具有 很好的存取和查找性能。 多个线程同时访问HashSet需要通过代码保证其同步。 集合元素可以为null 需要被保存到HashSet中的对象，需要重写其equals()和hashCode()方法，保证两者通过equals()方法返回为true时，两者的hashCode()方法返回也相同。 当HashSet中存储了对象时，此时再修改它，可能会导致它与其他对象相等（值相等），此时会导致HashSet无法准确的访问元素。  一个例子如下：</description>
+    </item>
+    
+    <item>
+      <title>面向对象(二)</title>
+      <link>https://cassiestd.github.io/posts/2020-06-09/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%BA%8C/</link>
+      <pubDate>Tue, 01 Oct 2019 21:31:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-09/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%BA%8C/</guid>
+      <description>包装类 基本数据类型不具备“对象”的特性，它没有属性，没有方法。为了解决这个问题。Java提供了包装类为8种基本数据类型的分别定义了相应的引用类型，并称之为基本数据类型的 包装类 ，对应关系如下表：
+   基本数据类型 包装类     byte Byte   short Short   int Integer   long Long   float Float   double Double   char Character   boolean Boolean    包装类对象和基本数据类型变量之间的转换  将基本类型变量转换为包装类对象：通过调用对应包装类的构造器来实现，此外，可以调用对应包装类的 parse() 方法来将一个字符串转换为相应包装类的对象。 将包装类对象转换为基本类型变量：通过对应包装类的 xxxValue() 方法来实现。 通过自动装箱和自动拆箱来实现两者的互转： 自动装箱就是将一个基本类型变量直接赋值给对应的包装类变量；自动拆箱就是把一个包装类直接赋值给一个对应的基本数据类型。  包装类对象和字符串之间的转换  将字符串转换为包装类对象：调用对应包装类的 parseXxx() 方法，传入的参数为可转换的字符串；调用对象包装类的构造器，传入可转换的字符串。 将包装类对象转换为字符串：调用字符串的 valueOf() 方法，传入的参数为包装类对象；将包装类对象与 &amp;quot;&amp;quot; 相加。  包装类对象的比较  可以将包装类对象直接与可以比较的基本数据变量进行比较。 包装类对象直接的比较不能简单的认为其包装的值相等两者就相等（应为包装类利用了cache的机制，可能两个包装相同数值的包装类对象不是同一个对象），需要用包装类的 compareTo()方法。  处理对象 打印对象 当我们通过 System.</description>
+    </item>
+    
+    <item>
+      <title>面向对象(一)</title>
+      <link>https://cassiestd.github.io/posts/2020-06-09/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%80/</link>
+      <pubDate>Wed, 25 Sep 2019 10:31:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-09/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%80/</guid>
+      <description>概述  面向对象三大特征： 封装，继承，多态 类可以被认为是一种自定义的数据类型，可以使用类来定义变量，所有使用类定义的变量都是 引用变量 ，他们将会引用到类的对象。 初始化块 总是在构造器执行之前被调用 静态初始化 块用于初始化类，在类初始化阶段被执行  关于类的知识点  所有类都是引用类型 类的修饰符只能是：public,default,abstract,final 类内的static就是为了区分被修饰的东西是属于类的，还是属于类的对象的 static修饰的成员不能访问没有static修饰的成员 如果一个类没有写构造器，那么系统将提供一个默认的无参构造器。但是一旦写了构造器，系统将不再提供默认构造器 类的属性的修饰符只能是：public,default,protected,private,static,final.前四个最多只能出现一个，可以与static,final组合起来使用 类的属性包括： 类变量 和 实例变量 ,用static的修饰的属性就是类变量 类的构造器的修饰符只能是：public,default,protected,private三者之一 声明类的构造器的时候， 不要声明返回值 ，如果写的构造方法写了返回值，则会被当成普通方法编译 静态变量和静态方法可以直接被类调用，也可以被类的对象调用  对象，引用，指针知识点  java不能直接访问堆内存中的对象，只能通过该对象的引用操作对象 堆内存的对象可以有多个引用，即多个引用指向同一个对象 如果希望垃圾回收机制回收某个对象，只需切断该对象的所有引用变量与该对象的联系即可 this关键字总是指向调用该方法的对象，其中构造器中的this是引用正在进行初始化的对象 可以把this作为方法的返回值，返回该方法的对象  方法知识点  java里的方法不能独立存在，必须定义在类内 java的方法的参数传递只有一种： 值传递 值传递的实质 ：系统为形参执行初始化，把实参变量的值赋给赋值给方法的形参变量，方法里操作的不是实际的实参变量 当方法的参数传递的是一个引用类型的参数时，实际上是把 实参变量的内容——对象的地址 ，复制给了形参变量，所以形参和实参指向同一个对象，在方法里操作形参，其实和在方法外操作实参是一样的 JDK1.5之后， java允许定义形参个数可变的参数 ，方法为：在 最后一个形参的类型后 增加三点(&amp;hellip;)，注意： 形参个数可变的那个形参，可以接受0个和1个形参 ，接受后的形参被当成 数组 处理 形参个数可变的参数可以接收一个 数组 方法 重载 要求两同一不同：同一个类中的同名方法，其形参列表不同。方法的其他部分与方法重载没有任何关系。  成员变量和局部变量知识点  成员变量无需显示初始化，系统将在类的准备阶段或者创建该类的实例时进行默认初始化，其初始化的赋值规则与数组动态初始化时数组元素的赋值规则完全相同。 局部变量包括： 形参，方法局部变量，代码块局部变量 。 局部变量除了形参，都必须显示初始化才能使用。 代码块内的局部变量的作用域就只在当前代码块内。 一个类不能定义两个同名的成员变量，即使一个是静态变量，一个是实例变量。 一个方法里不不能定义两个同名的局部变量，即使一个是方法内局部变量，一个代码块局部变量或者形参。  隐藏和封装知识点  访问控制级别由严格到宽松：private-&amp;gt;default-&amp;gt;protected-&amp;gt;public。 需要注意的是： protected的访问权限比default宽松，protected修饰的成员可以被同一个包中的其他类访问，也可以被不同包中的子类访问 。 局部变量不能使用访问控制符修饰。 如果一个java文件定义的所有类都没有使用public修饰，那么此java文件的命名可以是一切合法的文件名；但是如果一个java文件定义的类中有一个public修饰的类，那么此java文件只能与此类名相同。最后， 一个java文件最多只能由一个public修饰的类 。 一个java源文件只能定义一个包，即只能包含一个package语句。 import语句还有一个 静态导入 的方法：import static package.</description>
+    </item>
+    
+    <item>
+      <title>Mybatis动态SQL</title>
+      <link>https://cassiestd.github.io/posts/2020-06-08/mybatis%E5%8A%A8%E6%80%81sql/</link>
+      <pubDate>Tue, 24 Sep 2019 08:22:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-08/mybatis%E5%8A%A8%E6%80%81sql/</guid>
+      <description>前言 Mybatis可以提供动态组装SQL语句的功能，称为动态SQL。
+一个综合例子 这个例子缺少&amp;lt;set&amp;gt;元素，&amp;lt;foreach&amp;gt;元素
+&amp;lt;select id=&amp;#34;selectAll&amp;#34; resultMap=&amp;#34;selectAllResMap&amp;#34; parameterType=&amp;#34;CustomQuerryStudentParam&amp;#34;&amp;gt; select a.*,b.j2ee,b.android,b.sql,(b.j2ee+b.android+b.sql) as total_score from student a,student_score b &amp;lt;where&amp;gt; a.id=b.id &amp;lt;!--根据学号查询--&amp;gt; &amp;lt;if test=&amp;#34;studentNumber!=null and studentNumber!=0&amp;#34;&amp;gt; and a.student_number=#{studentNumber} &amp;lt;/if&amp;gt; &amp;lt;!--根据姓名模糊查询--&amp;gt; &amp;lt;if test=&amp;#34;studentName!=null and studentName!=&amp;#39;&amp;#39;&amp;#34;&amp;gt; &amp;lt;bind name=&amp;#34;fuzzyName&amp;#34; value=&amp;#34;&amp;#39;%&amp;#39;+studentName+&amp;#39;%&amp;#39;&amp;#34;/&amp;gt; and a.student_name like #{fuzzyName} &amp;lt;/if&amp;gt; &amp;lt;!--根据班级查询--&amp;gt; &amp;lt;if test=&amp;#34;studentClass!=null and studentClass!=0&amp;#34;&amp;gt; and a.student_class=#{studentClass} &amp;lt;/if&amp;gt; &amp;lt;!--排序--&amp;gt; order by &amp;lt;choose&amp;gt; &amp;lt;!--这里不能直接用${}将前台的数据存到这，会造成order by型sql注入--&amp;gt; &amp;lt;!--于是我对前台的数据进行数据对比，反正就是不能直接将前台的数据放这--&amp;gt; &amp;lt;when test=&amp;#34;sort!=null and sort==&amp;#39;studentNumber&amp;#39;&amp;#34;&amp;gt;a.student_number&amp;lt;/when&amp;gt; &amp;lt;when test=&amp;#34;sort!=null and sort==&amp;#39;studentClass&amp;#39;&amp;#34;&amp;gt;a.student_class&amp;lt;/when&amp;gt; &amp;lt;when test=&amp;#34;sort!=null and sort==&amp;#39;sql&amp;#39;&amp;#34;&amp;gt;b.`sql`&amp;lt;/when&amp;gt; &amp;lt;when test=&amp;#34;sort!=null and sort==&amp;#39;android&amp;#39;&amp;#34;&amp;gt;b.</description>
+    </item>
+    
+    <item>
+      <title>Mybatis级联查询</title>
+      <link>https://cassiestd.github.io/posts/2020-06-08/mybatis%E7%BA%A7%E8%81%94%E6%9F%A5%E8%AF%A2/</link>
+      <pubDate>Tue, 17 Sep 2019 11:19:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-08/mybatis%E7%BA%A7%E8%81%94%E6%9F%A5%E8%AF%A2/</guid>
+      <description>模拟需求  一对一关系：一个学生（Student）有一个地址（Address），一个地址只能被一个学生拥有。 一对多关系：一个学生可以有多个订单（Order），一个订单只能被一个学生拥有。 多对多关系：一个订单可以有多个商品（Item），同时一个商品可以被多个订单拥有。  根据上面的需求定义以下实体：
+ Student:int id,age;String name,grade,country;Address address;List&amp;lt;Order&amp;gt; orderList; Address:int id;String province,city,detail_address; Order:int id,item_id,sid;  由于Order的记录只存储Item的id，所以暂时不写Item实体，用item_id代表一个Item对象。
+说明 mybatis中通过&amp;lt;resultMap&amp;gt;的子元素&amp;lt;association&amp;gt;来处理一对一级联查询。&amp;lt;association&amp;gt;子元素通常含有以下属性：
+ property：指定映射到实体类的对象属性。 column：指定表中的字段（当通过执行两个sql语句来实现级联查询时用到）。 javaType：指定映射到实体类对象属性的类型。 select：指定引入嵌套查询的子sql语句（一般和column结合使用）。  mybatis中通过&amp;lt;resultMap&amp;gt;的子元素&amp;lt;collection&amp;gt;来处理一对多级联查询。&amp;lt;collection&amp;gt;子元素通常含有以下属性：
+ property：指定映射到实体类的对象属性。 column：指定表中的字段。 ofType：指定实体的对象属性的类型。 select：指定引入嵌套查询的子sql语句。  级联查询有以下三种方法：
+ 执行一条sql语句，将属于子表的部分映射到实体的对象属性的属性上。 执行两条sql语句，将嵌套子查询结果映射到实体的对象属性的属性上。 执行一条sql语句，将查询结果映射到一个包含父表和子表字段的实体的属性上。  方法一 一个resultMap的例子如下：
+&amp;lt;!--执行一条sql语句--&amp;gt; &amp;lt;resultMap id=&amp;#34;oneToOneResMap&amp;#34; type=&amp;#34;com.mybatis.pojo.Student&amp;#34;&amp;gt; &amp;lt;id property=&amp;#34;id&amp;#34; column=&amp;#34;id&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;age&amp;#34; column=&amp;#34;age&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;name&amp;#34; column=&amp;#34;name&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;grade&amp;#34; column=&amp;#34;grade&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;country&amp;#34; column=&amp;#34;country&amp;#34;/&amp;gt; &amp;lt;!--一对一的级联查询--&amp;gt; &amp;lt;association property=&amp;#34;address&amp;#34; javaType=&amp;#34;com.mybatis.pojo.Address&amp;#34;&amp;gt; &amp;lt;id property=&amp;#34;id&amp;#34; column=&amp;#34;addr_id&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;province&amp;#34; column=&amp;#34;province&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;city&amp;#34; column=&amp;#34;city&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;detail_address&amp;#34; column=&amp;#34;detail_address&amp;#34;/&amp;gt; &amp;lt;/association&amp;gt; &amp;lt;!</description>
+    </item>
+    
+    <item>
+      <title>流程控制与数组</title>
+      <link>https://cassiestd.github.io/posts/2020-06-09/%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%95%B0%E7%BB%84/</link>
+      <pubDate>Sun, 15 Sep 2019 23:31:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-09/%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%95%B0%E7%BB%84/</guid>
+      <description>分支结构 if条件语句  if,else if,else后的代码块只有一条语句时（可以是空语句），可以省略花括号。 使用if,else时一定要先考虑小的范围。  switch分支语句  switch后的控制表达式的数据类型只能是：byte，short，int，char。不能是boolean。Java7还允许是String类型。 允许省略case后的花括号。 不要忘了当一个case块写完时，以break结尾，否则将继续执行，直到遇到break或运行switch完毕才结束。  一个写法案例如下：
+char a=97; //符合条件&amp;#39;a&amp;#39; switch (a){ case &amp;#39;a&amp;#39;: System.out.println(&amp;#34;一概窝里GIAOGIAO！&amp;#34;); System.out.println(&amp;#34;我是char类型的a&amp;#34;); break; case &amp;#39;b&amp;#39;: System.out.println(&amp;#34;我是b&amp;#34;); break; default: System.out.println(&amp;#34;我是default呜呜呜&amp;#34;); } 循环结构 循环语句可能包含如下四个部分：
+ 初始化语句：一条或者多条语句，完成一些初始化操作，在循环开始前执行。 循环条件：一个布尔表达式，决定是否执行循环体。 循环体：循环的主体内容。 迭代语句：在循环条件执行之前执行，控制循环条件的变量，使之能够在合适的条件下结束循环。  while循环语句 一个简单的案例如下：
+int i=1; //初始化语句 while(i&amp;lt;11) { //循环条件 System.out.println(&amp;#34;i=&amp;#34;+i); //循环体 ++i; //迭代语句 } 此语句容易范的 错误 是： 在while()后加一个封号
+do while循环语句 do while与while的区别在于：do while先执行循环体，再执行循环条件，而while是先执行循环条件，条件允许时才能执行循环体。一个简单的案例如下：
+int i=1; //初始化语句 do{ System.out.println(&amp;#34;i=&amp;#34;+i); //循环体 ++i; //迭代语句 }while (i&amp;lt;11); //循环条件 此语句容易犯的一个 错误是 ： while()后没加封号</description>
+    </item>
+    
+    <item>
+      <title>数据类型和运算符</title>
+      <link>https://cassiestd.github.io/posts/2020-06-09/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%92%8C%E8%BF%90%E7%AE%97%E7%AC%A6/</link>
+      <pubDate>Wed, 04 Sep 2019 22:48:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-09/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%92%8C%E8%BF%90%E7%AE%97%E7%AC%A6/</guid>
+      <description>注释  单行注释：使用//即可 多行注释：使用/*注释内容*/即可 文档注释：以/**开始，以*/结束  标识符和关键字  允许一行书写多个语句，每个语句之间用封号隔开。 一个语句可以跨越多行，但是变量名和字符串不能跨越多行 java的标识符以大小写字母，下划线，数字和美元符组成，且数字不能打头  数据类型分类  java是一种强数据类型 java支持的数据类型分为：基本类型和引用类型 基本数据类型分为四类：  整数类型：byte(1字节),short(2字节),int(4字节),long(8字节) 字符类型：char(2字节) 浮点类型：float(4字节),double(8字节) 布尔类型：boolean(1位)   整型  一个java整型常量默认就是int类型 将一个较小的整型常量赋值给一个byte或者short，系统会自动把这个整数常量当成byte或者short处理。 如果使用一个巨大 的整型常量，系统不会自动把这个整数当成long型处理。如果希望将这个整数常量当成一个long型处理，可以加一个L后缀（或者l后缀） 如果将一个较小的整型常数（0~65535）赋值给char类型，系统会自动把这个整数当成char类型  测试如下：
+byte a=12; short b=13; int c=123456789; //此语句报错：Integer number too large，默认整型直接量为int类型，此时超过了int的范围 //long cc=123456789123; //此语句才是正确的 long cc=123456789123L; char d=97; //系统自动将int类型的直接量当成了char处理，所以会输出97的Unicode码：a System.out.println(d); //输出：a 字符型 字符型常量 有三种表示形式 1. 通过单个字符来直接指定字符型常量，例如&#39;a&#39; 2. 直接使用Unicode值来表示字符型常量，格式为\u9999,其中的数字是一个十六进制的整数 3. 通过转义字符表示特殊的字符型常量，例如\n和\t等
+测试如下：
+char a=97; //97这个int类型的整数常量被系统自动当成了char类型 char b=&amp;#39;a&amp;#39;; char c=&amp;#39;\u9999&amp;#39;; char d=&amp;#39;\t&amp;#39;; char e=&amp;#39;淦&amp;#39;; //通过单个字符指定字符常量，可以是汉字 //将输出：a---a---香--- ---淦 System.</description>
+    </item>
+    
+    <item>
+      <title>SpringMVC之注解开发</title>
+      <link>https://cassiestd.github.io/posts/2020-06-06/springmvc%E4%B9%8B%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91/</link>
+      <pubDate>Sat, 27 Jul 2019 17:48:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-06/springmvc%E4%B9%8B%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91/</guid>
+      <description>前言 &amp;emsp;&amp;emsp;之前的一篇博文：SpringMVC之处理器映射器中最后的注解式处理器映射器讲了如何使用最基础的注解开发，现在下面将讨论注解开发中的一些常见要点。
+讨论对象  @RequestMapping 控制器返回值 参数绑定  过程 @RequestMapping &amp;emsp;&amp;emsp;通过之前的利用注解方式配置映射器和适配器，对于控制器中标记有@RequestMapping的方法，我们可以通过@RequestMapping设定的url访问到此方法，其实 @RequestMapping也可以作用于类上，而不仅仅是作用于方法上 。作用于类上可以窄化请求映射。注解式开发的控制器都是基于方法的，我们往往把一个模块的控制器都放在一个类里，如果此时用@RequestMapping标记类，窄化此模块的请求，可以很好的起到逻辑上的模块划分的作用。假设我做一个手商城，有一个商品模块，那么是不是可以有商品添加，商品删除，商品修改等等此模块下的控制器，这些控制器放在一个类里，然后我在类前用@RequestMapping(&amp;quot;/item&amp;quot;)标记，然后假设我的商品添加控制器的标记为@RequestMapping(&amp;quot;/addItem&amp;quot;)，那么如果我要访问商品添加的控制器，访问的相对url为：/item/addItem，此类里的每个控制器都要加上/item前缀,此所谓窄化了请求。为啥要窄化请求，我认为是可以在逻辑上合理划分模块，一旦控制器多了，有个代表模块的前缀将会使得项目更加合理。参考实例如下：
+@Controller @RequestMapping(&amp;#34;justTest&amp;#34;) public class TestController{ @RequestMapping(&amp;#34;/hello&amp;#34;) public ModelAndView sayHello(){ ModelAndView modelAndView=new ModelAndView(&amp;#34;hello&amp;#34;); modelAndView.addObject(&amp;#34;info&amp;#34;,&amp;#34;Hello Man!&amp;#34;); return modelAndView; } } &amp;emsp;&amp;emsp;访问测试结果如下：
+&amp;emsp;&amp;emsp;@RequestMapping的另一个要点就是 请求限制 ，可以规定请求的方式为GET或者POST等等，可以规定请求的提交内容的类型（json等），等等。具体的属性如下表：
+   属性值 作用     value 例如 @RequestMapping(value=&amp;quot;/test&amp;quot;)，其实这等价于 @RequestMapping(&amp;quot;/test&amp;quot;)   method 指定请求控制器的方式，有GET，POST，DELETE等。例如：@RequestMapping(value = &amp;quot;/test&amp;quot;,method = RequestMethod.POST)就是指定只处理POST类型的请求   consumes 规定请求的提交内容的类型，比如我只接受json类型数据的请求，那么我可以设置成： @RequestMapping(value = &amp;quot;/test&amp;quot;,consumes = &amp;quot;application/json&amp;quot;)   produces 规定返回的内容的类型，比如我返回xml类型的数据，那么我可以设置成： @RequestMapping(value = &amp;quot;/test&amp;quot;,produces = &amp;quot;application/json&amp;quot;)   params 规定请求所必需的带的参数，可以进一步过滤掉无关请求   headers 规定请求必须带的HTTP头信息    &amp;emsp;&amp;emsp;为了测试以上参数，我写的一个控制器如下：</description>
+    </item>
+    
+    <item>
+      <title>SpringMVC之Hello World</title>
+      <link>https://cassiestd.github.io/posts/2020-06-06/springmvc%E4%B9%8Bhello_world/</link>
+      <pubDate>Thu, 25 Jul 2019 17:48:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-06/springmvc%E4%B9%8Bhello_world/</guid>
+      <description>开发环境  IDEA下的Maven项目 JDK 1.8_0211 Tomcat 8.5.38  项目依赖 &amp;emsp;&amp;emsp;为了方便以后的学习，我直接加入了SSM项目的所有依赖，从而包括Spring和Mybatis等。具体的依赖配置如下（Maven的pom.xml配置）：
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;project xmlns=&amp;#34;http://maven.apache.org/POM/4.0.0&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xsi:schemaLocation=&amp;#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&amp;#34;&amp;gt; &amp;lt;modelVersion&amp;gt;4.0.0&amp;lt;/modelVersion&amp;gt; &amp;lt;groupId&amp;gt;com.company.struct&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;artifact&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0-SNAPSHOT&amp;lt;/version&amp;gt; &amp;lt;packaging&amp;gt;war&amp;lt;/packaging&amp;gt; &amp;lt;name&amp;gt;artifact Maven Webapp&amp;lt;/name&amp;gt; &amp;lt;!-- FIXME change it to the project&amp;#39;s website --&amp;gt; &amp;lt;url&amp;gt;http://www.example.com&amp;lt;/url&amp;gt; &amp;lt;properties&amp;gt; &amp;lt;project.build.sourceEncoding&amp;gt;UTF-8&amp;lt;/project.build.sourceEncoding&amp;gt; &amp;lt;maven.compiler.source&amp;gt;1.7&amp;lt;/maven.compiler.source&amp;gt; &amp;lt;maven.compiler.target&amp;gt;1.7&amp;lt;/maven.compiler.target&amp;gt; &amp;lt;!-- spring的版本 --&amp;gt; &amp;lt;spring.version&amp;gt;5.1.5.RELEASE&amp;lt;/spring.version&amp;gt; &amp;lt;!-- mybatis的版本 --&amp;gt; &amp;lt;mybatis.version&amp;gt;3.4.6&amp;lt;/mybatis.version&amp;gt; &amp;lt;!-- mybatis/spring包 --&amp;gt; &amp;lt;mybatis-spring.version&amp;gt;1.3.2&amp;lt;/mybatis-spring.version&amp;gt; &amp;lt;!-- servlet核心包 --&amp;gt; &amp;lt;servlet-api.version&amp;gt;4.0.1&amp;lt;/servlet-api.version&amp;gt; &amp;lt;!-- slf4j日志文件管理包版本 --&amp;gt; &amp;lt;slf4j.version&amp;gt;1.7.1&amp;lt;/slf4j.version&amp;gt; &amp;lt;/properties&amp;gt; &amp;lt;!-- 各种依赖包--&amp;gt; &amp;lt;dependencies&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;junit&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;junit&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;4.11&amp;lt;/version&amp;gt; &amp;lt;!-- 表示开发的时候引入，发布的时候不会加载此包 --&amp;gt; &amp;lt;scope&amp;gt;test&amp;lt;/scope&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;!</description>
+    </item>
+    
+    <item>
+      <title>SpringMVC之处理器映射器</title>
+      <link>https://cassiestd.github.io/posts/2020-06-06/springmvc%E4%B9%8B%E6%8E%A7%E5%88%B6%E5%99%A8%E6%98%A0%E5%B0%84%E5%99%A8/</link>
+      <pubDate>Thu, 25 Jul 2019 17:48:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-06/springmvc%E4%B9%8B%E6%8E%A7%E5%88%B6%E5%99%A8%E6%98%A0%E5%B0%84%E5%99%A8/</guid>
+      <description>前言 &amp;emsp;&amp;emsp;此处只是对SpringMVC常见的三个控制器映射器做探讨，没有深入研究其源码实现，只是探讨其使用方法。以下探究的环境都是基于我的之前写过的一篇博客上说明的环境（包括前端控制器配置等），如需复刻，请参照：SpringMVC之HelloWorld
+研究对象 &amp;emsp;&amp;emsp;即将探讨的三个控制器映射器如下：
+ BeanNameUrlHandlerMapping SimpleUrlHandlerMapping RequestMappingHandlerMapping  BeanNameUrlHandlerMapping &amp;emsp;&amp;emsp;我的博客中写的一篇《SpringMVC之HelloWorld》的案例用到的映射器就是BeanNameUrlHandlerMapping，配置了这个映射器后，要求配置的控制器的bean的name为访问路由。具体的可以看我之前写的：SpringMVC之HelloWorld，注意观察我配置的控制器的name和最后我访问的url是否对应就行了。
+SimpleUrlHandlerMapping &amp;emsp;&amp;emsp;使用方法当然首先是在Spring容器中配置这个映射器咯，配置之前，先说明其好处（相对于BeanNameUrlHandlerMapping）：可以对映射进行统一配置，像BeanNameUrlHandlerMapping，我们创建一个控制器，就需要配置控制器的时候设置其name作为访问的url，当控制器多了，就不好统一规划（眼睛都看花=-=）。但是用SimpleUrlHandlerMapping，可以统一在此映射器处配置控制器的访问url。具体的配置参考如下：
+&amp;lt;!-- 配置处理器映射器--&amp;gt; &amp;lt;bean class=&amp;#34;org.springframework.web.servlet.handler.SimpleUrlHandlerMapping&amp;#34;&amp;gt; &amp;lt;property name=&amp;#34;mappings&amp;#34;&amp;gt; &amp;lt;props&amp;gt; &amp;lt;prop key=&amp;#34;/hello&amp;#34;&amp;gt;conOne&amp;lt;/prop&amp;gt; &amp;lt;/props&amp;gt; &amp;lt;/property&amp;gt; &amp;lt;/bean&amp;gt; &amp;lt;!-- 配置控制器--&amp;gt; &amp;lt;bean id=&amp;#34;conOne&amp;#34; class=&amp;#34;com.test.ssm.web.controller.TestController&amp;#34; /&amp;gt; Notice：上面配置的映射器的conOne是控制器的id，所以很容易观察到使用SimpleUrlHandlerMapping的方法就是：将配置好的控制器的id放到 &amp;lt;prop&amp;gt;标签里，然后 &amp;lt;prop&amp;gt; 标签的key属性就是此id对应控制器的访问路由。
+&amp;emsp;&amp;emsp;测试结果如下：
+RequestMappingHandlerMapping &amp;emsp;&amp;emsp;这个就是最最常用的了，就是大名鼎鼎的注解式映射器。会对类中标记的@RequestMapping的方法进行映射（也就是标记@RequestMapping同时设定url，此url为此控制器中的此方法的访问路由）。然后需要注意： RequestMappingHandlerMapping是注解式的映射器，那么控制器适配器也得用注解式的，控制器的注册也得用注解式。 配置这三件套（注解式映射器、控制器适配器、控制器）的参考如下：
+&amp;lt;!-- 注解映射器 --&amp;gt; &amp;lt;bean class=&amp;#34;org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping&amp;#34;/&amp;gt; &amp;lt;!-- 注解适配器--&amp;gt; &amp;lt;bean class=&amp;#34;org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter&amp;#34;/&amp;gt; &amp;lt;!-- 组件扫描器，扫描控制器，控制器需要使用注解@Controller,此处就是扫描controller包下的所有带@Controller注解的控制器类--&amp;gt; &amp;lt;context:component-scan base-package=&amp;#34;com.test.ssm.web.controller&amp;#34;/&amp;gt; Notice：上述的组件扫描器的base-package设置的就是我的项目的一个包：com.test.ssm.web.controller。如果你复刻，得按照你的项目的实际情况设定。设定哪个包，SpringMVC就将扫描哪个包中的带@Controller注解的类。同时： 你配置了注解的三件套，那么你之前的适配器啥的都要注掉，防止冲突
+&amp;emsp;&amp;emsp;接下来就是用注解方式开发控制器了，参考代码如下：
+package com.test.ssm.web.controller; import org.springframework.stereotype.Controller; import org.springframework.web.bind.annotation.RequestMapping; import org.springframework.web.servlet.ModelAndView; @Controller public class TestController{ @RequestMapping(&amp;#34;/hello&amp;#34;) public ModelAndView sayHello(){ ModelAndView modelAndView=new ModelAndView(&amp;#34;hello&amp;#34;); modelAndView.</description>
+    </item>
+    
+    <item>
+      <title>SpringMVC架构</title>
+      <link>https://cassiestd.github.io/posts/2020-06-06/springmvc%E5%85%A5%E9%97%A8/</link>
+      <pubDate>Tue, 23 Jul 2019 17:48:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-06/springmvc%E5%85%A5%E9%97%A8/</guid>
+      <description>介绍  SpringMVC是Spring Framework的一个模块。
+ Spring和SpringMVC无需中间整合层。
+ SpringMVC是一个基于MVC的web框架。
+  使用背景 &amp;emsp;&amp;emsp;在学习了一学期的JavaWeb后，记得老师最后让我们写一个MVC模式的项目，记得我当时把整个项目按照四层架构写好后，发现架构占据了整个开发的绝大多数时间（就是用Servlet+jsp+javaBean搭建一个MVC模式的项目，好吧我承认作为一个作业我硬是用四层架构有点刚=-=），体会就是：太太太太太难搭了！！！所以为了开发方便（其实是为了提前响应社会的需求哈哈哈），特此学习SSM（现在还在SpringMVC阶段=-=）。
+&amp;emsp;&amp;emsp;SpringMVC和Spring Web MVC是不同说法的同种东西，后者更加强调了SpringMVC是为WEB项目服务的，也就是说SpringMVC是应用在B/S架构的系统上。
+磨刀 &amp;emsp;&amp;emsp;MVC的基本思想就是数据模型和视图通过控制器分离，用户请求控制器，控制器向数据模型请求业务处理，之后控制器将数据模型返回的数据渲染到视图并返回给用户。这是MVC模式的整个运作流程。但是知道了MVC模式，具体的项目实施该怎样，我习惯将项目分为四层架构：实体层，数据接口层，业务逻辑层，web层。各个层次的主要任务如下：
+ 实体层：就是项目中涉及到的实体，有的与数据库里的表对应，也有为了业务方便而自定义存在。
+ 数据接口层：用来对实体进行操作的，也就是与数据库进行交互。
+ 业务逻辑层：项目的业务逻辑都在这里设计，给表现层调用来实现业务请求。
+ web层：项目的控制器或者与表现层相关的都在此层。可处理一些基本的非业务逻辑。
+  砍柴 SpringMVC的架构图 SpringMVC运作流程  用户将请求发送到前端控制器DispatcherServlet
+ 前端控制器收到请求，调用处理器映射器HandlerMapping
+ 处理器映射器查找处理器Handler（有配置xml和注解两种查找方式），生成处理器对象（如果有处理器拦截器则也生成）返回给前端控制器 前端控制器通过处理器HandlerAdapter是配置调用处理器
+ 执行处理器（也叫后台控制器）
+ 处理器执行返回ModelAndView
+ 处理器适配器将处理器返回的ModelAndView返回给前端控制器
+ 前端控制器讲ModelAndView返回给视图解析器ViewResolver
+ 视图解析器解析后返回具体的视图View
+ 前端控制器对视图进行渲染
+ 前端控制器返回响应结果给用户
+  Notice：处理器和控制器是不同说法的同种东西。
+各组件说明  前端控制器：框架提供。是整个运作流程的中心，调用其他组件来处理用户的请求
+ 处理器映射器：框架提供。主要任务是查找控制器。SpringMVC提供多种映射器实现方式，例如：注解，xml配置等
+ 处理器配置器：框架提供。作用就是执行控制器。这种适配器模式可以使得扩展适配器来对更多类型控制器进行处理
+ 处理器：需要自己开发。也叫后端控制器。处理器适配器和处理器是配套使用的，所以开发控制器时，需要按照控制器适配器的规定去开发。一般在这里面调用业务逻辑层来实现用户业务请求。
+ 视图解析器：框架提供。就是根据逻辑视图名解析到物理视图名，然后生成视图View对象给前端控制器来渲染数据。
+ 视图：视图View是一个接口，其实现类支持不同的View类型（jsp,pdf等等）
+  结语 &amp;emsp;&amp;emsp;正所谓磨刀不误砍柴工，只有充分理解了MVC模式和四层架构才能理解SpringMVC的运作流程，而只有充分理解清除了SpringMVC的运作流程，才能学好SpringMVC。</description>
+    </item>
+    
+    <item>
+      <title>Mybatis整合Spring</title>
+      <link>https://cassiestd.github.io/posts/2020-06-08/mybatis%E6%95%B4%E5%90%88spring/</link>
+      <pubDate>Wed, 10 Jul 2019 17:48:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-06-08/mybatis%E6%95%B4%E5%90%88spring/</guid>
+      <description>介绍 &amp;emsp;&amp;emsp;Mybatis是一款持久层的框架，使用Mybatis我们无需自己编写繁琐的JDBC代码，也无需为sql注入等安全问题烦恼。没用过Hibernate哈哈哈，无法做比较。好像现在市面上都是用Mybatis了叭=-=
+&amp;emsp;&amp;emsp;然后为了方便之后写一些Mybatis相关的demo，首先需要搭建好能够运行Mybatis的环境，接下来就是结合Spring来搭建Mybatis的过程。
+开发环境  IDEA下的Maven项目 JDK 1.8_0211 Tomcat 8.5.38 Mybatis 1.3.2  项目依赖 &amp;emsp;&amp;emsp;下面的Maven的依赖配置是一个完整的ssm依赖配置。包括了之后会用得到的Gjson和log4j等。此外，注意我的pom.xml在build里配置了一个resources ，代表我的src/main/java路径下的xml文件也会被认作项目的资源文件（否则利用Mybatis的扫描方式配置的mapper将不起作用 ），pom.xml配置如下：
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;project xmlns=&amp;#34;http://maven.apache.org/POM/4.0.0&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xsi:schemaLocation=&amp;#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&amp;#34;&amp;gt; &amp;lt;modelVersion&amp;gt;4.0.0&amp;lt;/modelVersion&amp;gt; &amp;lt;groupId&amp;gt;com.company.struct&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;artifact&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0-SNAPSHOT&amp;lt;/version&amp;gt; &amp;lt;packaging&amp;gt;war&amp;lt;/packaging&amp;gt; &amp;lt;name&amp;gt;artifact Maven Webapp&amp;lt;/name&amp;gt; &amp;lt;!-- FIXME change it to the project&amp;#39;s website --&amp;gt; &amp;lt;url&amp;gt;http://www.example.com&amp;lt;/url&amp;gt; &amp;lt;properties&amp;gt; &amp;lt;project.build.sourceEncoding&amp;gt;UTF-8&amp;lt;/project.build.sourceEncoding&amp;gt; &amp;lt;maven.compiler.source&amp;gt;1.7&amp;lt;/maven.compiler.source&amp;gt; &amp;lt;maven.compiler.target&amp;gt;1.7&amp;lt;/maven.compiler.target&amp;gt; &amp;lt;!-- spring的版本 --&amp;gt; &amp;lt;spring.version&amp;gt;5.1.5.RELEASE&amp;lt;/spring.version&amp;gt; &amp;lt;!-- mybatis的版本 --&amp;gt; &amp;lt;mybatis.version&amp;gt;3.4.6&amp;lt;/mybatis.version&amp;gt; &amp;lt;!-- mybatis/spring包 --&amp;gt; &amp;lt;mybatis-spring.version&amp;gt;1.3.2&amp;lt;/mybatis-spring.version&amp;gt; &amp;lt;!-- servlet核心包 --&amp;gt; &amp;lt;servlet-api.version&amp;gt;4.0.1&amp;lt;/servlet-api.version&amp;gt; &amp;lt;!-- slf4j日志文件管理包版本 --&amp;gt; &amp;lt;slf4j.version&amp;gt;1.7.1&amp;lt;/slf4j.version&amp;gt; &amp;lt;/properties&amp;gt; &amp;lt;!-- 各种依赖包--&amp;gt; &amp;lt;dependencies&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;junit&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;junit&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;4.</description>
+    </item>
+    
+    <item>
+      <title>Java算法与数据结构-01</title>
+      <link>https://cassiestd.github.io/posts/2020-02-07/algorithm01/</link>
+      <pubDate>Sun, 13 Jan 2019 23:30:58 +0530</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-02-07/algorithm01/</guid>
+      <description> 01 经典算法面试题 1、字符串匹配问题：  1) KMP算法
+2) 暴力匹配
+ 2、汉诺塔游戏：  1) 分治算法
+ 3、8皇后问题：  1) 回溯算法
+2) 分治算法
+ 4、马踏棋盘：  1) 图的深度优先遍历算法（DFS）+贪心算法优化
+ 02 线型结构和非线性结构 1、线形结构： 数据元素1to1，有两种存储结构【顺序存储结构：顺序表中的存储元素是连续的】和【链式存储结构：链表中的存储元素不一定是连续的，元素结点=数据元素+相邻元素地址信息】。线性结构常见的有：数组、队列、链表、栈等。注意：前驱元素和后继元素的概念。
+2、非线性结构： 数据元素1toN或者NtoN，常见的非线性结构有：二维数组，多维数组，广义表，树结构，图结构等。
+03 稀疏数组和队列 ###03.1 稀疏数组
+1、基本介绍（稀疏数组运用前提）： 当一个数组中大部分元素为0或同一个值时，可以用稀疏数组来保存该数组。
+2、稀疏数组的处理方法：  1)记录数组有几行几列，几个不同的值。
+2)把具有不同值的元素的行列及值记录在一个小规模数组中，从而缩小程序的规模。
+ 3、稀疏数组的应用： #####（1）二维数组 转 稀疏数组 的思路： &amp;gt;1)遍历原始的二维数组，得到有效数据的个数sum。 &amp;gt; &amp;gt;2)根据sum可以创建稀疏数组sparseArr int[sum+1][3]. &amp;gt; &amp;gt;3)将二维数组的有效数据存入到稀疏数组中（稀疏数组第一行存放行数、列数、不同值的元素个数）。 &amp;gt; &amp;gt;4)将稀疏数组存盘到文件中。 #####（2）稀疏数组 转 二维数组 的思路： &amp;gt;1)从文件中读取稀疏数组。 &amp;gt; &amp;gt;2）先读取稀疏数组的第一行，根据第一行的数据，创建原始的二维数组。 &amp;gt; &amp;gt;3）依次读取稀疏数组后几行的数据，并赋给原始二维数组。 4、稀疏数组的代码实现： </description>
+    </item>
+    
+    <item>
+      <title>算法笔记第1-3章知识点</title>
+      <link>https://cassiestd.github.io/posts/2020-01-13/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0%E7%AC%AC1-3%E7%AB%A0/</link>
+      <pubDate>Sun, 13 Jan 2019 23:30:58 +0530</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/2020-01-13/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0%E7%AC%AC1-3%E7%AB%A0/</guid>
+      <description>算法笔记第1-3章知识点 第一章 1、 程序提交结果： &amp;gt; (1) 答案正确：AC(Accepted)
+ (2) 编译错误：CE(Compile Error)
+(3) 答案错误：WA(Wrong Answer)
+(4) 运行超时：TLE(Time Limit Exceeded)
+(5) 运行错误：RE(Runtime Error)
+(6) 内存超限：MLE(Memory Limit Exceeded)
+(7) 格式错误：PE(Presentation Error)
+(8) 输出超限：OLE(Output Limit Exceeded)
+ 第二章 1、 scanf函数：注意不要忘了&amp;rdquo;&amp;amp;&amp;ldquo;符号！！
+int a,b; scanf(&amp;#34;%d%d&amp;#34;,&amp;amp;a,&amp;amp;b); // %d是整型变量的标准输入 printf(&amp;#34;%d&amp;#34;,a+b); 2、 四种基本数据类型及取值范围： 3、 注意： &amp;gt; (1) 无符号数加unsigned。
+ (2) long long 类型变量超过(2^31)-1就要加LL后缀。
+(3) 浮点数后缀F。
+(4) 32位整数用int，64位用long long。
+(5) 浮点数用double，不用float。float为32位，精度6-7位；double为64位，精度15-16位。
+ 4、 字符常量and字符变量：
+ (1) 字符常量：不能够被改变，不能够被赋值。 例如： &amp;lsquo;c&amp;rsquo;。 字符常量（必须是一个字符）要用单引号引起来以示区分。</description>
     </item>
     
   </channel>

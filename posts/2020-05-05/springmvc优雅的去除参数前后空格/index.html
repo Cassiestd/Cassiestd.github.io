@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>SpringMVC优雅的去除参数的前后空格 - Cassie</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="SpringMVC优雅的去除参数的前后空格" />
+<meta property="og:description" content="需要解决的问题  SpringMVC利用参数绑定接收的前端的参数，需要去除参数的前后空格。 SpringMVC利用@RequestBody接收的Json数据需要去除键值对的前后空格。  问题一的解决方法 可以自定义一个web参数绑定初始化器，然后在RequestMappingHandlerAdapter中配置webBindingInitializer。具体步骤如下：
+① 通过实现WebBindingInitializer自定义一个web参数绑定初始化器：
+/** * @author P1n93r * 对参数绑定进行扩展 */ @Component public class CustomWebBindingInitializer implements WebBindingInitializer { @Override public void initBinder(WebDataBinder webDataBinder) { // 对字符串的参数绑定进行扩展，去除前后空格 // 注册对于String类型参数对象的属性进行trim操作的编辑器, // 构造参数代表：空串是否转为null，true则将空串转为null webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(false)); //可以在此继续扩展~，比如扩展日期参数绑定 } } ② 在springmvc的全局配置文件中配置步骤①定义的初始化器：
+&lt;!--手动配置RequestMappingHandlerAdapter实现自定义扩展--&gt; &lt;bean class=&#34;org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter&#34;&gt; &lt;!--添加自定义参数绑定--&gt; &lt;property name=&#34;webBindingInitializer&#34; ref=&#34;customWebBindingInitializer&#34;/&gt; &lt;/bean&gt; 问题二的解决方法 可以自定义一个jackson的objectMapper，然后配置json消息转换器的objectMapper为自定义的objectMapper。具体的步骤如下：
+① 通过继承ObjectMapper来自定义一个ObjectMapper：
+/** * @author P1n93r * 自定义的一个jsonObject，用于去除接收的json数据中存在的前后空格情况 */ @Component public class CustomObjectMapper extends ObjectMapper { /** * 重写构造器 */ public CustomObjectMapper(){ /* 调用ObjectMapper的registerModule方法添加扩展点 此处使用匿名对象直接new SimpleModul添加扩展功能 */ registerModule(new SimpleModule() { { /* 注册对于String类型值对象的反序列化器 对于反序列化器直接new StdDeserializer的子类StdScalarDeserializer完成 */ addDeserializer(String." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cassiestd.github.io/posts/2020-05-05/springmvc%E4%BC%98%E9%9B%85%E7%9A%84%E5%8E%BB%E9%99%A4%E5%8F%82%E6%95%B0%E5%89%8D%E5%90%8E%E7%A9%BA%E6%A0%BC/" />
+<meta property="article:published_time" content="2020-04-15T00:38:36+08:00" />
+<meta property="article:modified_time" content="2020-04-15T00:38:36+08:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SpringMVC优雅的去除参数的前后空格"/>
+<meta name="twitter:description" content="需要解决的问题  SpringMVC利用参数绑定接收的前端的参数，需要去除参数的前后空格。 SpringMVC利用@RequestBody接收的Json数据需要去除键值对的前后空格。  问题一的解决方法 可以自定义一个web参数绑定初始化器，然后在RequestMappingHandlerAdapter中配置webBindingInitializer。具体步骤如下：
+① 通过实现WebBindingInitializer自定义一个web参数绑定初始化器：
+/** * @author P1n93r * 对参数绑定进行扩展 */ @Component public class CustomWebBindingInitializer implements WebBindingInitializer { @Override public void initBinder(WebDataBinder webDataBinder) { // 对字符串的参数绑定进行扩展，去除前后空格 // 注册对于String类型参数对象的属性进行trim操作的编辑器, // 构造参数代表：空串是否转为null，true则将空串转为null webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(false)); //可以在此继续扩展~，比如扩展日期参数绑定 } } ② 在springmvc的全局配置文件中配置步骤①定义的初始化器：
+&lt;!--手动配置RequestMappingHandlerAdapter实现自定义扩展--&gt; &lt;bean class=&#34;org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter&#34;&gt; &lt;!--添加自定义参数绑定--&gt; &lt;property name=&#34;webBindingInitializer&#34; ref=&#34;customWebBindingInitializer&#34;/&gt; &lt;/bean&gt; 问题二的解决方法 可以自定义一个jackson的objectMapper，然后配置json消息转换器的objectMapper为自定义的objectMapper。具体的步骤如下：
+① 通过继承ObjectMapper来自定义一个ObjectMapper：
+/** * @author P1n93r * 自定义的一个jsonObject，用于去除接收的json数据中存在的前后空格情况 */ @Component public class CustomObjectMapper extends ObjectMapper { /** * 重写构造器 */ public CustomObjectMapper(){ /* 调用ObjectMapper的registerModule方法添加扩展点 此处使用匿名对象直接new SimpleModul添加扩展功能 */ registerModule(new SimpleModule() { { /* 注册对于String类型值对象的反序列化器 对于反序列化器直接new StdDeserializer的子类StdScalarDeserializer完成 */ addDeserializer(String."/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:200,300" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="https://cassiestd.github.io/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://cassiestd.github.io/css/main.css" /><link rel="stylesheet" type="text/css" href="https://cassiestd.github.io/css/dark.css" media="(prefers-color-scheme: dark)" />
+
+	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+	<script src="https://cassiestd.github.io/js/main.js"></script>
+</head>
+
+<body>
+	<div class="container wrapper post">
+		<div class="header">
+	<h1 class="site-title"><a href="https://cassiestd.github.io/">Cassie</a></h1>
+	<div class="site-description"><h2>博学精一</h2><nav class="nav social">
+			<ul class="flat"><a href="https://github.com/cassiestd" title="Github"><i data-feather="github"></i></a><a href="/index.xml" title="RSS"><i data-feather="rss"></i></a></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+			<li>
+				<a href="/tags">Tags</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post-header">
+			<h1 class="title">SpringMVC优雅的去除参数的前后空格</h1>
+			<div class="meta">Posted at &mdash; Apr 15, 2020</div>
+		</div>
+
+		<div class="markdown">
+			
+
+<h2 id="需要解决的问题">需要解决的问题</h2>
+
+<ol>
+<li>SpringMVC利用参数绑定接收的前端的参数，需要去除参数的前后空格。</li>
+<li>SpringMVC利用@RequestBody接收的Json数据需要去除键值对的前后空格。</li>
+</ol>
+
+<h2 id="问题一的解决方法">问题一的解决方法</h2>
+
+<p>可以自定义一个web参数绑定初始化器，然后在RequestMappingHandlerAdapter中配置webBindingInitializer。具体步骤如下：</p>
+
+<p>① 通过实现WebBindingInitializer自定义一个web参数绑定初始化器：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">/**
+ * @author P1n93r
+ * 对参数绑定进行扩展
+ */
+@Component
+public class CustomWebBindingInitializer implements WebBindingInitializer {
+    @Override
+    public void initBinder(WebDataBinder webDataBinder) {
+        // 对字符串的参数绑定进行扩展，去除前后空格
+        // 注册对于String类型参数对象的属性进行trim操作的编辑器,
+        // 构造参数代表：空串是否转为null，true则将空串转为null
+        webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(false));
+
+        //可以在此继续扩展~，比如扩展日期参数绑定
+    }
+}</pre></div>
+<p>② 在springmvc的全局配置文件中配置步骤①定义的初始化器：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;!--手动配置RequestMappingHandlerAdapter实现自定义扩展--&gt;
+&lt;bean class=&#34;org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter&#34;&gt;
+    &lt;!--添加自定义参数绑定--&gt;
+    &lt;property name=&#34;webBindingInitializer&#34; ref=&#34;customWebBindingInitializer&#34;/&gt;
+&lt;/bean&gt;</pre></div>
+<h2 id="问题二的解决方法">问题二的解决方法</h2>
+
+<p>可以自定义一个jackson的objectMapper，然后配置json消息转换器的objectMapper为自定义的objectMapper。具体的步骤如下：</p>
+
+<p>① 通过继承ObjectMapper来自定义一个ObjectMapper：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">/**
+ * @author P1n93r
+ * 自定义的一个jsonObject，用于去除接收的json数据中存在的前后空格情况
+ */
+@Component
+public class CustomObjectMapper extends ObjectMapper {
+    /**
+     * 重写构造器
+     */
+    public CustomObjectMapper(){
+        /*
+            调用ObjectMapper的registerModule方法添加扩展点
+            此处使用匿名对象直接new SimpleModul添加扩展功能
+        */
+        registerModule(new SimpleModule() {
+            {
+                /*
+                    注册对于String类型值对象的反序列化器
+                    对于反序列化器直接new StdDeserializer的子类StdScalarDeserializer完成
+                */
+                addDeserializer(String.class, new StdScalarDeserializer&lt;String&gt;(String.class) {
+                    @Override
+                    public String deserialize(JsonParser jp, DeserializationContext context) throws IOException {
+                        return StringUtils.trim(jp.getValueAsString());
+                    }
+                });
+                // ... 也可自定义其他类型序列化和反序列化器，例如：蛋疼的日期类型...
+            }
+        });
+    }
+}</pre></div>
+<p>② 在springmvc的全局配置文件中配置json消息转换器，并设置其ObjectMapper为步骤①定义的ObjectMapper：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;!--手动配置RequestMappingHandlerAdapter实现自定义扩展--&gt;
+&lt;bean class=&#34;org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter&#34;&gt;
+    &lt;!--添加自定义参数绑定--&gt;
+    &lt;property name=&#34;webBindingInitializer&#34; ref=&#34;customWebBindingInitializer&#34;/&gt;
+    &lt;property name=&#34;messageConverters&#34;&gt;
+        &lt;list&gt;
+            &lt;!--先进行string处理--&gt;
+            &lt;bean class=&#34;org.springframework.http.converter.StringHttpMessageConverter&#34;&gt;
+                &lt;constructor-arg index=&#34;0&#34; value=&#34;UTF-8&#34;/&gt;
+            &lt;/bean&gt;
+            &lt;!--实现自定义Jackson消息转换，以完成以json形式对对象进行序列化和反序列化以及配置支持的media-type--&gt;
+            &lt;bean class=&#34;org.springframework.http.converter.json.MappingJackson2HttpMessageConverter&#34;&gt;
+                &lt;property name=&#34;objectMapper&#34; ref=&#34;customObjectMapper&#34;/&gt;
+                &lt;property name=&#34;supportedMediaTypes&#34;&gt;
+                    &lt;list&gt;
+                        &lt;value&gt;text/plain;charset=UTF-8&lt;/value&gt;
+                        &lt;value&gt;application/json;charset=UTF-8&lt;/value&gt;
+                    &lt;/list&gt;
+                &lt;/property&gt;
+            &lt;/bean&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</pre></div>
+<p><strong><em>Notice：</em></strong> 配置json消息转换器之前一定要先配置一个String消息转换器，否则控制器返回给前端的json数据会被一个双引号 <code>&quot;&quot;</code> 包围。RequestMappingHandlerAdapter的配置也需要在注解驱动 <code>&lt;mvc:annotation-driven /&gt;</code> 之前。</p>
+
+		</div>
+
+		<div class="post-tags">
+			
+				
+			
+		</div><div id="disqus_thread"></div>
+<script type="text/javascript">
+	(function () {
+		
+		
+		if (window.location.hostname == "localhost")
+			return;
+
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		var disqus_shortname = 'cassie_std';
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+		Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div> © Copyright notice |  <a href="https://github.com/vividvilla/ezhil">Ezhil theme</a> | Built with <a href="https://gohugo.io">Hugo</a></div>
+	</nav>
+</div>
+
+<script>feather.replace()</script>
+</body>
+</html>

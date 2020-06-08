@@ -22,14 +22,5 @@
 将public目录内容上传到github 命令行cd到public目录，运行命令 git add . 将本目录下的所有文件都添加到本地git仓库，然后运行命令 git commit -m &amp;quot;标识&amp;quot; 将刚才的添加都commit（提交）一下，然后就是运行命令 git push original master 将本次仓库的文件上传到远程仓库。所有操作便完成了，打开你的博客查看。</description>
     </item>
     
-    <item>
-      <title>TEST ART1</title>
-      <link>https://cassiestd.github.io/posts/2019-12-18/art1/</link>
-      <pubDate>Wed, 18 Dec 2019 02:01:58 +0530</pubDate>
-      
-      <guid>https://cassiestd.github.io/posts/2019-12-18/art1/</guid>
-      <description> 好丑哦 我自闭了= = </description>
-    </item>
-    
   </channel>
 </rss>
