@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>MySQL外键约束update&amp;&amp;delete - Cassie</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="MySQL外键约束update&amp;&amp;delete" />
+<meta property="og:description" content="MySQL中外键约束on update和on delete 一、on update rule： 1、restrict：约束 如果存在从数据，不允许删除主数据。
+2、no action： 如果存在从数据，不允许删除主数据。
+3、cascade：级联 删除主数据，顺便也删掉从数据。
+4、set null： 删除主数据，从数据外键的值设为null。
+二、on delete rule： 1、restrict：约束 修改主数据中被关联的filed，如果该主数据有从数据，不允许修改。
+2、no action： 修改主数据中被关联的filed，如果该主数据有从数据，不允许修改。
+3、cascade： 修改主数据中被关联的filed，如果该主数据有从数据，顺便一起修改从数据的外键值。
+4、set null： 修改主数据中被关联的field，如果该主数据有从数据，从数据的外键值设为null。
+三、区分restrict和no action： 只有在极个别情况下会导致区别，no action是在其他约束的动作之后执行，restrict有最高的优先权执行。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cassiestd.github.io/posts/mysql/mysql%E4%B8%AD%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9Fupdate%E5%92%8Cdelete/" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MySQL外键约束update&amp;&amp;delete"/>
+<meta name="twitter:description" content="MySQL中外键约束on update和on delete 一、on update rule： 1、restrict：约束 如果存在从数据，不允许删除主数据。
+2、no action： 如果存在从数据，不允许删除主数据。
+3、cascade：级联 删除主数据，顺便也删掉从数据。
+4、set null： 删除主数据，从数据外键的值设为null。
+二、on delete rule： 1、restrict：约束 修改主数据中被关联的filed，如果该主数据有从数据，不允许修改。
+2、no action： 修改主数据中被关联的filed，如果该主数据有从数据，不允许修改。
+3、cascade： 修改主数据中被关联的filed，如果该主数据有从数据，顺便一起修改从数据的外键值。
+4、set null： 修改主数据中被关联的field，如果该主数据有从数据，从数据的外键值设为null。
+三、区分restrict和no action： 只有在极个别情况下会导致区别，no action是在其他约束的动作之后执行，restrict有最高的优先权执行。"/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:200,300" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="https://cassiestd.github.io/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://cassiestd.github.io/css/main.css" /><link rel="stylesheet" type="text/css" href="https://cassiestd.github.io/css/dark.css" media="(prefers-color-scheme: dark)" />
+
+	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+	<script src="https://cassiestd.github.io/js/main.js"></script>
+</head>
+
+<body>
+	<div class="container wrapper post">
+		<div class="header">
+	<h1 class="site-title"><a href="https://cassiestd.github.io/">Cassie</a></h1>
+	<div class="site-description"><h2>博学精一</h2><nav class="nav social">
+			<ul class="flat"><a href="https://github.com/cassiestd" title="Github"><i data-feather="github"></i></a><a href="/index.xml" title="RSS"><i data-feather="rss"></i></a></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+			<li>
+				<a href="/tags">Tags</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post-header">
+			<h1 class="title">MySQL外键约束update&amp;&amp;delete</h1>
+			<div class="meta">Posted at &mdash; Jan 1, 0001</div>
+		</div>
+
+		<div class="markdown">
+			
+
+<h2 id="mysql中外键约束on-update和on-delete">MySQL中外键约束on update和on delete</h2>
+
+<h3 id="一-on-update-rule">一、on update rule：</h3>
+
+<h4 id="1-restrict-约束">1、restrict：约束</h4>
+
+<p>如果存在从数据，不允许删除主数据。</p>
+
+<h4 id="2-no-action">2、no action：</h4>
+
+<p>如果存在从数据，不允许删除主数据。</p>
+
+<h4 id="3-cascade-级联">3、cascade：级联</h4>
+
+<p>删除主数据，顺便也删掉从数据。</p>
+
+<h4 id="4-set-null">4、set null：</h4>
+
+<p>删除主数据，从数据外键的值设为null。</p>
+
+<h3 id="二-on-delete-rule">二、on delete rule：</h3>
+
+<h4 id="1-restrict-约束-1">1、restrict：约束</h4>
+
+<p>修改主数据中被关联的filed，如果该主数据有从数据，不允许修改。</p>
+
+<h4 id="2-no-action-1">2、no action：</h4>
+
+<p>修改主数据中被关联的filed，如果该主数据有从数据，不允许修改。</p>
+
+<h4 id="3-cascade">3、cascade：</h4>
+
+<p>修改主数据中被关联的filed，如果该主数据有从数据，顺便一起修改从数据的外键值。</p>
+
+<h4 id="4-set-null-1">4、set null：</h4>
+
+<p>修改主数据中被关联的field，如果该主数据有从数据，从数据的外键值设为null。</p>
+
+<h3 id="三-区分restrict和no-action">三、区分restrict和no action：</h3>
+
+<p>只有在极个别情况下会导致区别，no action是在其他约束的动作之后执行，restrict有最高的优先权执行。</p>
+
+		</div>
+
+		<div class="post-tags">
+			
+				
+			
+		</div><div id="disqus_thread"></div>
+<script type="text/javascript">
+	(function () {
+		
+		
+		if (window.location.hostname == "localhost")
+			return;
+
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		var disqus_shortname = 'cassie_std';
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+		Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div> © Copyright notice |  <a href="https://github.com/vividvilla/ezhil">Ezhil theme</a> | Built with <a href="https://gohugo.io">Hugo</a></div>
+	</nav>
+</div>
+
+<script>feather.replace()</script>
+</body>
+</html>

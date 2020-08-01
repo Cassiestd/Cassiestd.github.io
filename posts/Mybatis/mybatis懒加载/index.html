@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Mybatis懒加载 - Cassie</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="Mybatis懒加载" />
+<meta property="og:description" content="前言 Mybatis的懒加载就是所谓的延迟加载，很多博客上也称之为按需加载，但是我觉得只有当配置了Mybatis的非侵略性懒加载才能称之为按需加载（下面会提到）。Mybatis的级联查询有两种方式：
+ 执行一条多表级联的sql语句（sql语句上的级联）。主从查询必定会同步执行。 写两条单表查询的sql语句，两者之间存在逻辑上的级联（sql语法上并没有关联起来）。当开启mybatis的懒加载时，只有当需要访问从查询的数据时才会执行从查询（此时开启的是非侵略性懒加载。如果是侵略性懒加载，不管你访问的是不是从查询的数据，都会执行从查询）。  本博文后面的讨论都是基于mybatis-3.2.7，所以开启懒加载需要两个依赖包：asm-3.3.1.jar和cglib-2.2.2.jar ，具体的适配版本需要自己测试。
+开启懒加载 开启mybatis的懒加载主要是再mybatis的全局配置文件中的settings元素中设置设置两个元素（mybatis的全局配置文件中的元素是有顺序的，settings元素只能在properties元素之后，在typeAliases元素之前），如下所示：
+&lt;settings&gt; &lt;!--设置mybatis使用log4j日志--&gt; &lt;setting name=&#34;logImpl&#34; value=&#34;LOG4J&#34;/&gt; &lt;!--开启mybatis的懒加载（延迟加载）--&gt; &lt;setting name=&#34;lazyLoadingEnabled&#34; value=&#34;true&#34;/&gt; &lt;!--非侵略型懒加载--&gt; &lt;setting name=&#34;aggressiveLazyLoading&#34; value=&#34;false&#34;/&gt; &lt;/settings&gt; 说明： mybatis-3.2.7默认不开启懒加载，默认开启非侵略性懒加载（侵略性和非侵略性后文会分析）。
+模拟需求 一个学生（Student）有一个成绩单（StudentScore），Student类组合了StudentScore类；数据库中存在两张表：student和student_score，student和student_score是一对一的级联关系。
+Student类代码如下：
+package com.mybatis.pojo; public class Student { protected int id,studentNumber,studentClass; protected String studentName; protected StudentScore studentScore; //学生的成绩  //getter and setter  public int getId() { return id; } public void setId(int id) { this.id = id; } public int getStudentNumber() { return studentNumber; } public void setStudentNumber(int studentNumber) { this." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cassiestd.github.io/posts/mybatis/mybatis%E6%87%92%E5%8A%A0%E8%BD%BD/" />
+<meta property="article:published_time" content="2019-10-26T13:09:36+08:00" />
+<meta property="article:modified_time" content="2019-10-26T13:09:36+08:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Mybatis懒加载"/>
+<meta name="twitter:description" content="前言 Mybatis的懒加载就是所谓的延迟加载，很多博客上也称之为按需加载，但是我觉得只有当配置了Mybatis的非侵略性懒加载才能称之为按需加载（下面会提到）。Mybatis的级联查询有两种方式：
+ 执行一条多表级联的sql语句（sql语句上的级联）。主从查询必定会同步执行。 写两条单表查询的sql语句，两者之间存在逻辑上的级联（sql语法上并没有关联起来）。当开启mybatis的懒加载时，只有当需要访问从查询的数据时才会执行从查询（此时开启的是非侵略性懒加载。如果是侵略性懒加载，不管你访问的是不是从查询的数据，都会执行从查询）。  本博文后面的讨论都是基于mybatis-3.2.7，所以开启懒加载需要两个依赖包：asm-3.3.1.jar和cglib-2.2.2.jar ，具体的适配版本需要自己测试。
+开启懒加载 开启mybatis的懒加载主要是再mybatis的全局配置文件中的settings元素中设置设置两个元素（mybatis的全局配置文件中的元素是有顺序的，settings元素只能在properties元素之后，在typeAliases元素之前），如下所示：
+&lt;settings&gt; &lt;!--设置mybatis使用log4j日志--&gt; &lt;setting name=&#34;logImpl&#34; value=&#34;LOG4J&#34;/&gt; &lt;!--开启mybatis的懒加载（延迟加载）--&gt; &lt;setting name=&#34;lazyLoadingEnabled&#34; value=&#34;true&#34;/&gt; &lt;!--非侵略型懒加载--&gt; &lt;setting name=&#34;aggressiveLazyLoading&#34; value=&#34;false&#34;/&gt; &lt;/settings&gt; 说明： mybatis-3.2.7默认不开启懒加载，默认开启非侵略性懒加载（侵略性和非侵略性后文会分析）。
+模拟需求 一个学生（Student）有一个成绩单（StudentScore），Student类组合了StudentScore类；数据库中存在两张表：student和student_score，student和student_score是一对一的级联关系。
+Student类代码如下：
+package com.mybatis.pojo; public class Student { protected int id,studentNumber,studentClass; protected String studentName; protected StudentScore studentScore; //学生的成绩  //getter and setter  public int getId() { return id; } public void setId(int id) { this.id = id; } public int getStudentNumber() { return studentNumber; } public void setStudentNumber(int studentNumber) { this."/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:200,300" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="https://cassiestd.github.io/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://cassiestd.github.io/css/main.css" /><link rel="stylesheet" type="text/css" href="https://cassiestd.github.io/css/dark.css" media="(prefers-color-scheme: dark)" />
+
+	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+	<script src="https://cassiestd.github.io/js/main.js"></script>
+</head>
+
+<body>
+	<div class="container wrapper post">
+		<div class="header">
+	<h1 class="site-title"><a href="https://cassiestd.github.io/">Cassie</a></h1>
+	<div class="site-description"><h2>博学精一</h2><nav class="nav social">
+			<ul class="flat"><a href="https://github.com/cassiestd" title="Github"><i data-feather="github"></i></a><a href="/index.xml" title="RSS"><i data-feather="rss"></i></a></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+			<li>
+				<a href="/tags">Tags</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post-header">
+			<h1 class="title">Mybatis懒加载</h1>
+			<div class="meta">Posted at &mdash; Oct 26, 2019</div>
+		</div>
+
+		<div class="markdown">
+			
+
+<h2 id="前言">前言</h2>
+
+<p>Mybatis的懒加载就是所谓的延迟加载，很多博客上也称之为按需加载，但是我觉得只有当配置了Mybatis的非侵略性懒加载才能称之为按需加载（下面会提到）。Mybatis的级联查询有两种方式：</p>
+
+<ol>
+<li>执行一条多表级联的sql语句（sql语句上的级联）。主从查询必定会同步执行。</li>
+<li>写两条单表查询的sql语句，两者之间存在逻辑上的级联（sql语法上并没有关联起来）。当开启mybatis的懒加载时，只有当需要访问从查询的数据时才会执行从查询（此时开启的是非侵略性懒加载。如果是侵略性懒加载，不管你访问的是不是从查询的数据，都会执行从查询）。</li>
+</ol>
+
+<p>本博文后面的讨论都是基于mybatis-3.2.7，所以开启懒加载需要两个依赖包：<strong>asm-3.3.1.jar和cglib-2.2.2.jar</strong> ，具体的适配版本需要自己测试。</p>
+
+<h2 id="开启懒加载">开启懒加载</h2>
+
+<p>开启mybatis的懒加载主要是再mybatis的全局配置文件中的<code>settings</code>元素中设置设置两个元素（mybatis的全局配置文件中的元素是有顺序的，settings元素只能在properties元素之后，在typeAliases元素之前），如下所示：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;settings&gt;
+    &lt;!--设置mybatis使用log4j日志--&gt;
+    &lt;setting name=&#34;logImpl&#34; value=&#34;LOG4J&#34;/&gt;
+    &lt;!--开启mybatis的懒加载（延迟加载）--&gt;
+    &lt;setting name=&#34;lazyLoadingEnabled&#34; value=&#34;true&#34;/&gt;
+    &lt;!--非侵略型懒加载--&gt;
+    &lt;setting name=&#34;aggressiveLazyLoading&#34; value=&#34;false&#34;/&gt;
+&lt;/settings&gt;</pre></div>
+<p><strong><em>说明：</em></strong> mybatis-3.2.7默认不开启懒加载，默认开启非侵略性懒加载（侵略性和非侵略性后文会分析）。</p>
+
+<h2 id="模拟需求">模拟需求</h2>
+
+<p>一个学生（Student）有一个成绩单（StudentScore），Student类组合了StudentScore类；数据库中存在两张表：student和student_score，student和student_score是一对一的级联关系。</p>
+
+<p>Student类代码如下：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><span style="color:#719e07">package</span> com.mybatis.pojo;
+public class Student {
+    protected <span style="color:#dc322f">int</span> id,studentNumber,studentClass;
+    protected String studentName;
+    protected StudentScore studentScore;      <span style="color:#586e75">//学生的成绩
+</span><span style="color:#586e75"></span>
+    <span style="color:#586e75">//getter and setter
+</span><span style="color:#586e75"></span>    public <span style="color:#dc322f">int</span> <span style="color:#268bd2">getId</span>() {
+        <span style="color:#719e07">return</span> id;
+    }
+
+    public void <span style="color:#268bd2">setId</span>(<span style="color:#dc322f">int</span> id) {
+        this.id = id;
+    }
+
+    public <span style="color:#dc322f">int</span> <span style="color:#268bd2">getStudentNumber</span>() {
+        <span style="color:#719e07">return</span> studentNumber;
+    }
+
+    public void <span style="color:#268bd2">setStudentNumber</span>(<span style="color:#dc322f">int</span> studentNumber) {
+        this.studentNumber = studentNumber;
+    }
+
+    public <span style="color:#dc322f">int</span> <span style="color:#268bd2">getStudentClass</span>() {
+        <span style="color:#719e07">return</span> studentClass;
+    }
+
+    public void <span style="color:#268bd2">setStudentClass</span>(<span style="color:#dc322f">int</span> studentClass) {
+        this.studentClass = studentClass;
+    }
+
+    public String <span style="color:#268bd2">getStudentName</span>() {
+        <span style="color:#719e07">return</span> studentName;
+    }
+
+    public void <span style="color:#268bd2">setStudentName</span>(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public StudentScore <span style="color:#268bd2">getStudentScore</span>() {
+        <span style="color:#719e07">return</span> studentScore;
+    }
+
+    public void <span style="color:#268bd2">setStudentScore</span>(StudentScore studentScore) {
+        this.studentScore = studentScore;
+    }
+
+
+    @Override
+    public String <span style="color:#268bd2">toString</span>() {
+        <span style="color:#719e07">return</span> <span style="color:#2aa198">&#34;Student{&#34;</span> <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#34;id=&#34;</span> <span style="color:#719e07">+</span> id <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#34;, studentNumber=&#34;</span> <span style="color:#719e07">+</span> studentNumber <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#34;, studentClass=&#34;</span> <span style="color:#719e07">+</span> studentClass <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#34;, studentName=&#39;&#34;</span> <span style="color:#719e07">+</span> studentName <span style="color:#719e07">+</span> <span style="color:#2aa198">&#39;\&#39;&#39;</span> <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#34;, studentScore=&#34;</span> <span style="color:#719e07">+</span> studentScore <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#39;}&#39;</span>;
+    }
+}</pre></div>
+<p>StudentScore的代码如下：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><span style="color:#719e07">package</span> com.mybatis.pojo;
+public class StudentScore {
+    protected <span style="color:#dc322f">int</span> id;
+    protected <span style="color:#dc322f">float</span> j2ee,android,sql;
+
+    <span style="color:#586e75">//getter and setter
+</span><span style="color:#586e75"></span>    public <span style="color:#dc322f">int</span> <span style="color:#268bd2">getId</span>() {
+        <span style="color:#719e07">return</span> id;
+    }
+
+    public void <span style="color:#268bd2">setId</span>(<span style="color:#dc322f">int</span> id) {
+        this.id = id;
+    }
+
+    public <span style="color:#dc322f">float</span> <span style="color:#268bd2">getJ2ee</span>() {
+        <span style="color:#719e07">return</span> j2ee;
+    }
+
+    public void <span style="color:#268bd2">setJ2ee</span>(<span style="color:#dc322f">float</span> j2ee) {
+        this.j2ee = j2ee;
+    }
+
+    public <span style="color:#dc322f">float</span> <span style="color:#268bd2">getAndroid</span>() {
+        <span style="color:#719e07">return</span> android;
+    }
+
+    public void <span style="color:#268bd2">setAndroid</span>(<span style="color:#dc322f">float</span> android) {
+        this.android = android;
+    }
+
+    public <span style="color:#dc322f">float</span> <span style="color:#268bd2">getSql</span>() {
+        <span style="color:#719e07">return</span> sql;
+    }
+
+    public void <span style="color:#268bd2">setSql</span>(<span style="color:#dc322f">float</span> sql) {
+        this.sql = sql;
+    }
+
+    @Override
+    public String <span style="color:#268bd2">toString</span>() {
+        <span style="color:#719e07">return</span> <span style="color:#2aa198">&#34;StudentScore{&#34;</span> <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#34;id=&#34;</span> <span style="color:#719e07">+</span> id <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#34;, j2ee=&#34;</span> <span style="color:#719e07">+</span> j2ee <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#34;, android=&#34;</span> <span style="color:#719e07">+</span> android <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#34;, sql=&#34;</span> <span style="color:#719e07">+</span> sql <span style="color:#719e07">+</span>
+                <span style="color:#2aa198">&#39;}&#39;</span>;
+    }
+}</pre></div>
+<h2 id="编写映射文件和mapper接口">编写映射文件和Mapper接口</h2>
+
+<p>Mapper接口中主要声明了抽象方法：<code>public List&lt;Student&gt; lazySelect() throws Exception;</code> ,映射文件中于此对应的主要代码如下：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;!--延迟加载的查询的映射配置--&gt;
+&lt;resultMap id=&#34;lazyLoadingRes&#34; type=&#34;Student&#34;&gt;
+    &lt;id column=&#34;id&#34; property=&#34;id&#34;/&gt;
+    &lt;result column=&#34;student_number&#34; property=&#34;studentNumber&#34;/&gt;
+    &lt;result column=&#34;student_name&#34; property=&#34;studentName&#34;/&gt;
+    &lt;result column=&#34;student_class&#34; property=&#34;studentClass&#34;/&gt;
+    &lt;result column=&#34;total_score&#34; property=&#34;totalScore&#34;/&gt;
+    &lt;association property=&#34;studentScore&#34; javaType=&#34;StudentScore&#34; column=&#34;id&#34; select=&#34;selectScoreById&#34; /&gt;
+&lt;/resultMap&gt;
+
+&lt;!--查询student_score表--&gt;
+&lt;select id=&#34;selectScoreById&#34; resultType=&#34;StudentScore&#34; parameterType=&#34;Integer&#34;&gt;
+    select * from student_score where id=#{param0}
+&lt;/select&gt;
+
+&lt;!--查询所有student信息--&gt;
+&lt;select id=&#34;lazySelect&#34; resultMap=&#34;lazyLoadingRes&#34;&gt;
+    select * from student
+&lt;/select&gt;</pre></div>
+<p>可以看到，我没有使用sql语法上的级联查询，而是利用mybatis的association的select属性实现两个存在逻辑上的级联的单表sql查询语句的级联查询。</p>
+
+<h2 id="测试及分析">测试及分析</h2>
+
+<p>写了一个测试方法，代码如下（其中的studentDao就是已经在@Before里实例化了的Mapper对象）：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">@Test
+public void test1() throws Exception {
+   System.out.println(&#34;-----------懒加载开始------------&#34;);
+   List&lt;Student&gt; students = studentDao.lazySelect();
+   System.out.println(&#34;-----------懒加载结束------------&#34;);
+   //System.out.println(students.get(1));
+}</pre></div>
+<p>此时运行结果如下图：</p>
+
+<p><img src="./../media/20191026-1.png" alt="结果1" /></p>
+
+<p>可以看到，开启懒加载后（非侵略性），<strong>在无需访问从查询的数据时，只执行了主查询</strong> ，那么当我们需要访问从查询的数据时候呢？将上面的测试方法的<code>System.out.println(students.get(1));</code>的注释去掉，便是需要打印Student对象的所有属性，而Student对象有一个StudentScore对象属性，此处便是需要访问从查询的数据了，再看结果：</p>
+
+<p><img src="./../media/20191026-2.png" alt="结果2" /></p>
+
+<p>可以看到，当我们需要访问从查询的数据时，会在需要访问的时候再执行从查询。那我们仅仅是需要访问主查询的数据呢？将 <code>System.out.println(students.get(1));</code> 改为 <code>System.out.println(students.get(1).getStudentName());</code> （此时只访问Student对象的name属性，此属性通过主查询得到），此时再看结果：</p>
+
+<p><img src="./../media/20191026-3.png" alt="结果3" /></p>
+
+<p>可以看到，当我们开启的是非侵略性懒加载时，只有当我们需要访问从查询的数据时，才会执行从查询，我们访问的name属性不是从查询的数据，所以也只执行了主查询，没有执行从查询，但是如果将懒加载改为侵略性的呢？将mybatis的全局配置文件中的<code>&lt;setting name=&quot;aggressiveLazyLoading&quot; value=&quot;false&quot;/&gt;</code>中的true改为false，再在上一步的基础上查看结果：</p>
+
+<p><img src="./../media/20191026-4.png" alt="结果4" /></p>
+
+<p>我们看到，当开启的是侵略性懒加载时，虽然访问的是非从查询数据（访问的是主查询的数据），但是还是执行了从查询，这便是侵略性懒加载和非侵略性懒加载的区别了：<strong>侵略性懒加载只要访问对象的属性，不管是不是从查询的数据，都会执行从查询。</strong></p>
+
+		</div>
+
+		<div class="post-tags">
+			
+				
+					<nav class="nav tags">
+							<ul class="flat">
+								
+								<li><a href="/tags/mybatis">Mybatis</a></li>
+								
+							</ul>
+					</nav>
+				
+			
+		</div><div id="disqus_thread"></div>
+<script type="text/javascript">
+	(function () {
+		
+		
+		if (window.location.hostname == "localhost")
+			return;
+
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		var disqus_shortname = 'cassie_std';
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+		Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div> © Copyright notice |  <a href="https://github.com/vividvilla/ezhil">Ezhil theme</a> | Built with <a href="https://gohugo.io">Hugo</a></div>
+	</nav>
+</div>
+
+<script>feather.replace()</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SpringMVC on Cassie</title>
+    <link>https://cassiestd.github.io/tags/springmvc/</link>
+    <description>Recent content in SpringMVC on Cassie</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <copyright>© Copyright notice</copyright>
+    <lastBuildDate>Sat, 27 Jul 2019 17:48:36 +0800</lastBuildDate>
+    
+	<atom:link href="https://cassiestd.github.io/tags/springmvc/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>SpringMVC之注解开发</title>
+      <link>https://cassiestd.github.io/posts/springmvc/springmvc%E4%B9%8B%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91/</link>
+      <pubDate>Sat, 27 Jul 2019 17:48:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/springmvc/springmvc%E4%B9%8B%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91/</guid>
+      <description>前言 &amp;emsp;&amp;emsp;之前的一篇博文：SpringMVC之处理器映射器中最后的注解式处理器映射器讲了如何使用最基础的注解开发，现在下面将讨论注解开发中的一些常见要点。
+讨论对象  @RequestMapping 控制器返回值 参数绑定  过程 @RequestMapping &amp;emsp;&amp;emsp;通过之前的利用注解方式配置映射器和适配器，对于控制器中标记有@RequestMapping的方法，我们可以通过@RequestMapping设定的url访问到此方法，其实 @RequestMapping也可以作用于类上，而不仅仅是作用于方法上 。作用于类上可以窄化请求映射。注解式开发的控制器都是基于方法的，我们往往把一个模块的控制器都放在一个类里，如果此时用@RequestMapping标记类，窄化此模块的请求，可以很好的起到逻辑上的模块划分的作用。假设我做一个手商城，有一个商品模块，那么是不是可以有商品添加，商品删除，商品修改等等此模块下的控制器，这些控制器放在一个类里，然后我在类前用@RequestMapping(&amp;quot;/item&amp;quot;)标记，然后假设我的商品添加控制器的标记为@RequestMapping(&amp;quot;/addItem&amp;quot;)，那么如果我要访问商品添加的控制器，访问的相对url为：/item/addItem，此类里的每个控制器都要加上/item前缀,此所谓窄化了请求。为啥要窄化请求，我认为是可以在逻辑上合理划分模块，一旦控制器多了，有个代表模块的前缀将会使得项目更加合理。参考实例如下：
+@Controller @RequestMapping(&amp;#34;justTest&amp;#34;) public class TestController{ @RequestMapping(&amp;#34;/hello&amp;#34;) public ModelAndView sayHello(){ ModelAndView modelAndView=new ModelAndView(&amp;#34;hello&amp;#34;); modelAndView.addObject(&amp;#34;info&amp;#34;,&amp;#34;Hello Man!&amp;#34;); return modelAndView; } } &amp;emsp;&amp;emsp;访问测试结果如下：
+&amp;emsp;&amp;emsp;@RequestMapping的另一个要点就是 请求限制 ，可以规定请求的方式为GET或者POST等等，可以规定请求的提交内容的类型（json等），等等。具体的属性如下表：
+   属性值 作用     value 例如 @RequestMapping(value=&amp;quot;/test&amp;quot;)，其实这等价于 @RequestMapping(&amp;quot;/test&amp;quot;)   method 指定请求控制器的方式，有GET，POST，DELETE等。例如：@RequestMapping(value = &amp;quot;/test&amp;quot;,method = RequestMethod.POST)就是指定只处理POST类型的请求   consumes 规定请求的提交内容的类型，比如我只接受json类型数据的请求，那么我可以设置成： @RequestMapping(value = &amp;quot;/test&amp;quot;,consumes = &amp;quot;application/json&amp;quot;)   produces 规定返回的内容的类型，比如我返回xml类型的数据，那么我可以设置成： @RequestMapping(value = &amp;quot;/test&amp;quot;,produces = &amp;quot;application/json&amp;quot;)   params 规定请求所必需的带的参数，可以进一步过滤掉无关请求   headers 规定请求必须带的HTTP头信息    &amp;emsp;&amp;emsp;为了测试以上参数，我写的一个控制器如下：</description>
+    </item>
+    
+    <item>
+      <title>SpringMVC之Hello World</title>
+      <link>https://cassiestd.github.io/posts/springmvc/springmvc%E4%B9%8Bhello_world/</link>
+      <pubDate>Thu, 25 Jul 2019 17:48:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/springmvc/springmvc%E4%B9%8Bhello_world/</guid>
+      <description>开发环境  IDEA下的Maven项目 JDK 1.8_0211 Tomcat 8.5.38  项目依赖 &amp;emsp;&amp;emsp;为了方便以后的学习，我直接加入了SSM项目的所有依赖，从而包括Spring和Mybatis等。具体的依赖配置如下（Maven的pom.xml配置）：
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;project xmlns=&amp;#34;http://maven.apache.org/POM/4.0.0&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xsi:schemaLocation=&amp;#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&amp;#34;&amp;gt; &amp;lt;modelVersion&amp;gt;4.0.0&amp;lt;/modelVersion&amp;gt; &amp;lt;groupId&amp;gt;com.company.struct&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;artifact&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0-SNAPSHOT&amp;lt;/version&amp;gt; &amp;lt;packaging&amp;gt;war&amp;lt;/packaging&amp;gt; &amp;lt;name&amp;gt;artifact Maven Webapp&amp;lt;/name&amp;gt; &amp;lt;!-- FIXME change it to the project&amp;#39;s website --&amp;gt; &amp;lt;url&amp;gt;http://www.example.com&amp;lt;/url&amp;gt; &amp;lt;properties&amp;gt; &amp;lt;project.build.sourceEncoding&amp;gt;UTF-8&amp;lt;/project.build.sourceEncoding&amp;gt; &amp;lt;maven.compiler.source&amp;gt;1.7&amp;lt;/maven.compiler.source&amp;gt; &amp;lt;maven.compiler.target&amp;gt;1.7&amp;lt;/maven.compiler.target&amp;gt; &amp;lt;!-- spring的版本 --&amp;gt; &amp;lt;spring.version&amp;gt;5.1.5.RELEASE&amp;lt;/spring.version&amp;gt; &amp;lt;!-- mybatis的版本 --&amp;gt; &amp;lt;mybatis.version&amp;gt;3.4.6&amp;lt;/mybatis.version&amp;gt; &amp;lt;!-- mybatis/spring包 --&amp;gt; &amp;lt;mybatis-spring.version&amp;gt;1.3.2&amp;lt;/mybatis-spring.version&amp;gt; &amp;lt;!-- servlet核心包 --&amp;gt; &amp;lt;servlet-api.version&amp;gt;4.0.1&amp;lt;/servlet-api.version&amp;gt; &amp;lt;!-- slf4j日志文件管理包版本 --&amp;gt; &amp;lt;slf4j.version&amp;gt;1.7.1&amp;lt;/slf4j.version&amp;gt; &amp;lt;/properties&amp;gt; &amp;lt;!-- 各种依赖包--&amp;gt; &amp;lt;dependencies&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;junit&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;junit&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;4.11&amp;lt;/version&amp;gt; &amp;lt;!-- 表示开发的时候引入，发布的时候不会加载此包 --&amp;gt; &amp;lt;scope&amp;gt;test&amp;lt;/scope&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;!</description>
+    </item>
+    
+    <item>
+      <title>SpringMVC之处理器映射器</title>
+      <link>https://cassiestd.github.io/posts/springmvc/springmvc%E4%B9%8B%E6%8E%A7%E5%88%B6%E5%99%A8%E6%98%A0%E5%B0%84%E5%99%A8/</link>
+      <pubDate>Thu, 25 Jul 2019 17:48:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/springmvc/springmvc%E4%B9%8B%E6%8E%A7%E5%88%B6%E5%99%A8%E6%98%A0%E5%B0%84%E5%99%A8/</guid>
+      <description>前言 &amp;emsp;&amp;emsp;此处只是对SpringMVC常见的三个控制器映射器做探讨，没有深入研究其源码实现，只是探讨其使用方法。以下探究的环境都是基于我的之前写过的一篇博客上说明的环境（包括前端控制器配置等），如需复刻，请参照：SpringMVC之HelloWorld
+研究对象 &amp;emsp;&amp;emsp;即将探讨的三个控制器映射器如下：
+ BeanNameUrlHandlerMapping SimpleUrlHandlerMapping RequestMappingHandlerMapping  BeanNameUrlHandlerMapping &amp;emsp;&amp;emsp;我的博客中写的一篇《SpringMVC之HelloWorld》的案例用到的映射器就是BeanNameUrlHandlerMapping，配置了这个映射器后，要求配置的控制器的bean的name为访问路由。具体的可以看我之前写的：SpringMVC之HelloWorld，注意观察我配置的控制器的name和最后我访问的url是否对应就行了。
+SimpleUrlHandlerMapping &amp;emsp;&amp;emsp;使用方法当然首先是在Spring容器中配置这个映射器咯，配置之前，先说明其好处（相对于BeanNameUrlHandlerMapping）：可以对映射进行统一配置，像BeanNameUrlHandlerMapping，我们创建一个控制器，就需要配置控制器的时候设置其name作为访问的url，当控制器多了，就不好统一规划（眼睛都看花=-=）。但是用SimpleUrlHandlerMapping，可以统一在此映射器处配置控制器的访问url。具体的配置参考如下：
+&amp;lt;!-- 配置处理器映射器--&amp;gt; &amp;lt;bean class=&amp;#34;org.springframework.web.servlet.handler.SimpleUrlHandlerMapping&amp;#34;&amp;gt; &amp;lt;property name=&amp;#34;mappings&amp;#34;&amp;gt; &amp;lt;props&amp;gt; &amp;lt;prop key=&amp;#34;/hello&amp;#34;&amp;gt;conOne&amp;lt;/prop&amp;gt; &amp;lt;/props&amp;gt; &amp;lt;/property&amp;gt; &amp;lt;/bean&amp;gt; &amp;lt;!-- 配置控制器--&amp;gt; &amp;lt;bean id=&amp;#34;conOne&amp;#34; class=&amp;#34;com.test.ssm.web.controller.TestController&amp;#34; /&amp;gt; Notice：上面配置的映射器的conOne是控制器的id，所以很容易观察到使用SimpleUrlHandlerMapping的方法就是：将配置好的控制器的id放到 &amp;lt;prop&amp;gt;标签里，然后 &amp;lt;prop&amp;gt; 标签的key属性就是此id对应控制器的访问路由。
+&amp;emsp;&amp;emsp;测试结果如下：
+RequestMappingHandlerMapping &amp;emsp;&amp;emsp;这个就是最最常用的了，就是大名鼎鼎的注解式映射器。会对类中标记的@RequestMapping的方法进行映射（也就是标记@RequestMapping同时设定url，此url为此控制器中的此方法的访问路由）。然后需要注意： RequestMappingHandlerMapping是注解式的映射器，那么控制器适配器也得用注解式的，控制器的注册也得用注解式。 配置这三件套（注解式映射器、控制器适配器、控制器）的参考如下：
+&amp;lt;!-- 注解映射器 --&amp;gt; &amp;lt;bean class=&amp;#34;org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping&amp;#34;/&amp;gt; &amp;lt;!-- 注解适配器--&amp;gt; &amp;lt;bean class=&amp;#34;org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter&amp;#34;/&amp;gt; &amp;lt;!-- 组件扫描器，扫描控制器，控制器需要使用注解@Controller,此处就是扫描controller包下的所有带@Controller注解的控制器类--&amp;gt; &amp;lt;context:component-scan base-package=&amp;#34;com.test.ssm.web.controller&amp;#34;/&amp;gt; Notice：上述的组件扫描器的base-package设置的就是我的项目的一个包：com.test.ssm.web.controller。如果你复刻，得按照你的项目的实际情况设定。设定哪个包，SpringMVC就将扫描哪个包中的带@Controller注解的类。同时： 你配置了注解的三件套，那么你之前的适配器啥的都要注掉，防止冲突
+&amp;emsp;&amp;emsp;接下来就是用注解方式开发控制器了，参考代码如下：
+package com.test.ssm.web.controller; import org.springframework.stereotype.Controller; import org.springframework.web.bind.annotation.RequestMapping; import org.springframework.web.servlet.ModelAndView; @Controller public class TestController{ @RequestMapping(&amp;#34;/hello&amp;#34;) public ModelAndView sayHello(){ ModelAndView modelAndView=new ModelAndView(&amp;#34;hello&amp;#34;); modelAndView.</description>
+    </item>
+    
+    <item>
+      <title>SpringMVC架构</title>
+      <link>https://cassiestd.github.io/posts/springmvc/springmvc%E5%85%A5%E9%97%A8/</link>
+      <pubDate>Tue, 23 Jul 2019 17:48:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/springmvc/springmvc%E5%85%A5%E9%97%A8/</guid>
+      <description>介绍  SpringMVC是Spring Framework的一个模块。
+ Spring和SpringMVC无需中间整合层。
+ SpringMVC是一个基于MVC的web框架。
+  使用背景 &amp;emsp;&amp;emsp;在学习了一学期的JavaWeb后，记得老师最后让我们写一个MVC模式的项目，记得我当时把整个项目按照四层架构写好后，发现架构占据了整个开发的绝大多数时间（就是用Servlet+jsp+javaBean搭建一个MVC模式的项目，好吧我承认作为一个作业我硬是用四层架构有点刚=-=），体会就是：太太太太太难搭了！！！所以为了开发方便（其实是为了提前响应社会的需求哈哈哈），特此学习SSM（现在还在SpringMVC阶段=-=）。
+&amp;emsp;&amp;emsp;SpringMVC和Spring Web MVC是不同说法的同种东西，后者更加强调了SpringMVC是为WEB项目服务的，也就是说SpringMVC是应用在B/S架构的系统上。
+磨刀 &amp;emsp;&amp;emsp;MVC的基本思想就是数据模型和视图通过控制器分离，用户请求控制器，控制器向数据模型请求业务处理，之后控制器将数据模型返回的数据渲染到视图并返回给用户。这是MVC模式的整个运作流程。但是知道了MVC模式，具体的项目实施该怎样，我习惯将项目分为四层架构：实体层，数据接口层，业务逻辑层，web层。各个层次的主要任务如下：
+ 实体层：就是项目中涉及到的实体，有的与数据库里的表对应，也有为了业务方便而自定义存在。
+ 数据接口层：用来对实体进行操作的，也就是与数据库进行交互。
+ 业务逻辑层：项目的业务逻辑都在这里设计，给表现层调用来实现业务请求。
+ web层：项目的控制器或者与表现层相关的都在此层。可处理一些基本的非业务逻辑。
+  砍柴 SpringMVC的架构图 SpringMVC运作流程  用户将请求发送到前端控制器DispatcherServlet
+ 前端控制器收到请求，调用处理器映射器HandlerMapping
+ 处理器映射器查找处理器Handler（有配置xml和注解两种查找方式），生成处理器对象（如果有处理器拦截器则也生成）返回给前端控制器 前端控制器通过处理器HandlerAdapter是配置调用处理器
+ 执行处理器（也叫后台控制器）
+ 处理器执行返回ModelAndView
+ 处理器适配器将处理器返回的ModelAndView返回给前端控制器
+ 前端控制器讲ModelAndView返回给视图解析器ViewResolver
+ 视图解析器解析后返回具体的视图View
+ 前端控制器对视图进行渲染
+ 前端控制器返回响应结果给用户
+  Notice：处理器和控制器是不同说法的同种东西。
+各组件说明  前端控制器：框架提供。是整个运作流程的中心，调用其他组件来处理用户的请求
+ 处理器映射器：框架提供。主要任务是查找控制器。SpringMVC提供多种映射器实现方式，例如：注解，xml配置等
+ 处理器配置器：框架提供。作用就是执行控制器。这种适配器模式可以使得扩展适配器来对更多类型控制器进行处理
+ 处理器：需要自己开发。也叫后端控制器。处理器适配器和处理器是配套使用的，所以开发控制器时，需要按照控制器适配器的规定去开发。一般在这里面调用业务逻辑层来实现用户业务请求。
+ 视图解析器：框架提供。就是根据逻辑视图名解析到物理视图名，然后生成视图View对象给前端控制器来渲染数据。
+ 视图：视图View是一个接口，其实现类支持不同的View类型（jsp,pdf等等）
+  结语 &amp;emsp;&amp;emsp;正所谓磨刀不误砍柴工，只有充分理解了MVC模式和四层架构才能理解SpringMVC的运作流程，而只有充分理解清除了SpringMVC的运作流程，才能学好SpringMVC。</description>
+    </item>
+    
+  </channel>
+</rss>

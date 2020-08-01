@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mybatis on Cassie</title>
+    <link>https://cassiestd.github.io/tags/mybatis/</link>
+    <description>Recent content in Mybatis on Cassie</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <copyright>© Copyright notice</copyright>
+    <lastBuildDate>Sat, 26 Oct 2019 20:40:36 +0800</lastBuildDate>
+    
+	<atom:link href="https://cassiestd.github.io/tags/mybatis/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Mybatis传参</title>
+      <link>https://cassiestd.github.io/posts/mybatis/mybatis%E4%BC%A0%E5%8F%82/</link>
+      <pubDate>Sat, 26 Oct 2019 20:40:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/mybatis/mybatis%E4%BC%A0%E5%8F%82/</guid>
+      <description> 前言 有一次用到mybatis的动态sql中的foreach，发现foreach的属性collection填写的值有点问题。然后突然想到之前都是使用的都是用Map或JavaBean传参，没有使用过多参的情况，然后今天测试多参传递，之前只知道可以用#{0},#{1}或者再Mapper接口中形参声明中使用@Param，但是今天发现还可以使用#{param1},#{param2}这种，emmm，还发现了很多规则，都在下面了。
+结论  当Mapper接口的形参使用了@Param标记，那么映射文件中用#{0},#{1}&amp;hellip;这种形式取值时，与@Param位置对应的那个#{}会被替换成@Param里的值。 映射文件中使用#{param1}，#{param2}&amp;hellip;的形式取值时，总是可以取到Mapper形参列表里的第一个、第二个&amp;hellip;参数。 映射文件中可以使用 _parameter 。当Mapper接口形参列表只有一个值时，此参数就代表这个值；当形参存在多个值时，此参数就代表这几个形参形成的Map，其key为0,1,2&amp;hellip;,param1,pram2,param3&amp;hellip;，如果存在使用了@Param的情况，则对应位置的#{0},#{1}&amp;hellip;会被替换成@Param里的值。并且利用_parameter.get()方式取值时，不能取0,1,2&amp;hellip;，只能取param1,param2&amp;hellip;,或者@Param标记设置的值。 当Mapper接口只有一个形参时，如果此形参是一个List，那么foreach的collection取值只能是list；如果此形参是一个数组，collection的取值只能是array；如果此形参是一个Map，则collection的取值只能是Map的key（对应的value为可迭代对象）；如果此形参用了@Param标记，则collection只能取@Param标记的值，或者_parameter.get(&amp;lsquo;标记的值&amp;rsquo;)。  </description>
+    </item>
+    
+    <item>
+      <title>Mybatis缓存</title>
+      <link>https://cassiestd.github.io/posts/mybatis/mybatis%E7%BC%93%E5%AD%98/</link>
+      <pubDate>Sat, 26 Oct 2019 16:24:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/mybatis/mybatis%E7%BC%93%E5%AD%98/</guid>
+      <description>概述 Mybatis主要有一级缓存和二级缓存，mybatis默认开启一级缓存，需要手动开启二级缓存。两者特性如下：
+ 一级缓存：是相对于同一个SqlSession而言；缓存存储介质为内存；一级缓存刷新的标志是SqlSession执行commit。 二级缓存：是相对于同一个namespace的mapper而言；存储介质可以为磁盘，所以要缓存的实体需要实现Serializable接口；SqlSession提交或者关闭后，二级缓存才会生效，二级缓存刷新的标志不是SqlSession执行commit。  一级缓存 mybatis默认就是开启并使用的一级缓存，同一个SqlSession而言，执行多次查询，只会执行一次sql语句，并将结果存储到缓存中，后面的查询都是从缓存中拿取。一个测试方法例子如下：
+@Test public void test1(){ SqlSession sqlSession = factory.openSession(); SellMapper mapper = sqlSession.getMapper(SellMapper.class); System.out.println(mapper.selectAll(&amp;#34;asc&amp;#34;).size()); //mapper.deleteById(2); //sqlSession.commit(); System.out.println(mapper.selectAll(&amp;#34;asc&amp;#34;).size()); } 查看执行日志如下：
+DEBUG [main] - Opening JDBC Connection DEBUG [main] - Created connection 2147046752. DEBUG [main] - Setting autocommit to false on JDBC Connection [com.mysql.cj.jdbc.ConnectionImpl@7ff95560] DEBUG [main] - ==&amp;gt; Preparing: select id,place,spring,summer,autumn,winter,(spring+summer+autumn+winter) as total from sell order by total asc DEBUG [main] - ==&amp;gt; Parameters: DEBUG [main] - &amp;lt;== Total: 24 24 24 可以看到，第二次执行查询操作，没有再次执行sql语句了，总共只执行了一次sql语句，第二次的取值是从缓存中拿到的。那么两次查询之间执行一次commit操作呢（虽然没有真正的对数据库做出修改）？将上面测试方法中的sqlSession.</description>
+    </item>
+    
+    <item>
+      <title>Mybatis懒加载</title>
+      <link>https://cassiestd.github.io/posts/mybatis/mybatis%E6%87%92%E5%8A%A0%E8%BD%BD/</link>
+      <pubDate>Sat, 26 Oct 2019 13:09:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/mybatis/mybatis%E6%87%92%E5%8A%A0%E8%BD%BD/</guid>
+      <description>前言 Mybatis的懒加载就是所谓的延迟加载，很多博客上也称之为按需加载，但是我觉得只有当配置了Mybatis的非侵略性懒加载才能称之为按需加载（下面会提到）。Mybatis的级联查询有两种方式：
+ 执行一条多表级联的sql语句（sql语句上的级联）。主从查询必定会同步执行。 写两条单表查询的sql语句，两者之间存在逻辑上的级联（sql语法上并没有关联起来）。当开启mybatis的懒加载时，只有当需要访问从查询的数据时才会执行从查询（此时开启的是非侵略性懒加载。如果是侵略性懒加载，不管你访问的是不是从查询的数据，都会执行从查询）。  本博文后面的讨论都是基于mybatis-3.2.7，所以开启懒加载需要两个依赖包：asm-3.3.1.jar和cglib-2.2.2.jar ，具体的适配版本需要自己测试。
+开启懒加载 开启mybatis的懒加载主要是再mybatis的全局配置文件中的settings元素中设置设置两个元素（mybatis的全局配置文件中的元素是有顺序的，settings元素只能在properties元素之后，在typeAliases元素之前），如下所示：
+&amp;lt;settings&amp;gt; &amp;lt;!--设置mybatis使用log4j日志--&amp;gt; &amp;lt;setting name=&amp;#34;logImpl&amp;#34; value=&amp;#34;LOG4J&amp;#34;/&amp;gt; &amp;lt;!--开启mybatis的懒加载（延迟加载）--&amp;gt; &amp;lt;setting name=&amp;#34;lazyLoadingEnabled&amp;#34; value=&amp;#34;true&amp;#34;/&amp;gt; &amp;lt;!--非侵略型懒加载--&amp;gt; &amp;lt;setting name=&amp;#34;aggressiveLazyLoading&amp;#34; value=&amp;#34;false&amp;#34;/&amp;gt; &amp;lt;/settings&amp;gt; 说明： mybatis-3.2.7默认不开启懒加载，默认开启非侵略性懒加载（侵略性和非侵略性后文会分析）。
+模拟需求 一个学生（Student）有一个成绩单（StudentScore），Student类组合了StudentScore类；数据库中存在两张表：student和student_score，student和student_score是一对一的级联关系。
+Student类代码如下：
+package com.mybatis.pojo; public class Student { protected int id,studentNumber,studentClass; protected String studentName; protected StudentScore studentScore; //学生的成绩  //getter and setter  public int getId() { return id; } public void setId(int id) { this.id = id; } public int getStudentNumber() { return studentNumber; } public void setStudentNumber(int studentNumber) { this.</description>
+    </item>
+    
+    <item>
+      <title>Mybatis动态SQL</title>
+      <link>https://cassiestd.github.io/posts/mybatis/mybatis%E5%8A%A8%E6%80%81sql/</link>
+      <pubDate>Tue, 24 Sep 2019 08:22:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/mybatis/mybatis%E5%8A%A8%E6%80%81sql/</guid>
+      <description>前言 Mybatis可以提供动态组装SQL语句的功能，称为动态SQL。
+一个综合例子 这个例子缺少&amp;lt;set&amp;gt;元素，&amp;lt;foreach&amp;gt;元素
+&amp;lt;select id=&amp;#34;selectAll&amp;#34; resultMap=&amp;#34;selectAllResMap&amp;#34; parameterType=&amp;#34;CustomQuerryStudentParam&amp;#34;&amp;gt; select a.*,b.j2ee,b.android,b.sql,(b.j2ee+b.android+b.sql) as total_score from student a,student_score b &amp;lt;where&amp;gt; a.id=b.id &amp;lt;!--根据学号查询--&amp;gt; &amp;lt;if test=&amp;#34;studentNumber!=null and studentNumber!=0&amp;#34;&amp;gt; and a.student_number=#{studentNumber} &amp;lt;/if&amp;gt; &amp;lt;!--根据姓名模糊查询--&amp;gt; &amp;lt;if test=&amp;#34;studentName!=null and studentName!=&amp;#39;&amp;#39;&amp;#34;&amp;gt; &amp;lt;bind name=&amp;#34;fuzzyName&amp;#34; value=&amp;#34;&amp;#39;%&amp;#39;+studentName+&amp;#39;%&amp;#39;&amp;#34;/&amp;gt; and a.student_name like #{fuzzyName} &amp;lt;/if&amp;gt; &amp;lt;!--根据班级查询--&amp;gt; &amp;lt;if test=&amp;#34;studentClass!=null and studentClass!=0&amp;#34;&amp;gt; and a.student_class=#{studentClass} &amp;lt;/if&amp;gt; &amp;lt;!--排序--&amp;gt; order by &amp;lt;choose&amp;gt; &amp;lt;!--这里不能直接用${}将前台的数据存到这，会造成order by型sql注入--&amp;gt; &amp;lt;!--于是我对前台的数据进行数据对比，反正就是不能直接将前台的数据放这--&amp;gt; &amp;lt;when test=&amp;#34;sort!=null and sort==&amp;#39;studentNumber&amp;#39;&amp;#34;&amp;gt;a.student_number&amp;lt;/when&amp;gt; &amp;lt;when test=&amp;#34;sort!=null and sort==&amp;#39;studentClass&amp;#39;&amp;#34;&amp;gt;a.student_class&amp;lt;/when&amp;gt; &amp;lt;when test=&amp;#34;sort!=null and sort==&amp;#39;sql&amp;#39;&amp;#34;&amp;gt;b.`sql`&amp;lt;/when&amp;gt; &amp;lt;when test=&amp;#34;sort!=null and sort==&amp;#39;android&amp;#39;&amp;#34;&amp;gt;b.</description>
+    </item>
+    
+    <item>
+      <title>Mybatis级联查询</title>
+      <link>https://cassiestd.github.io/posts/mybatis/mybatis%E7%BA%A7%E8%81%94%E6%9F%A5%E8%AF%A2/</link>
+      <pubDate>Tue, 17 Sep 2019 11:19:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/mybatis/mybatis%E7%BA%A7%E8%81%94%E6%9F%A5%E8%AF%A2/</guid>
+      <description>模拟需求  一对一关系：一个学生（Student）有一个地址（Address），一个地址只能被一个学生拥有。 一对多关系：一个学生可以有多个订单（Order），一个订单只能被一个学生拥有。 多对多关系：一个订单可以有多个商品（Item），同时一个商品可以被多个订单拥有。  根据上面的需求定义以下实体：
+ Student:int id,age;String name,grade,country;Address address;List&amp;lt;Order&amp;gt; orderList; Address:int id;String province,city,detail_address; Order:int id,item_id,sid;  由于Order的记录只存储Item的id，所以暂时不写Item实体，用item_id代表一个Item对象。
+说明 mybatis中通过&amp;lt;resultMap&amp;gt;的子元素&amp;lt;association&amp;gt;来处理一对一级联查询。&amp;lt;association&amp;gt;子元素通常含有以下属性：
+ property：指定映射到实体类的对象属性。 column：指定表中的字段（当通过执行两个sql语句来实现级联查询时用到）。 javaType：指定映射到实体类对象属性的类型。 select：指定引入嵌套查询的子sql语句（一般和column结合使用）。  mybatis中通过&amp;lt;resultMap&amp;gt;的子元素&amp;lt;collection&amp;gt;来处理一对多级联查询。&amp;lt;collection&amp;gt;子元素通常含有以下属性：
+ property：指定映射到实体类的对象属性。 column：指定表中的字段。 ofType：指定实体的对象属性的类型。 select：指定引入嵌套查询的子sql语句。  级联查询有以下三种方法：
+ 执行一条sql语句，将属于子表的部分映射到实体的对象属性的属性上。 执行两条sql语句，将嵌套子查询结果映射到实体的对象属性的属性上。 执行一条sql语句，将查询结果映射到一个包含父表和子表字段的实体的属性上。  方法一 一个resultMap的例子如下：
+&amp;lt;!--执行一条sql语句--&amp;gt; &amp;lt;resultMap id=&amp;#34;oneToOneResMap&amp;#34; type=&amp;#34;com.mybatis.pojo.Student&amp;#34;&amp;gt; &amp;lt;id property=&amp;#34;id&amp;#34; column=&amp;#34;id&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;age&amp;#34; column=&amp;#34;age&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;name&amp;#34; column=&amp;#34;name&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;grade&amp;#34; column=&amp;#34;grade&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;country&amp;#34; column=&amp;#34;country&amp;#34;/&amp;gt; &amp;lt;!--一对一的级联查询--&amp;gt; &amp;lt;association property=&amp;#34;address&amp;#34; javaType=&amp;#34;com.mybatis.pojo.Address&amp;#34;&amp;gt; &amp;lt;id property=&amp;#34;id&amp;#34; column=&amp;#34;addr_id&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;province&amp;#34; column=&amp;#34;province&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;city&amp;#34; column=&amp;#34;city&amp;#34;/&amp;gt; &amp;lt;result property=&amp;#34;detail_address&amp;#34; column=&amp;#34;detail_address&amp;#34;/&amp;gt; &amp;lt;/association&amp;gt; &amp;lt;!</description>
+    </item>
+    
+    <item>
+      <title>Mybatis整合Spring</title>
+      <link>https://cassiestd.github.io/posts/mybatis/mybatis%E6%95%B4%E5%90%88spring/</link>
+      <pubDate>Wed, 10 Jul 2019 17:48:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/mybatis/mybatis%E6%95%B4%E5%90%88spring/</guid>
+      <description>介绍 &amp;emsp;&amp;emsp;Mybatis是一款持久层的框架，使用Mybatis我们无需自己编写繁琐的JDBC代码，也无需为sql注入等安全问题烦恼。没用过Hibernate哈哈哈，无法做比较。好像现在市面上都是用Mybatis了叭=-=
+&amp;emsp;&amp;emsp;然后为了方便之后写一些Mybatis相关的demo，首先需要搭建好能够运行Mybatis的环境，接下来就是结合Spring来搭建Mybatis的过程。
+开发环境  IDEA下的Maven项目 JDK 1.8_0211 Tomcat 8.5.38 Mybatis 1.3.2  项目依赖 &amp;emsp;&amp;emsp;下面的Maven的依赖配置是一个完整的ssm依赖配置。包括了之后会用得到的Gjson和log4j等。此外，注意我的pom.xml在build里配置了一个resources ，代表我的src/main/java路径下的xml文件也会被认作项目的资源文件（否则利用Mybatis的扫描方式配置的mapper将不起作用 ），pom.xml配置如下：
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;project xmlns=&amp;#34;http://maven.apache.org/POM/4.0.0&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xsi:schemaLocation=&amp;#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&amp;#34;&amp;gt; &amp;lt;modelVersion&amp;gt;4.0.0&amp;lt;/modelVersion&amp;gt; &amp;lt;groupId&amp;gt;com.company.struct&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;artifact&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0-SNAPSHOT&amp;lt;/version&amp;gt; &amp;lt;packaging&amp;gt;war&amp;lt;/packaging&amp;gt; &amp;lt;name&amp;gt;artifact Maven Webapp&amp;lt;/name&amp;gt; &amp;lt;!-- FIXME change it to the project&amp;#39;s website --&amp;gt; &amp;lt;url&amp;gt;http://www.example.com&amp;lt;/url&amp;gt; &amp;lt;properties&amp;gt; &amp;lt;project.build.sourceEncoding&amp;gt;UTF-8&amp;lt;/project.build.sourceEncoding&amp;gt; &amp;lt;maven.compiler.source&amp;gt;1.7&amp;lt;/maven.compiler.source&amp;gt; &amp;lt;maven.compiler.target&amp;gt;1.7&amp;lt;/maven.compiler.target&amp;gt; &amp;lt;!-- spring的版本 --&amp;gt; &amp;lt;spring.version&amp;gt;5.1.5.RELEASE&amp;lt;/spring.version&amp;gt; &amp;lt;!-- mybatis的版本 --&amp;gt; &amp;lt;mybatis.version&amp;gt;3.4.6&amp;lt;/mybatis.version&amp;gt; &amp;lt;!-- mybatis/spring包 --&amp;gt; &amp;lt;mybatis-spring.version&amp;gt;1.3.2&amp;lt;/mybatis-spring.version&amp;gt; &amp;lt;!-- servlet核心包 --&amp;gt; &amp;lt;servlet-api.version&amp;gt;4.0.1&amp;lt;/servlet-api.version&amp;gt; &amp;lt;!-- slf4j日志文件管理包版本 --&amp;gt; &amp;lt;slf4j.version&amp;gt;1.7.1&amp;lt;/slf4j.version&amp;gt; &amp;lt;/properties&amp;gt; &amp;lt;!-- 各种依赖包--&amp;gt; &amp;lt;dependencies&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;junit&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;junit&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;4.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Mybatis动态SQL - Cassie</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="Mybatis动态SQL" />
+<meta property="og:description" content="前言 Mybatis可以提供动态组装SQL语句的功能，称为动态SQL。
+一个综合例子 这个例子缺少&lt;set&gt;元素，&lt;foreach&gt;元素
+&lt;select id=&#34;selectAll&#34; resultMap=&#34;selectAllResMap&#34; parameterType=&#34;CustomQuerryStudentParam&#34;&gt; select a.*,b.j2ee,b.android,b.sql,(b.j2ee&#43;b.android&#43;b.sql) as total_score from student a,student_score b &lt;where&gt; a.id=b.id &lt;!--根据学号查询--&gt; &lt;if test=&#34;studentNumber!=null and studentNumber!=0&#34;&gt; and a.student_number=#{studentNumber} &lt;/if&gt; &lt;!--根据姓名模糊查询--&gt; &lt;if test=&#34;studentName!=null and studentName!=&#39;&#39;&#34;&gt; &lt;bind name=&#34;fuzzyName&#34; value=&#34;&#39;%&#39;&#43;studentName&#43;&#39;%&#39;&#34;/&gt; and a.student_name like #{fuzzyName} &lt;/if&gt; &lt;!--根据班级查询--&gt; &lt;if test=&#34;studentClass!=null and studentClass!=0&#34;&gt; and a.student_class=#{studentClass} &lt;/if&gt; &lt;!--排序--&gt; order by &lt;choose&gt; &lt;!--这里不能直接用${}将前台的数据存到这，会造成order by型sql注入--&gt; &lt;!--于是我对前台的数据进行数据对比，反正就是不能直接将前台的数据放这--&gt; &lt;when test=&#34;sort!=null and sort==&#39;studentNumber&#39;&#34;&gt;a.student_number&lt;/when&gt; &lt;when test=&#34;sort!=null and sort==&#39;studentClass&#39;&#34;&gt;a.student_class&lt;/when&gt; &lt;when test=&#34;sort!=null and sort==&#39;sql&#39;&#34;&gt;b.`sql`&lt;/when&gt; &lt;when test=&#34;sort!=null and sort==&#39;android&#39;&#34;&gt;b." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cassiestd.github.io/posts/mybatis/mybatis%E5%8A%A8%E6%80%81sql/" />
+<meta property="article:published_time" content="2019-09-24T08:22:36+08:00" />
+<meta property="article:modified_time" content="2019-09-24T08:22:36+08:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Mybatis动态SQL"/>
+<meta name="twitter:description" content="前言 Mybatis可以提供动态组装SQL语句的功能，称为动态SQL。
+一个综合例子 这个例子缺少&lt;set&gt;元素，&lt;foreach&gt;元素
+&lt;select id=&#34;selectAll&#34; resultMap=&#34;selectAllResMap&#34; parameterType=&#34;CustomQuerryStudentParam&#34;&gt; select a.*,b.j2ee,b.android,b.sql,(b.j2ee&#43;b.android&#43;b.sql) as total_score from student a,student_score b &lt;where&gt; a.id=b.id &lt;!--根据学号查询--&gt; &lt;if test=&#34;studentNumber!=null and studentNumber!=0&#34;&gt; and a.student_number=#{studentNumber} &lt;/if&gt; &lt;!--根据姓名模糊查询--&gt; &lt;if test=&#34;studentName!=null and studentName!=&#39;&#39;&#34;&gt; &lt;bind name=&#34;fuzzyName&#34; value=&#34;&#39;%&#39;&#43;studentName&#43;&#39;%&#39;&#34;/&gt; and a.student_name like #{fuzzyName} &lt;/if&gt; &lt;!--根据班级查询--&gt; &lt;if test=&#34;studentClass!=null and studentClass!=0&#34;&gt; and a.student_class=#{studentClass} &lt;/if&gt; &lt;!--排序--&gt; order by &lt;choose&gt; &lt;!--这里不能直接用${}将前台的数据存到这，会造成order by型sql注入--&gt; &lt;!--于是我对前台的数据进行数据对比，反正就是不能直接将前台的数据放这--&gt; &lt;when test=&#34;sort!=null and sort==&#39;studentNumber&#39;&#34;&gt;a.student_number&lt;/when&gt; &lt;when test=&#34;sort!=null and sort==&#39;studentClass&#39;&#34;&gt;a.student_class&lt;/when&gt; &lt;when test=&#34;sort!=null and sort==&#39;sql&#39;&#34;&gt;b.`sql`&lt;/when&gt; &lt;when test=&#34;sort!=null and sort==&#39;android&#39;&#34;&gt;b."/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:200,300" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="https://cassiestd.github.io/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://cassiestd.github.io/css/main.css" /><link rel="stylesheet" type="text/css" href="https://cassiestd.github.io/css/dark.css" media="(prefers-color-scheme: dark)" />
+
+	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+	<script src="https://cassiestd.github.io/js/main.js"></script>
+</head>
+
+<body>
+	<div class="container wrapper post">
+		<div class="header">
+	<h1 class="site-title"><a href="https://cassiestd.github.io/">Cassie</a></h1>
+	<div class="site-description"><h2>博学精一</h2><nav class="nav social">
+			<ul class="flat"><a href="https://github.com/cassiestd" title="Github"><i data-feather="github"></i></a><a href="/index.xml" title="RSS"><i data-feather="rss"></i></a></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+			<li>
+				<a href="/tags">Tags</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post-header">
+			<h1 class="title">Mybatis动态SQL</h1>
+			<div class="meta">Posted at &mdash; Sep 24, 2019</div>
+		</div>
+
+		<div class="markdown">
+			
+
+<h2 id="前言">前言</h2>
+
+<p>Mybatis可以提供动态组装SQL语句的功能，称为动态SQL。</p>
+
+<h2 id="一个综合例子">一个综合例子</h2>
+
+<p>这个例子缺少&lt;set&gt;元素，&lt;foreach&gt;元素</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;select id=&#34;selectAll&#34; resultMap=&#34;selectAllResMap&#34; parameterType=&#34;CustomQuerryStudentParam&#34;&gt;
+    select a.*,b.j2ee,b.android,b.sql,(b.j2ee+b.android+b.sql) as total_score
+        from student a,student_score b
+    &lt;where&gt;
+        a.id=b.id
+        &lt;!--根据学号查询--&gt;
+        &lt;if test=&#34;studentNumber!=null and studentNumber!=0&#34;&gt;
+            and a.student_number=#{studentNumber}
+        &lt;/if&gt;
+        &lt;!--根据姓名模糊查询--&gt;
+        &lt;if test=&#34;studentName!=null and studentName!=&#39;&#39;&#34;&gt;
+            &lt;bind name=&#34;fuzzyName&#34; value=&#34;&#39;%&#39;+studentName+&#39;%&#39;&#34;/&gt;
+            and a.student_name like #{fuzzyName}
+        &lt;/if&gt;
+        &lt;!--根据班级查询--&gt;
+        &lt;if test=&#34;studentClass!=null and studentClass!=0&#34;&gt;
+            and a.student_class=#{studentClass}
+        &lt;/if&gt;
+        &lt;!--排序--&gt;
+        order by
+        &lt;choose&gt;
+            &lt;!--这里不能直接用${}将前台的数据存到这，会造成order by型sql注入--&gt;
+            &lt;!--于是我对前台的数据进行数据对比，反正就是不能直接将前台的数据放这--&gt;
+            &lt;when test=&#34;sort!=null and sort==&#39;studentNumber&#39;&#34;&gt;a.student_number&lt;/when&gt;
+            &lt;when test=&#34;sort!=null and sort==&#39;studentClass&#39;&#34;&gt;a.student_class&lt;/when&gt;
+            &lt;when test=&#34;sort!=null and sort==&#39;sql&#39;&#34;&gt;b.`sql`&lt;/when&gt;
+            &lt;when test=&#34;sort!=null and sort==&#39;android&#39;&#34;&gt;b.android&lt;/when&gt;
+            &lt;when test=&#34;sort!=null and sort==&#39;j2ee&#39;&#34;&gt;b.j2ee&lt;/when&gt;
+            &lt;otherwise&gt;total_score&lt;/otherwise&gt;
+        &lt;/choose&gt;
+        &lt;!--排序的方式（asc还是desc）--&gt;
+        &lt;choose&gt;
+            &lt;when test=&#34;isAsc!=null and isAsc==false&#34;&gt;desc&lt;/when&gt;
+            &lt;otherwise&gt;asc&lt;/otherwise&gt;
+        &lt;/choose&gt;
+        &lt;!--分页--&gt;
+        &lt;if test=&#34;offset!=null&#34;&gt;
+            &lt;if test=&#34;pageSize!=null and pageSize!=0&#34;&gt;
+                limit #{offset},#{pageSize}
+            &lt;/if&gt;
+        &lt;/if&gt;
+    &lt;/where&gt;
+&lt;/select&gt;</pre></div>
+<h2 id="if-元素">&lt;if&gt;元素</h2>
+
+<p>if元素可以使得有条件的包含where字句的一部分，类似高级语言中的if语句，需注意的地方是： <strong>if元素的test属性为判断条件，里面不能写&amp;&amp;和||，而是and和or，而且取值直接写标识符即可，无需用#和$符号</strong></p>
+
+<h2 id="choose-when-otherkwise-元素">&lt;choose&gt;,&lt;when&gt;,&lt;otherkwise&gt;元素</h2>
+
+<p>类似高级语言的swich语句，当要多个条件选择一个时使用，同时还可以给个默认的条件——用&lt;otherwise&gt;元素即可</p>
+
+<h2 id="where-元素">&lt;where&gt;元素</h2>
+
+<p>where元素的好处如下：</p>
+
+<ol>
+<li>会自动在写where元素的地方输出一个where语句</li>
+<li>如果where里的所有条件都不满足，则mybatis会输出所有记录</li>
+<li>会自动去掉第一个输出条件的开头的and或者or</li>
+<li>无需考虑空格问题，比如两个查询条件之间的空格，mybatis会自动处理</li>
+</ol>
+
+<h2 id="bind-元素">&lt;bind&gt;元素</h2>
+
+<p>主要用在模糊查询的拼接%符号的，模糊查询时，不要使用${}和%拼接，会造成sql注入。</p>
+
+<h2 id="set-元素">&lt;set&gt;元素</h2>
+
+<p>主要用在动态更新列，需要注意的是： <strong>set元素内的多个if元素里的内容，需要以逗号结尾</strong> ，因为set元素不会自动去掉第一个输出条件的开头的逗号，所以我们把逗号写在后面，&lt;set&gt;元素会自动去除其内的最后一个逗号。一个例子如下：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;update id=&#34;updateOne&#34; parameterType=&#34;Student&#34;&gt;
+    update student a,student_score b
+    &lt;set&gt;
+        &lt;if test=&#34;studentNumber!=0&#34;&gt;
+            a.student_number=#{studentNumber},
+        &lt;/if&gt;
+        &lt;if test=&#34;studentClass!=0&#34;&gt;
+            a.student_class=#{studentClass},
+        &lt;/if&gt;
+        &lt;if test=&#34;studentName!=null and studentName!=&#39;&#39;&#34;&gt;
+            a.student_name=#{studentName},
+        &lt;/if&gt;
+        &lt;if test=&#34;studentScore.j2ee!=0&#34;&gt;
+            b.j2ee=#{studentScore.j2ee},
+        &lt;/if&gt;
+        &lt;if test=&#34;studentScore.android!=0&#34;&gt;
+            b.android=#{studentScore.android},
+        &lt;/if&gt;
+        &lt;if test=&#34;studentScore.sql!=0&#34;&gt;
+            b.`sql`=#{studentScore.sql}
+        &lt;/if&gt;
+    &lt;/set&gt;
+    &lt;where&gt;
+        a.id=b.id
+        &lt;if test=&#34;id!=0&#34;&gt;
+            and a.id=#{id}
+        &lt;/if&gt;
+    &lt;/where&gt;
+&lt;/update&gt;</pre></div>
+<h2 id="foreach-元素">&lt;foreach&gt;元素</h2>
+
+<p>类似JSTL的&lt;c:foreach&gt;标签，一个例子如下：</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;!--批量删除--&gt;
+&lt;delete id=&#34;deleteByRange&#34; parameterType=&#34;List&#34;&gt;
+    delete from student where id in
+    &lt;foreach collection=&#34;list&#34; open=&#34;(&#34; close=&#34;)&#34; separator=&#34;,&#34; item=&#34;v&#34;&gt;
+        #{v}
+    &lt;/foreach&gt;
+&lt;/delete&gt;</pre></div>
+<h2 id="trim-元素">&lt;trim&gt;元素</h2>
+
+<p>比较少用，主要作用是加前后缀，以及覆盖前后缀。</p>
+
+		</div>
+
+		<div class="post-tags">
+			
+				
+					<nav class="nav tags">
+							<ul class="flat">
+								
+								<li><a href="/tags/mybatis">Mybatis</a></li>
+								
+							</ul>
+					</nav>
+				
+			
+		</div><div id="disqus_thread"></div>
+<script type="text/javascript">
+	(function () {
+		
+		
+		if (window.location.hostname == "localhost")
+			return;
+
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		var disqus_shortname = 'cassie_std';
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+		Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div> © Copyright notice |  <a href="https://github.com/vividvilla/ezhil">Ezhil theme</a> | Built with <a href="https://gohugo.io">Hugo</a></div>
+	</nav>
+</div>
+
+<script>feather.replace()</script>
+</body>
+</html>

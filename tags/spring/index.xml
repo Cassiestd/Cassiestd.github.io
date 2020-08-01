@@ -7,17 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <copyright>© Copyright notice</copyright>
-    <lastBuildDate>Tue, 12 Nov 2019 09:00:36 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 20 Nov 2019 17:16:36 +0800</lastBuildDate>
     
 	<atom:link href="https://cassiestd.github.io/tags/spring/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Spring Bean</title>
+      <link>https://cassiestd.github.io/posts/spring/spring-bean/</link>
+      <pubDate>Wed, 20 Nov 2019 17:16:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/spring/spring-bean/</guid>
+      <description>Bean的配置 Spring是一个生产和管理其容器内的Bean的工厂，如果要使用这个工厂来生产和管理Bean，需要在Spring的配置文件中配置Bean，Spring框架支持XML和Properties两种格式的配置文件，但是实际中常用的是XML格式的文件。XML配置文件的根元素是 &amp;lt;beans&amp;gt; ，其内包含了多个 &amp;lt;bean&amp;gt; 子元素，每个 &amp;lt;bean&amp;gt; 元素定义一个Bean， 并描述Bean是如何装配到Spring容器中的 。 &amp;lt;bean&amp;gt; 常用属性及其子元素如下表：
+   属性或子元素名称 描述     id Bean在Spring中的唯一标识   class Bean的具体实现类   scope 指定Bean的作用域   &amp;lt;constructor-arg&amp;gt; &amp;lt;bean&amp;gt;元素的子元素，使用构造方法注入   &amp;lt;property&amp;gt; &amp;lt;bean&amp;gt;元素的子元素，用于设置一个属性（利用属性的setter方法注入）   &amp;lt;list&amp;gt; &amp;lt;bean&amp;gt;元素的子元素，用于封装List或者数组类型的依赖注入   &amp;lt;map&amp;gt; &amp;lt;bean&amp;gt;元素的子元素，用于封装Map类型的依赖注入   &amp;lt;set&amp;gt; &amp;lt;bean&amp;gt;元素的子元素，用于封装Set类型的依赖注入   &amp;lt;entry&amp;gt; &amp;lt;bean&amp;gt;元素的子元素，用于设置一个键值对    Bean的实例化 在Spring中实例化Bean有三种方式：
+ 构造方法实例化。 静态工厂实例化。 实例工厂实例化。  构造方法实例化 构造方法实例化就是调用Bean的无参构造器来实例化Bean。只需在指定相应的 &amp;lt;bean&amp;gt; 元素就行了（保证Bean有无参构造器）。一个例子如下：</description>
+    </item>
+    
+    <item>
       <title>Spring IoC</title>
-      <link>https://cassiestd.github.io/posts/2020-06-07/spring-ioc/</link>
+      <link>https://cassiestd.github.io/posts/spring/spring-ioc/</link>
       <pubDate>Tue, 12 Nov 2019 09:00:36 +0800</pubDate>
       
-      <guid>https://cassiestd.github.io/posts/2020-06-07/spring-ioc/</guid>
+      <guid>https://cassiestd.github.io/posts/spring/spring-ioc/</guid>
       <description>Spring IoC基本概念 控制反转（IoC，Inversion of Control） 是Spring框架的基础，也是Spring的核心理念，用于消减计算机程序的耦合的问题。 依赖注入（DI，Dependency Injection）是IoC的另外一种说法 ，只是从不同角度描述相同的概念。
 当一个Java对象调用另一个对象时，传统编程模式下，我们通常使用new的方式创建一个对象，这种方式会增加调用者和被调用者之间的耦合性，不利于后期的维护和升级。Spring框架的出现就是为了解决这个耦合的问题。其中重要的两个概念如下：
  控制反转：调用者不再通过new的方式创建被调用者对象，而是由Spring容器来负责创建，创建对象的控制权由调用者转移到了Spring容器，控制权发生了反转，此所谓 控制反转 。 依赖注入：调用者组合被调用者时，Spring容器负责将被依赖的对象赋值给该组合成员变量，相当于为调用者注入了它所依赖的实例，此所谓 依赖注入 。  综上所述， 在Spring中实现控制反转的是IoC容器，其实现方法是依赖注入。
@@ -27,6 +38,20 @@ XmlBeanFactory xmlBeanFactory = new XmlBeanFactory(new FileSystemResource(&amp;#
  通过ClassPathXmlApplicationContext创建。 通过FileSystemXmlApplicationContext创建。 通过Web服务器实例化ApplicationContext创建。  方式1的实例代码如下：
 //利用ApplicationContext实现控制反转 ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext(&amp;#34;spring/applicationContext.xml&amp;#34;); Student student0=(Student)applicationContext.getBean(&amp;#34;student&amp;#34;); student0.setName(&amp;#34;GIAO！&amp;#34;); System.out.println(student0); 方式2的实例代码如下（需要XMl配置文件的绝对路径）：
 FileSystemXmlApplicationContext applicationContext = new FileSystemXmlApplicationContext(&amp;#34;E:\\ideaProject\\SpringTest\\res\\spring\\applicationContext.xml&amp;#34;); Student student=(Student)applicationContext.getBean(&amp;#34;student&amp;#34;); student.setNumber(4041); System.out.println(student); 方式3，需要在j2ee项目的web.xml中进行配置，以后等到mvc再举例。</description>
+    </item>
+    
+    <item>
+      <title>Spring入门</title>
+      <link>https://cassiestd.github.io/posts/spring/spring%E5%85%A5%E9%97%A8/</link>
+      <pubDate>Tue, 05 Nov 2019 08:28:36 +0800</pubDate>
+      
+      <guid>https://cassiestd.github.io/posts/spring/spring%E5%85%A5%E9%97%A8/</guid>
+      <description>Spring简介 Spring是一个轻量级的Java开发框架， 目的是为了解决企业级应用开发的业务逻辑层和其他各层的耦合问题。
+Spring体系结构 Spring的体系结构图如下：
+Core Container  Core模块：提供框架的基本组成部分，包括控制反转（Inversion of Control，IoC）和依赖注入（Denpendency Injection，DI）。 Beans：提供了BeanFactory，是工厂模式的典型实现， Spring将管理对象称为Bean。 Context：建立在Core和Beans的基础上，提供一个 框架式的对象访问方式，是访问定义和配置的任何对象的媒介。 常用接口为ApplicationContext。 SpEl： 提供强大的表达式语言去支持运行时查询和操作对象图。  Test 此模支持使用 JUnit或TestNG 对Spring组件进行单元测试和集成测试。
+AOP、Aspects、Instrumentation和Messaging  AOP： 提供了一个符合AOP要求的面向切面的编程实现，允许定义方法拦截器和切入点，将代码按照功能进行分离，以便干净的解构。 Aspects：提供了与AspectJ的集成功能，AspectJ是一个功能强大且成熟的AOP框架。 Instrumentation：提供了类植入（Instrumentation）支持和类加载器的实现，可以在特定的应用服务器中使用。 Messaging：此模块是Spring 4.0以后新增的，提供了对消息传递体系结构和协议的支持。  Data Access/Integration  JDBC：提供了一个JDBC的抽象层，消除了繁琐的JDBC编码和数据库厂商特有的错误代码解析。 ORM：为流行的 对象关系映射（Object Relational Mapping）API提供集成层。 此模块可以将O/R映射框架与Spring提供的所有其他功能结合使用，例如声明式事务管理功能。 OXM：提供了一个支持对象/XML映射的抽象层实现，例如：JAXB、Castor等。 JMS：指JAVA消息传递服务（Java Message Server），包含用于生产和使用消息的功能。 Transactions：支持用于实现特殊接口和所有POJO类的编程和声明式事务管理。  Web  WebSocket：Spring 4.0以后新增的模块，提供了WebSocket和SockJS的实现。 Servlet：也成为webmvc模块，包含用于Web应用程序的SpringMVC和REST Web Services实现。Spring MVC框架提供了领域模型代码和Web表单之间的清晰分离，并与Spring FrameWork的所有其他功能集成。 Web：提供了基本的Web开发集成功能，例如：文件上传、使用一个Servlet监听器初始化一个IoC容器以及Web应用上下文。 Portlet：类似于Servlet模块的功能，提供了Portlet环境下的MVC的实现。  Spring目录结构 下载Spring Framework解压后，得到如下图所示的目录结构：
+其中，docs目录是Spring的API文档和开发规范；libs是Spring应用所需要的JAR包和源代码；schema是Spring应用所需要的schema文件，这些schema文件定义了Spring相关配置文件的约束。其中， libs下有三类JAR文件：以RELEASE.jar结尾的是开发时所需要的JAR包；以RELEASE-source.jar结尾的时源文件的压缩包；以RELEASE-javadoc.jar结尾的是API文档的压缩包。
+Notice： Spring框架依赖于Apache Commons Logging组件，需要配合commons-logging的JAR包才能使用。</description>
     </item>
     
   </channel>
